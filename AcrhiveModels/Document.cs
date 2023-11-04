@@ -1,0 +1,31 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace AcrhiveModels
+{
+    public class Document: FullAuditableModel
+    {
+        //Обозначение документа
+        public required string Name { get; set; }
+        //Описание документа
+        public string? Description { get; set; }
+        //Дата документа (отличается от даты создания записи)
+        public DateOnly Date {  get; set; }
+        //Компания, выпустившая документ
+        public int CompanyId { get; set; }
+        //Тип документа
+        public DocumentType DocumentType { get; set; }
+    }
+    public enum DocumentType
+    {
+        AddOriginal,
+        CreateCopy,
+        DeleteCopy,
+        DeliverCopy,
+        AddCorrection,
+        AddApplicability
+    }
+}

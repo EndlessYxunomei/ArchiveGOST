@@ -8,6 +8,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="appsettings.json" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.13" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="7.0.13">
       <PrivateAssets>all</PrivateAssets>
@@ -27,6 +31,12 @@
     <ProjectReference Include="..\AcrhiveModels\AcrhiveModels.csproj" />
     <ProjectReference Include="..\ArchiveGOST_DbLibrary\ArchiveGOST_DbLibrary.csproj" />
     <ProjectReference Include="..\Archive_Helpers\Archive_Helpers.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="appsettings.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
 </Project>
