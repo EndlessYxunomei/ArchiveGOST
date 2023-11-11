@@ -8,9 +8,9 @@ namespace AcrhiveModels.Interfaces
 {
     public interface IAuditeModel
     {
-        public string? CreatedByUserId { get; set; }
+        //public string? CreatedByUserId { get; set; }
         public DateTime CreatedDate { get; set; }
-        public string? LastModifiedUserId { get; set; }
+        //public string? LastModifiedUserId { get; set; }
         public DateTime? LastModifiedDate { get; set; }
     }
 }

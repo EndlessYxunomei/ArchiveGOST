@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using AcrhiveModels;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 
 namespace ArchiveGOST_DbLibrary
@@ -27,8 +28,18 @@ namespace ArchiveGOST_DbLibrary
         }
 
         //Таблицы
-
+        public DbSet<Person> People { get; set; }
+        public DbSet<Document> Documents { get; set; }
+        public DbSet<Applicability> Applicabilities { get; set; }
+        public DbSet<Correction> Corrections { get; set; }
+        public DbSet<Company> Companies { get; set; }
+        public DbSet<Original> Originals { get; set; }
+        public DbSet<Copy> Copies { get; set; }
+        public DbSet<Delivery> Deliveries { get; set; }
         //создание связей и пр
-
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+        }
     }
 }

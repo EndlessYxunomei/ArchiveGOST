@@ -8,12 +8,13 @@ namespace AcrhiveModels
 {
     public class Correction: FullAuditableModel
     {
-        //К какому Оригиналу отностися
-        public int OrigonalId { get; set; }
+        //К каким Оригиналам отностися
+        public virtual List<Original> Original { get; set; } = new List<Original>();
         //номер изменения
         public int CorrectionNumber { get; set; }
         //Обоснование изменения
         public int DocumentId { get; set; }
+        public virtual Document? Document { get; set; }
         //Описание изменений
         public required string Description { get; set; }
 

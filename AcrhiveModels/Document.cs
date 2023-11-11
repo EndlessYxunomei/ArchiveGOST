@@ -16,6 +16,7 @@ namespace AcrhiveModels
         public DateOnly Date {  get; set; }
         //Компания, выпустившая документ
         public int CompanyId { get; set; }
+        public virtual Company? Company { get; set; }
         //Тип документа
         public DocumentType DocumentType { get; set; }
     }

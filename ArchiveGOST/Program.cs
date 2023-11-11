@@ -22,9 +22,17 @@ namespace ArchiveGOST
         {
             //настраиваем подключение к базе данных
             BuildOptions();
-            
-            
-            Console.WriteLine("Hello, World!");
+            //тестирование
+            Test1();
+            Console.WriteLine("Всё прошло удачно");
+        }
+        private static void Test1()
+        {
+            using (var context = new ArchiveDbContext(_optionsBuilder.Options))
+            {
+                context.Database.EnsureDeleted();
+                context.Database.EnsureCreated();
+            }
         }
     }
 }
