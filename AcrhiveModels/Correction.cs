@@ -9,7 +9,7 @@ namespace AcrhiveModels
     public class Correction: FullAuditableModel
     {
         //К каким Оригиналам отностися
-        public virtual List<Original> Original { get; set; } = new List<Original>();
+        public virtual List<Original> Originals { get; set; } = new List<Original>();
         //номер изменения
         public int CorrectionNumber { get; set; }
         //Обоснование изменения

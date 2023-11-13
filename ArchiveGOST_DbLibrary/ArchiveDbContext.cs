@@ -1,6 +1,7 @@
 ﻿using AcrhiveModels;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Options;
 
 namespace ArchiveGOST_DbLibrary
 {
@@ -21,9 +22,12 @@ namespace ArchiveGOST_DbLibrary
                     .SetBasePath(Directory.GetCurrentDirectory())
                     .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
                 _configuration = builder.Build();
-                var cnstr = _configuration.GetConnectionString("ArchiveLibrary");
+                //var cnstr = _configuration.GetConnectionString("ArchiveLibrary");
+                var cnstr = _configuration.GetConnectionString("ArchiveLibrarySQLServer");
 
-                optionsBuilder.UseSqlite(cnstr);
+                //optionsBuilder.UseSqlite(cnstr);
+                optionsBuilder.UseSqlServer(cnstr);
+
             }
         }
 
@@ -39,7 +43,53 @@ namespace ArchiveGOST_DbLibrary
         //создание связей и пр
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            base.OnModelCreating(modelBuilder);
+            //связь много-много для орининалов и применимости
+            modelBuilder.Entity<Original>()
+            .HasMany(x => x.Applicabilities)
+            .WithMany(p => p.Originals)
+            .UsingEntity<Dictionary<string, object>>(
+            "OriginalApplicabilities",
+            ip => ip.HasOne<Applicability>()
+            .WithMany()
+            .HasForeignKey("ApplicabilityId")
+            .HasConstraintName("FK_OriginalApplicability_Applicabilities_ApplicabilityId")
+            .OnDelete(DeleteBehavior.ClientCascade),
+            ip => ip.HasOne<Original>()
+            .WithMany()
+            .HasForeignKey("OriginalId")
+            .HasConstraintName("FK_ApplicabilityOriginal_Originals_OriginalId")
+            .OnDelete(DeleteBehavior.Cascade));
+
+            //связь много-много для орининалов и изменений
+            modelBuilder.Entity<Original>()
+            .HasMany(x => x.Corrections)
+            .WithMany(p => p.Originals)
+            .UsingEntity<Dictionary<string, object>>(
+            "OriginalCorrections",
+            ip => ip.HasOne<Correction>()
+            .WithMany()
+            .HasForeignKey("ApplicabilityId")
+            .HasConstraintName("FK_OriginalCorrection_Corrections_CorrectionId")
+            .OnDelete(DeleteBehavior.ClientCascade),
+            ip => ip.HasOne<Original>()
+            .WithMany()
+            .HasForeignKey("OriginalId")
+            .HasConstraintName("FK_CorrectionOriginal_Originals_OriginalId")
+            .OnDelete(DeleteBehavior.Cascade));
+
+            /*modelBuilder.Entity<Copy>()
+                .HasOne(x => x.Original).WithMany(y => y.Copies).OnDelete(DeleteBehavior.ClientCascade);//хз какой тут нужен режим удаления
+
+            modelBuilder.Entity<Original>()
+                .HasOne(x => x.Document).WithOne().OnDelete(DeleteBehavior.ClientCascade);
+            modelBuilder.Entity<Copy>()
+                .HasOne(x => x.CreationDocument).WithOne().OnDelete(DeleteBehavior.ClientCascade);
+            modelBuilder.Entity<Copy>()
+                .HasOne(x => x.DeletionDocument).WithOne().OnDelete(DeleteBehavior.ClientCascade);
+            modelBuilder.Entity<Delivery>()
+                .HasOne(x => x.DeliveryDocument).WithOne().OnDelete(DeleteBehavior.ClientCascade);
+            modelBuilder.Entity<Delivery>()
+                .HasOne(x => x.ReturnDocument).WithOne().OnDelete(DeleteBehavior.ClientCascade);*/
         }
     }
 }

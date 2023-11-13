@@ -19,7 +19,7 @@ namespace AcrhiveModels
         //Количестов листов
         public int PageCount { get; set; }
         //Организация, хранящая подлинник
-        public int CompanyId { get; set; }
+        public int? CompanyId { get; set; }
         public virtual Company? Company { get; set; }
         //Сопроводительный документ
         public int? DocumentId { get; set; }

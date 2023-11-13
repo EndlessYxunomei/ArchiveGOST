@@ -13,7 +13,7 @@ namespace AcrhiveModels
         //Описание документа
         public string? Description { get; set; }
         //Дата документа (отличается от даты создания записи)
-        public DateOnly Date {  get; set; }
+        public DateTime Date {  get; set; }
         //Компания, выпустившая документ
         public int CompanyId { get; set; }
         public virtual Company? Company { get; set; }
@@ -26,7 +26,6 @@ namespace AcrhiveModels
         CreateCopy,
         DeleteCopy,
         DeliverCopy,
-        AddCorrection,
-        AddApplicability
+        AddCorrection
     }
 }
