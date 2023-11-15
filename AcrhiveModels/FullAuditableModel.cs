@@ -14,6 +14,6 @@ namespace AcrhiveModels
         public int Id { get; set; }
         [Required]
         [DefaultValue(false)]
-        public bool IsDeletable { get; set; }
+        public bool IsDeleted { get; set; }
     }
 }

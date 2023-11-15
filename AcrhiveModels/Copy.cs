@@ -24,5 +24,6 @@ namespace AcrhiveModels
         public virtual Document? DeletionDocument { get; set; }
         //Датат удничтожения копии
         public DateTime DelitionDate { get; set; }
+        public List<Delivery> Deliveries { get; set; } = new List<Delivery>();
     }
 }

@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AcrhiveModels.Interfaces
+namespace AcrhiveModels
 {
-    public interface ISoftDeletable
+    public class ArchiveConstants
     {
-        public bool IsDeleted { get; set; }
+
     }
 }

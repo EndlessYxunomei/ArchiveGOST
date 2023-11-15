@@ -60,36 +60,22 @@ namespace ArchiveGOST_DbLibrary
             .HasConstraintName("FK_ApplicabilityOriginal_Originals_OriginalId")
             .OnDelete(DeleteBehavior.Cascade));
 
-            //связь много-много для орининалов и изменений
-            modelBuilder.Entity<Original>()
-            .HasMany(x => x.Corrections)
-            .WithMany(p => p.Originals)
+            //связь много-много для копий и выдач
+            modelBuilder.Entity<Copy>()
+            .HasMany(x => x.Deliveries)
+            .WithMany(p => p.Copies)
             .UsingEntity<Dictionary<string, object>>(
-            "OriginalCorrections",
-            ip => ip.HasOne<Correction>()
+            "CopyDeliveries",
+            ip => ip.HasOne<Delivery>()
             .WithMany()
-            .HasForeignKey("ApplicabilityId")
-            .HasConstraintName("FK_OriginalCorrection_Corrections_CorrectionId")
+            .HasForeignKey("DeliveryId")
+            .HasConstraintName("FK_CopyDelivery_Deliveries_DeliveryId")
             .OnDelete(DeleteBehavior.ClientCascade),
-            ip => ip.HasOne<Original>()
+            ip => ip.HasOne<Copy>()
             .WithMany()
-            .HasForeignKey("OriginalId")
-            .HasConstraintName("FK_CorrectionOriginal_Originals_OriginalId")
+            .HasForeignKey("CopyId")
+            .HasConstraintName("FK_CopyDelivery_Copies_CopyId")
             .OnDelete(DeleteBehavior.Cascade));
-
-            /*modelBuilder.Entity<Copy>()
-                .HasOne(x => x.Original).WithMany(y => y.Copies).OnDelete(DeleteBehavior.ClientCascade);//хз какой тут нужен режим удаления
-
-            modelBuilder.Entity<Original>()
-                .HasOne(x => x.Document).WithOne().OnDelete(DeleteBehavior.ClientCascade);
-            modelBuilder.Entity<Copy>()
-                .HasOne(x => x.CreationDocument).WithOne().OnDelete(DeleteBehavior.ClientCascade);
-            modelBuilder.Entity<Copy>()
-                .HasOne(x => x.DeletionDocument).WithOne().OnDelete(DeleteBehavior.ClientCascade);
-            modelBuilder.Entity<Delivery>()
-                .HasOne(x => x.DeliveryDocument).WithOne().OnDelete(DeleteBehavior.ClientCascade);
-            modelBuilder.Entity<Delivery>()
-                .HasOne(x => x.ReturnDocument).WithOne().OnDelete(DeleteBehavior.ClientCascade);*/
         }
     }
 }
