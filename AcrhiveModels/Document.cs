@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,6 +12,7 @@ namespace AcrhiveModels
         //Обозначение документа
         public required string Name { get; set; }
         //Описание документа
+        [StringLength(ArchiveConstants.MAX_DESCRIPTION_LENGTH)]
         public string? Description { get; set; }
         //Дата документа (отличается от даты создания записи)
         public DateTime Date {  get; set; }

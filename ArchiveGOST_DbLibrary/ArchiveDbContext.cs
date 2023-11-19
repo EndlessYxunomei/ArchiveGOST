@@ -76,6 +76,42 @@ namespace ArchiveGOST_DbLibrary
             .HasForeignKey("CopyId")
             .HasConstraintName("FK_CopyDelivery_Copies_CopyId")
             .OnDelete(DeleteBehavior.Cascade));
+
+            //Альтернативный ключ для оригинала - инвентарный номер
+            modelBuilder.Entity<Original>().HasAlternateKey(o => o.InventoryNumber);
+            //Альтернативынй ключ для пользователя - имя и фамилия
+        }
+        //подключение к трекеру для автоматической даты создания и изменения записей
+        public override int SaveChanges()
+        {
+            //подключаемся к теркеру изменений
+            var tracker = ChangeTracker;
+            foreach (var entry in tracker.Entries())
+            {
+                //проверяем есть ли у записи аудитные поля
+                if (entry.Entity is FullAuditableModel referenceEntity)
+                {
+                    //в зависимости от состояния добовляем нужные данные для аудита
+                    switch (entry.State)
+                    {
+                        case EntityState.Added:
+                            {
+                                //если запись новая, то добавляем дату создания
+                                referenceEntity.CreatedDate = DateTime.Now;
+                                break;
+                            }
+                        case EntityState.Modified:
+                            {
+                                //вносим дату измененеия
+                                referenceEntity.LastModifiedDate = DateTime.Now;
+                                break;
+                            }
+                        default:
+                            break;
+                    }
+                }
+            }
+            return base.SaveChanges();
         }
     }
 }
