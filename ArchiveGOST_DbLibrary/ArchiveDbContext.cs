@@ -79,7 +79,16 @@ namespace ArchiveGOST_DbLibrary
 
             //Альтернативный ключ для оригинала - инвентарный номер
             modelBuilder.Entity<Original>().HasAlternateKey(o => o.InventoryNumber);
-            //Альтернативынй ключ для пользователя - имя и фамилия
+
+            //Фильтры для отсеивания объектов, у которых isDeleted = true
+            modelBuilder.Entity<Document>().HasQueryFilter(x => x.IsDeleted == false);
+            modelBuilder.Entity<Original>().HasQueryFilter(x => x.IsDeleted == false);
+            modelBuilder.Entity<Correction>().HasQueryFilter(x => x.IsDeleted == false);
+            modelBuilder.Entity<Applicability>().HasQueryFilter(x => x.IsDeleted == false);
+            modelBuilder.Entity<Copy>().HasQueryFilter(x => x.IsDeleted == false);
+            modelBuilder.Entity<Company>().HasQueryFilter(x => x.IsDeleted == false);
+            modelBuilder.Entity<Person>().HasQueryFilter(x => x.IsDeleted == false);
+            modelBuilder.Entity<Delivery>().HasQueryFilter(x => x.IsDeleted == false);
         }
         //подключение к трекеру для автоматической даты создания и изменения записей
         public override int SaveChanges()

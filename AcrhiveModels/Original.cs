@@ -35,10 +35,10 @@ namespace AcrhiveModels
         public int? PersonId { get; set; }
         public virtual Person? Person { get; set;}
         //список копий
-        public virtual List<Copy> Copies { get; set; } = new List<Copy>();
+        public virtual List<Copy> Copies { get; set; } = [];
         //список корекций
-        public virtual List<Correction> Corrections { get; set; } = new List<Correction>();
+        public virtual List<Correction> Corrections { get; set; } = [];
         //список применяемости
-        public virtual List<Applicability> Applicabilities { get; set; } = new List<Applicability>();
+        public virtual List<Applicability> Applicabilities { get; set; } = [];
     }
 }

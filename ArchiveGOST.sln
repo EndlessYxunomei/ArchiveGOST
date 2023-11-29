@@ -9,7 +9,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ArchiveGOST_DbLibrary", "Ar
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AcrhiveModels", "AcrhiveModels\AcrhiveModels.csproj", "{B1E81ED1-F88E-4C0F-A09F-AFF4F0F51C5A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Archive_Helpers", "Archive_Helpers\Archive_Helpers.csproj", "{714E5CF4-5B41-48BD-9A8B-1C7B6006E0A0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Archive_Helpers", "Archive_Helpers\Archive_Helpers.csproj", "{714E5CF4-5B41-48BD-9A8B-1C7B6006E0A0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataBaseLayer", "DataBaseLayer\DataBaseLayer.csproj", "{7FBEED8B-4D9A-4BBD-A3D2-C354DB6E55DA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServiceLayer", "ServiceLayer\ServiceLayer.csproj", "{2D280B99-369E-482B-A5B7-93D63BE194E1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +37,14 @@ Global
 		{714E5CF4-5B41-48BD-9A8B-1C7B6006E0A0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{714E5CF4-5B41-48BD-9A8B-1C7B6006E0A0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{714E5CF4-5B41-48BD-9A8B-1C7B6006E0A0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7FBEED8B-4D9A-4BBD-A3D2-C354DB6E55DA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7FBEED8B-4D9A-4BBD-A3D2-C354DB6E55DA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7FBEED8B-4D9A-4BBD-A3D2-C354DB6E55DA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7FBEED8B-4D9A-4BBD-A3D2-C354DB6E55DA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2D280B99-369E-482B-A5B7-93D63BE194E1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2D280B99-369E-482B-A5B7-93D63BE194E1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2D280B99-369E-482B-A5B7-93D63BE194E1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2D280B99-369E-482B-A5B7-93D63BE194E1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

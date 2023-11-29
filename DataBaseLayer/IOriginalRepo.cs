@@ -1,0 +1,21 @@
+﻿using AcrhiveModels;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace DataBaseLayer
+{
+    public interface IOriginalRepo
+    {
+        Task<List<Original>> GetOriginalList();
+        Task<Original> GetOriginalAsync(int id);
+        Task<List<Original>> GetOriginalsByDocument(int docunentId);
+        Task<int> GetLastInventoryNumberAsync();
+        Task<int> UpsertOriginal(Original original);
+        Task UpsertOriginals(List<Original> originals);
+        Task DeleteOriginal(int id);
+        Task DeleteOriginals(List<int> originalIds);
+    }
+}

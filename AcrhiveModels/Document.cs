@@ -15,7 +15,7 @@ namespace AcrhiveModels
         [StringLength(ArchiveConstants.MAX_DESCRIPTION_LENGTH)]
         public string? Description { get; set; }
         //Дата документа (отличается от даты создания записи)
-        public DateTime Date {  get; set; }
+        public DateOnly Date {  get; set; }
         //Компания, выпустившая документ
         public int CompanyId { get; set; }
         public virtual Company? Company { get; set; }
