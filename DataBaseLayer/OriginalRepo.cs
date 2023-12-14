@@ -5,6 +5,7 @@ using System.Diagnostics;
 using System.Reflection.Metadata;
 using System.Transactions;
 using System.Xml.Linq;
+using static System.Formats.Asn1.AsnWriter;
 
 namespace DataBaseLayer
 {
@@ -80,7 +81,26 @@ namespace DataBaseLayer
         }
         public async Task UpsertOriginals(List<Original> originals)
         {
-            using (var scope = new TransactionScope(TransactionScopeOption.Required,
+            using (var transaction = _context.Database.BeginTransaction(System.Data.IsolationLevel.ReadUncommitted))
+            {
+                try
+                {
+                    foreach (var original in originals)
+                    {
+                        var success = await UpsertOriginal(original) > 0;
+                        if (!success) { throw new Exception($"Error saving the original {original.Name}"); }
+                    }
+                    await transaction.CommitAsync();
+                }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine(ex.ToString());
+                    await transaction.RollbackAsync();
+                    throw;
+                }
+            }
+            //не работает в SQLite
+            /*using (var scope = new TransactionScope(TransactionScopeOption.Required,
                 new TransactionOptions { IsolationLevel = IsolationLevel.ReadUncommitted },
                 TransactionScopeAsyncFlowOption.Enabled))
             {
@@ -98,7 +118,7 @@ namespace DataBaseLayer
                     Debug.WriteLine(ex.ToString());
                     throw;
                 }
-            }
+            }*/
         }
         public async Task DeleteOriginal(int id)
         {
@@ -109,7 +129,25 @@ namespace DataBaseLayer
         }
         public async Task DeleteOriginals(List<int> originalIds)
         {
-            using (var scope = new TransactionScope(TransactionScopeOption.Required,
+            using (var transaction = _context.Database.BeginTransaction(System.Data.IsolationLevel.ReadUncommitted))
+            {
+                try
+                {
+                    foreach (var originalId in originalIds)
+                    {
+                        await DeleteOriginal(originalId);
+                    }
+                    await transaction.CommitAsync();
+                }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine(ex.ToString());
+                    await transaction.RollbackAsync();
+                    throw;
+                }
+            }
+            //не работает в SQLite
+            /*using (var scope = new TransactionScope(TransactionScopeOption.Required,
                 new TransactionOptions { IsolationLevel = IsolationLevel.ReadUncommitted },
                 TransactionScopeAsyncFlowOption.Enabled))
             {
@@ -126,7 +164,7 @@ namespace DataBaseLayer
                     Debug.WriteLine(ex.ToString());
                     throw;
                 }
-            }
+            }*/
         }
 
         public async Task<int> GetLastInventoryNumberAsync()

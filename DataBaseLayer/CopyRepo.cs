@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Transactions;
+using static System.Formats.Asn1.AsnWriter;
 
 namespace DataBaseLayer
 {
@@ -20,23 +21,42 @@ namespace DataBaseLayer
             var copy = await _context.Copies.FirstOrDefaultAsync(x => x.Id == id);
             return copy ?? throw new Exception("Copy not found");
         }
-        public async Task<List<Copy>> GetCopyListByDelivery(Delivery delivery)
+        public async Task<List<Copy>> GetCopyListByDelivery(int deliveryId)
         {
-            var dbDelivery = await _context.Deliveries.FirstOrDefaultAsync(x => x.DeliveryDocumentId == delivery.DeliveryDocumentId) ?? throw new Exception("Delivery not found");
+            var dbDelivery = await _context.Deliveries.FirstOrDefaultAsync(x => x.Id == deliveryId) ?? throw new Exception("Delivery not found");
             return await _context.Copies.Where(y => y.Deliveries.Contains(dbDelivery)).ToListAsync();
         }
-        public async Task<List<Copy>> GetCopyListByDocument(Document document)
+        public async Task<List<Copy>> GetCopyListByDocument(int documentId)
         {
-            return await _context.Copies.Where(x => x.CreationDocumentId == document.Id || x.DeletionDocumentId == document.Id).ToListAsync();
+            return await _context.Copies.Where(x => x.CreationDocumentId == documentId || x.DeletionDocumentId == documentId).ToListAsync();
         }
-        public async Task<List<Copy>> GetCopyListByOriginal(Original original)
+        public async Task<List<Copy>> GetCopyListByOriginal(int originalId)
         {
-            return await _context.Copies.Where(x => x.OriginalId == original.Id).ToListAsync();
+            return await _context.Copies.Where(x => x.OriginalId == originalId).ToListAsync();
         }
 
         public async Task UpsertCopies(List<Copy> copies)
         {
-            using (var scope = new TransactionScope(TransactionScopeOption.Required,
+            using (var transaction = _context.Database.BeginTransaction(System.Data.IsolationLevel.ReadUncommitted))
+            {
+                try
+                {
+                    foreach (var copy in copies)
+                    {
+                        var success = await UpsertCopy(copy) > 0;
+                        if (!success) { throw new Exception($"Error saving the copy {copy.CopyNumber}"); }
+                    }
+                    await transaction.CommitAsync();
+                }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine(ex.ToString());
+                    await transaction.RollbackAsync();
+                    throw;
+                }
+            }
+            //не работает в SQLite
+            /*using (var scope = new TransactionScope(TransactionScopeOption.Required,
                 new TransactionOptions { IsolationLevel = IsolationLevel.ReadUncommitted },
                 TransactionScopeAsyncFlowOption.Enabled))
             {
@@ -54,7 +74,7 @@ namespace DataBaseLayer
                     Debug.WriteLine(ex.ToString());
                     throw;
                 }
-            }
+            }*/
         }
         private async Task<int> CreateCopy (Copy copy)
         {
@@ -95,7 +115,25 @@ namespace DataBaseLayer
         }
         public async Task DeleteCopies(List<int> copyIds)
         {
-            using (var scope = new TransactionScope(TransactionScopeOption.Required,
+            using (var transaction = _context.Database.BeginTransaction(System.Data.IsolationLevel.ReadUncommitted))
+            {
+                try
+                {
+                    foreach (var copyId in copyIds)
+                    {
+                        await DeleteCopy(copyId);
+                    }
+                    await transaction.CommitAsync();
+                }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine(ex.ToString());
+                    await transaction.RollbackAsync();
+                    throw;
+                }
+            }
+            //не работает в SQLite 
+            /*using (var scope = new TransactionScope(TransactionScopeOption.Required,
                 new TransactionOptions { IsolationLevel = IsolationLevel.ReadUncommitted },
                 TransactionScopeAsyncFlowOption.Enabled))
             {
@@ -112,7 +150,7 @@ namespace DataBaseLayer
                     Debug.WriteLine(ex.ToString());
                     throw;
                 }
-            }
+            }*/
         }
         public async Task DeleteCopy(int id)
         {
@@ -122,9 +160,9 @@ namespace DataBaseLayer
             await _context.SaveChangesAsync();
         }
 
-        public async Task<int> GetLastCopyNumberAsync(int id)
+        public async Task<int> GetLastCopyNumberAsync(int originalId)
         {
-            return await _context.Copies.Where(x => x.OriginalId == id).MaxAsync(y => y.CopyNumber);
+            return await _context.Copies.Where(x => x.OriginalId == originalId).MaxAsync(y => y.CopyNumber);
         }
     }
 }

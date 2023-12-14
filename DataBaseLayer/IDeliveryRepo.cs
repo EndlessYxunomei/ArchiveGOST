@@ -9,9 +9,9 @@ namespace DataBaseLayer
 {
     public interface IDeliveryRepo
     {
-        Task<List<Delivery>> GetDeliveriesByCopy(Copy copy);
-        Task<List<Delivery>> GetDeliveriesByPerson(Person person);
-        Task<List<Delivery>> GetDeliveriesByDocument(Document document);
+        Task<List<Delivery>> GetDeliveriesByCopy(int copyId);
+        Task<List<Delivery>> GetDeliveriesByPerson(int personId);
+        Task<List<Delivery>> GetDeliveriesByDocument(int documentId);
         Task<Delivery> GetDeliveryAsync(int id);
 
         Task<int> UpsertDelivery(Delivery delivery);

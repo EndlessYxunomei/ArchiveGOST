@@ -10,8 +10,9 @@ namespace DataBaseLayer
     public interface ICorrectionRepo
     {
         Task<Correction> GetCorrectionAsync(int id);
-        Task<List<Correction>> GetCorrectionList(Original original);
-        Task<int> GetLastCorectionNumberAsync(int id);
+        Task<List<Correction>> GetCorrectionList(int originalId);
+        Task<List<Correction>> GetCorrectionListByDocument(int documentId);
+        Task<int> GetLastCorectionNumberAsync(int originalId);
         Task<int> UpsertCorrection(Correction correction);
         Task UpsertCorrections(List<Correction> corrections);
         Task DeleteCorrection(int id);

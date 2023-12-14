@@ -10,7 +10,7 @@ namespace DataBaseLayer
     public interface IApplicabilityRepo
     {
         Task<List<Applicability>> GetApplicabilityList();
-        Task<List<Applicability>> GetApplicabilityListByOriginal(Original original);
+        Task<List<Applicability>> GetApplicabilityListByOriginal(int originalId);
 
         Task<int> UpsertApplicability(Applicability applicability);
         Task UpsertApplicabilities(List<Applicability> applicabilities);

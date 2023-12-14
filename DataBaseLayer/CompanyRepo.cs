@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Transactions;
+using static System.Formats.Asn1.AsnWriter;
 
 namespace DataBaseLayer
 {
@@ -27,7 +28,26 @@ namespace DataBaseLayer
 
         public async Task UpsertCompanies(List<Company> companies)
         {
-            using (var scope = new TransactionScope(TransactionScopeOption.Required,
+            using (var transaction = _context.Database.BeginTransaction(System.Data.IsolationLevel.ReadUncommitted))
+            {
+                try
+                {
+                    foreach (var company in companies)
+                    {
+                        var success = await UpsertCompany(company) > 0;
+                        if (!success) { throw new Exception($"Error saving the company {company.Name}"); }
+                    }
+                    await transaction.CommitAsync();
+                }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine(ex.ToString());
+                    await transaction.RollbackAsync();
+                    throw;
+                }
+            }
+            //не работает в SQLite
+            /*using (var scope = new TransactionScope(TransactionScopeOption.Required,
                 new TransactionOptions { IsolationLevel = IsolationLevel.ReadUncommitted },
                 TransactionScopeAsyncFlowOption.Enabled))
             {
@@ -45,7 +65,7 @@ namespace DataBaseLayer
                     Debug.WriteLine(ex.ToString());
                     throw;
                 }
-            }
+            }*/
         }
         public async Task<int> UpsertCompany(Company company)
         {
@@ -74,7 +94,25 @@ namespace DataBaseLayer
         }
         public async Task DeleteCompanies(List<int> companyIds)
         {
-            using (var scope = new TransactionScope(TransactionScopeOption.Required,
+            using (var transaction = _context.Database.BeginTransaction(System.Data.IsolationLevel.ReadUncommitted))
+            {
+                try
+                {
+                    foreach (var companyId in companyIds)
+                    {
+                        await DeleteCompany(companyId);
+                    }
+                    await transaction.CommitAsync();
+                }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine(ex.ToString());
+                    await transaction.RollbackAsync();
+                    throw;
+                }
+            }
+            //не работает в SQLite
+            /*using (var scope = new TransactionScope(TransactionScopeOption.Required,
                 new TransactionOptions { IsolationLevel = IsolationLevel.ReadUncommitted },
                 TransactionScopeAsyncFlowOption.Enabled))
             {
@@ -91,7 +129,7 @@ namespace DataBaseLayer
                     Debug.WriteLine(ex.ToString());
                     throw;
                 }
-            }
+            }*/
         }
         public async Task DeleteCompany(int id)
         {

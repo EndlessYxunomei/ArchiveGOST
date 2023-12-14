@@ -10,10 +10,10 @@ namespace DataBaseLayer
     public interface ICopyRepo
     {
         Task<Copy> GetCopyAsync(int id);
-        Task<List<Copy>> GetCopyListByOriginal(Original original);
-        Task<List<Copy>> GetCopyListByDocument(Document document);
-        Task<List<Copy>> GetCopyListByDelivery(Delivery delivery);
-        Task<int> GetLastCopyNumberAsync(int id);
+        Task<List<Copy>> GetCopyListByOriginal(int originalId);
+        Task<List<Copy>> GetCopyListByDocument(int documentId);
+        Task<List<Copy>> GetCopyListByDelivery(int deliveryId);
+        Task<int> GetLastCopyNumberAsync(int originalId);
 
         Task<int> UpsertCopy(Copy copy);
         Task UpsertCopies(List<Copy> copies);

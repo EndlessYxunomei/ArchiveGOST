@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Transactions;
 using System.Xml.Linq;
+using static System.Formats.Asn1.AsnWriter;
 
 namespace DataBaseLayer
 {
@@ -16,21 +17,21 @@ namespace DataBaseLayer
     {
         private readonly ArchiveDbContext _context = context;
 
-        public async Task<List<Delivery>> GetDeliveriesByCopy(Copy copy)
+        public async Task<List<Delivery>> GetDeliveriesByCopy(int copyId)
         {
-            var copyToDeliver = await _context.Copies.FirstOrDefaultAsync(x => x.Id == copy.Id) ?? throw new Exception("Copy to deliver not found");
+            var copyToDeliver = await _context.Copies.FirstOrDefaultAsync(x => x.Id == copyId) ?? throw new Exception("Copy to deliver not found");
             return await _context.Deliveries.Where(y => y.Copies.Contains(copyToDeliver)).ToListAsync();
         }
-        public async Task<List<Delivery>> GetDeliveriesByDocument(Document document)
+        public async Task<List<Delivery>> GetDeliveriesByDocument(int documentId)
         {
             //return await _context.Deliveries.Where(x => x.DeliveryDocumentId == document.Id || x.ReturnDocumentId == document.Id).ToListAsync();
-            return await _context.Deliveries.Where(x => x.DeliveryDocumentId == document.Id)
-                .Union(_context.Deliveries.Where(x => x.ReturnDocumentId == document.Id))
+            return await _context.Deliveries.Where(x => x.DeliveryDocumentId == documentId)
+                .Union(_context.Deliveries.Where(x => x.ReturnDocumentId == documentId))
                 .ToListAsync();
         }
-        public async Task<List<Delivery>> GetDeliveriesByPerson(Person person)
+        public async Task<List<Delivery>> GetDeliveriesByPerson(int personId)
         {
-            return await _context.Deliveries.Where(x => x.PersonId == person.Id).ToListAsync();
+            return await _context.Deliveries.Where(x => x.PersonId == personId).ToListAsync();
         }
         public async Task<Delivery> GetDeliveryAsync(int id)
         {
@@ -45,7 +46,26 @@ namespace DataBaseLayer
 
         public async Task UpsertDeliveries(List<Delivery> deliveries)
         {
-            using (var scope = new TransactionScope(TransactionScopeOption.Required,
+            using (var transaction = _context.Database.BeginTransaction(System.Data.IsolationLevel.ReadUncommitted))
+            {
+                try
+                {
+                    foreach (var delivery in deliveries)
+                    {
+                        var success = await UpsertDelivery(delivery) > 0;
+                        if (!success) { throw new Exception($"Error saving the delivery  {delivery.Id}"); }
+                    }
+                    await transaction.CommitAsync();
+                }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine(ex.ToString());
+                    await transaction.RollbackAsync();
+                    throw;
+                }
+            }
+            //не работает в SQLite
+            /*using (var scope = new TransactionScope(TransactionScopeOption.Required,
                 new TransactionOptions { IsolationLevel = IsolationLevel.ReadUncommitted },
                 TransactionScopeAsyncFlowOption.Enabled))
             {
@@ -63,7 +83,7 @@ namespace DataBaseLayer
                     Debug.WriteLine(ex.ToString());
                     throw;
                 }
-            }
+            }*/
         }
         public async Task<int> UpsertDelivery(Delivery delivery)
         {
@@ -105,7 +125,25 @@ namespace DataBaseLayer
         }
         public async Task DeleteDeliveries(List<int> deliveryIds)
         {
-            using (var scope = new TransactionScope(TransactionScopeOption.Required,
+            using (var transaction = _context.Database.BeginTransaction(System.Data.IsolationLevel.ReadUncommitted))
+            {
+                try
+                {
+                    foreach (var deliveryId in deliveryIds)
+                    {
+                        await DeleteDelivery(deliveryId);
+                    }
+                    await transaction.CommitAsync();
+                }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine(ex.ToString());
+                    await transaction.RollbackAsync();
+                    throw;
+                }
+            }
+            //не работает в SQLite
+            /*using (var scope = new TransactionScope(TransactionScopeOption.Required,
                 new TransactionOptions { IsolationLevel = IsolationLevel.ReadUncommitted },
                 TransactionScopeAsyncFlowOption.Enabled))
             {
@@ -122,7 +160,7 @@ namespace DataBaseLayer
                     Debug.WriteLine(ex.ToString());
                     throw;
                 }
-            }
+            }*/
         }
         public async Task DeleteDelivery(int id)
         {
