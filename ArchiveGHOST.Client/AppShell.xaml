@@ -7,9 +7,20 @@
     Shell.FlyoutBehavior="Disabled"
     Title="ArchiveGHOST.Client">
 
-    <ShellContent
-        Title="Home"
-        ContentTemplate="{DataTemplate local:MainPage}"
-        Route="MainPage" />
+    <TabBar>
+        <Tab Title="Home">
+            <ShellContent
+                Title="Home"
+                ContentTemplate="{DataTemplate local:InventoryListPage}"
+                Route="MainPage" />
+        </Tab>
+        <!--<Tab Title="Create Original">
+            <ShellContent
+                Title="Create Original"
+                ContentTemplate="{DataTemplate local:CreateOriginalPage}"
+                Route="CreateOriginal" />
+        </Tab>-->
+    </TabBar>
+
 
 </Shell>

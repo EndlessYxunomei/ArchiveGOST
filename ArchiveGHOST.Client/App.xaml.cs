@@ -6,7 +6,7 @@
         {
             InitializeComponent();
 
-            MainPage = new InventoryListPage();
+            MainPage = new AppShell();
         }
     }
 }

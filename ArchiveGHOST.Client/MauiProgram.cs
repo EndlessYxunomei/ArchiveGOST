@@ -1,10 +1,19 @@
-﻿using CommunityToolkit.Maui;
+﻿using ArchiveGHOST.Client.Services;
+using ArchiveGOST_DbLibrary;
+using CommunityToolkit.Maui;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using ServiceLayer;
+using VMLayer;
+using VMLayer.Navigation;
 
 namespace ArchiveGHOST.Client
 {
     public static class MauiProgram
     {
+        //private static IConfigurationRoot _configuration;
+        
         public static MauiApp CreateMauiApp()
         {
             var builder = MauiApp.CreateBuilder();
@@ -16,6 +25,35 @@ namespace ArchiveGHOST.Client
                     fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
                 });
             builder.UseMauiCommunityToolkit();
+
+            builder.Configuration.AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
+
+            builder.Services.AddTransientWithShellRoute<InventoryListPage, OriginalListViewModel>("InventoryPage");
+            //builder.Services.AddTransient<InventoryListPage>();
+            //builder.Services.AddTransient<OriginalListViewModel>();
+
+            builder.Services.AddTransientWithShellRoute<OriginalDetailPage, OriginalDetailViewModel>("OriginalDetail");
+            //builder.Services.AddTransient<OriginalDetailPage>();
+            //builder.Services.AddTransient<OriginalDetailViewModel>();
+
+            builder.Services.AddTransientWithShellRoute<CreateOriginalPage, CreateOriginalViewModel>("CreateOriginal");
+            //builder.Services.AddTransient<CreateOriginalPage>();
+            //builder.Services.AddTransient<CreateOriginalViewModel>();
+
+
+            //НАДО РАЗОБРАТЬСЯ КАК ДОБЫТЬ НАШ КОНЕКТИОН СТРИНГ И ГДЕ МАТЬ ВАШУ НАХОДИТСЯ НАША БАЗА
+            //ПОКА РАБОТАЕТ ТОЛЬКО ПРЯМОЙ КС ДЛЯ СЕРВЕРА
+
+            builder.Services.AddDbContext<ArchiveDbContext>(op =>
+            op.UseSqlServer(builder.Configuration.GetConnectionString("ArchiveLibrarySQLServer")));
+            //op.UseSqlServer("Data Source=localhost;Initial Catalog=ArchiveGostDb;Trusted_Connection=True;Encrypt = True;Trust Server Certificate=True"));
+
+            builder.Services.AddTransient<IOriginalService, OriginalService>();
+            builder.Services.AddTransient<IDocumentService, DocumentService>();
+            builder.Services.AddTransient<ICompanyService, CompanyService>();
+            builder.Services.AddTransient<IPersonService, PersonService>();
+            builder.Services.AddSingleton<IDialogService, DialogService>();
+            builder.Services.AddSingleton<INavigationService, NavigationService>();
 
 #if DEBUG
     		builder.Logging.AddDebug();

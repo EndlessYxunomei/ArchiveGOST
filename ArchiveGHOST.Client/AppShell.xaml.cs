@@ -5,6 +5,9 @@
         public AppShell()
         {
             InitializeComponent();
+
+            //Routing.RegisterRoute("MainPage", typeof(InventoryListPage));
+            //Routing.RegisterRoute("CreateOriginal", typeof(CreateOriginalPage));
         }
     }
 }

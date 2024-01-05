@@ -22,11 +22,11 @@ namespace ArchiveGOST_DbLibrary
                     .SetBasePath(Directory.GetCurrentDirectory())
                     .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
                 _configuration = builder.Build();
-                var cnstr = _configuration.GetConnectionString("ArchiveLibrary");
-                //var cnstr = _configuration.GetConnectionString("ArchiveLibrarySQLServer");
+                //var cnstr = _configuration.GetConnectionString("ArchiveLibrary");
+                var cnstr = _configuration.GetConnectionString("ArchiveLibrarySQLServer");
 
-                optionsBuilder.UseSqlite(cnstr);
-                //optionsBuilder.UseSqlServer(cnstr);
+                //optionsBuilder.UseSqlite(cnstr);
+                optionsBuilder.UseSqlServer(cnstr);
 
             }
         }

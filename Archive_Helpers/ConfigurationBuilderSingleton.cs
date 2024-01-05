@@ -5,7 +5,7 @@ namespace Archive_Helpers
     public sealed class ConfigurationBuilderSingleton
     {
         private static ConfigurationBuilderSingleton _instance = null;
-        private static readonly object instanceLock = new object();
+        private static readonly object instanceLock = new();
         private static IConfigurationRoot _configuration;
         public ConfigurationBuilderSingleton()
         {
@@ -20,10 +20,7 @@ namespace Archive_Helpers
             {
                 lock (instanceLock)
                 {
-                    if (_instance == null)
-                    {
-                        _instance = new ConfigurationBuilderSingleton();
-                    }
+                    _instance ??= new ConfigurationBuilderSingleton();
                 }
                 return _instance;
             }
@@ -32,7 +29,9 @@ namespace Archive_Helpers
         {
             get
             {
-                if (_configuration == null) { var x = Instance; }
+                if (_configuration == null) {
+                    _ = Instance;
+                }
                 return _configuration;
             }
         }

@@ -20,7 +20,7 @@ namespace DataBaseLayer
         }
         public async Task<List<Original>> GetOriginalList()
         {
-            return await _context.Originals.ToListAsync();
+            return await _context.Originals.Include(x => x.Document).OrderBy(x => x.InventoryNumber).ToListAsync();
         }
         public async Task<List<Original>> GetOriginalsByDocument(int docunentId)
         {
@@ -170,6 +170,11 @@ namespace DataBaseLayer
         public async Task<int> GetLastInventoryNumberAsync()
         {
             return await _context.Originals.MaxAsync(y => y.InventoryNumber);
+        }
+
+        public async Task<bool> CheckInventoryNumberAsync(int inventoryNumber)
+        {
+            return await _context.Originals.AnyAsync(x => x.InventoryNumber == inventoryNumber);
         }
     }
 }

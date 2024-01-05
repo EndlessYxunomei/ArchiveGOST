@@ -15,8 +15,8 @@ namespace ArchiveGOST
         {
             _configuration = ConfigurationBuilderSingleton.ConfigurationRoot;
             _optionsBuilder = new DbContextOptionsBuilder<ArchiveDbContext>();
-            _optionsBuilder.UseSqlite(_configuration.GetConnectionString("ArchiveLibrary"));
-            //_optionsBuilder.UseSqlServer(_configuration.GetConnectionString("ArchiveLibrarySQLServer"));
+            //_optionsBuilder.UseSqlite(_configuration.GetConnectionString("ArchiveLibrary"));
+            _optionsBuilder.UseSqlServer(_configuration.GetConnectionString("ArchiveLibrarySQLServer"));
         }
         
         

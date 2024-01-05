@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vms="clr-namespace:VMLayer;assembly=VMLayer"
+             x:Class="ArchiveGHOST.Client.CreateOriginalPage"
+             x:DataType="vms:CreateOriginalViewModel"
+             Title="Добавление документа">
+    <!--<ContentPage.Resources>
+        <conv:RatingToColorConverter x:Key="ratingToColorConverter" />
+    </ContentPage.Resources>-->
+    <VerticalStackLayout Spacing="10">
+        <HorizontalStackLayout Padding="5" Spacing="5">
+            <Label Text="Инвентарный номер:"/>
+            <Entry Placeholder="0" Text="{Binding InventoryNumber}" Keyboard="Numeric" WidthRequest="50"/>
+        </HorizontalStackLayout>
+        <HorizontalStackLayout Padding="5" Spacing="5">
+            <Label Text="Обозначение:"/>
+            <Entry Placeholder="Новое обозначение" Text="{Binding Name}" MaxLength="100" WidthRequest="200"/>
+        </HorizontalStackLayout>
+        <HorizontalStackLayout Padding="5" Spacing="5">
+            <Label Text="Наименование:"/>
+            <Editor Placeholder="Новое наименование" Text="{Binding Caption}" HeightRequest="100" MaxLength="1000" WidthRequest="200" IsSpellCheckEnabled="True"/>
+        </HorizontalStackLayout>
+        <HorizontalStackLayout Padding="5" Spacing="5">
+            <Label Text="Примечания:"/>
+            <Editor Text="{Binding Notes}" MaxLength="1000" WidthRequest="200" HeightRequest="100" IsSpellCheckEnabled="True"/>
+        </HorizontalStackLayout>
+        <HorizontalStackLayout Padding="5" Spacing="5">
+            <Label Text="Сопроводительный документ:"/>
+            <Picker ItemsSource="{Binding DocumentList}" ItemDisplayBinding="{Binding Name}" SelectedItem="{Binding Document}" WidthRequest="200"/>
+            <Button Text="+" Command="{Binding AddDocumentCommand}"/>
+        </HorizontalStackLayout>
+        <HorizontalStackLayout Padding="5" Spacing="5">
+            <Label Text="Держатель подлинника:"/>
+            <Picker ItemsSource="{Binding Companylist}" ItemDisplayBinding="{Binding Name}" SelectedItem="{Binding Company}" WidthRequest="200"/>
+            <Button Text="+" Command="{Binding AddCompanyCommand}"/>
+        </HorizontalStackLayout>
+        <HorizontalStackLayout Padding="5" Spacing="5">
+            <Label Text="Кем зарегистрирован:"/>
+            <Picker ItemsSource="{Binding PersonList}" ItemDisplayBinding="{Binding FullName}" SelectedItem="{Binding Person}" WidthRequest="200"/>
+            <Button Text="+" Command="{Binding AddPersonCommand}"/>
+        </HorizontalStackLayout>
+        <HorizontalStackLayout Padding="5" Spacing="5">
+            <Button
+                Text="Добавить документ"
+                Command="{Binding AcseptCommand}"/>
+            <Button
+                Text="Отмена"
+                Command="{Binding CancelCommand}"/>
+        </HorizontalStackLayout>
+    </VerticalStackLayout>
+</ContentPage>

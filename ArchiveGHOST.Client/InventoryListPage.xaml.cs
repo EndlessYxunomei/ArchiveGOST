@@ -4,9 +4,9 @@ namespace ArchiveGHOST.Client;
 
 public partial class InventoryListPage : ContentPage
 {
-	public InventoryListPage()
+	public InventoryListPage(OriginalListViewModel vm)
 	{
 		InitializeComponent();
-		BindingContext = new OriginalListViewModel();
+		BindingContext = vm;
 	}
 }
