@@ -19,7 +19,7 @@
         </HorizontalStackLayout>
         <HorizontalStackLayout Padding="5" Spacing="5">
             <Label Text="Наименование:"/>
-            <Editor Placeholder="Новое наименование" Text="{Binding Caption}" HeightRequest="100" MaxLength="1000" WidthRequest="200" IsSpellCheckEnabled="True"/>
+            <Editor Text="{Binding Caption}" Placeholder="Новое наименование" HeightRequest="100" MaxLength="1000" WidthRequest="200" IsSpellCheckEnabled="True"/>
         </HorizontalStackLayout>
         <HorizontalStackLayout Padding="5" Spacing="5">
             <Label Text="Примечания:"/>
@@ -27,17 +27,17 @@
         </HorizontalStackLayout>
         <HorizontalStackLayout Padding="5" Spacing="5">
             <Label Text="Сопроводительный документ:"/>
-            <Picker ItemsSource="{Binding DocumentList}" ItemDisplayBinding="{Binding Name}" SelectedItem="{Binding Document}" WidthRequest="200"/>
+            <Picker ItemsSource="{Binding DocumentList}" SelectedItem="{Binding Document}" WidthRequest="300"/>
             <Button Text="+" Command="{Binding AddDocumentCommand}"/>
         </HorizontalStackLayout>
         <HorizontalStackLayout Padding="5" Spacing="5">
             <Label Text="Держатель подлинника:"/>
-            <Picker ItemsSource="{Binding Companylist}" ItemDisplayBinding="{Binding Name}" SelectedItem="{Binding Company}" WidthRequest="200"/>
+            <Picker ItemsSource="{Binding Companylist}" ItemDisplayBinding="{Binding Name}" SelectedItem="{Binding Company}" WidthRequest="300"/>
             <Button Text="+" Command="{Binding AddCompanyCommand}"/>
         </HorizontalStackLayout>
         <HorizontalStackLayout Padding="5" Spacing="5">
             <Label Text="Кем зарегистрирован:"/>
-            <Picker ItemsSource="{Binding PersonList}" ItemDisplayBinding="{Binding FullName}" SelectedItem="{Binding Person}" WidthRequest="200"/>
+            <Picker ItemsSource="{Binding PersonList}" ItemDisplayBinding="{Binding FullName}" SelectedItem="{Binding Person}" WidthRequest="300"/>
             <Button Text="+" Command="{Binding AddPersonCommand}"/>
         </HorizontalStackLayout>
         <HorizontalStackLayout Padding="5" Spacing="5">

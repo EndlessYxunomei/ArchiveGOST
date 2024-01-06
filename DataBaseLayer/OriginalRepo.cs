@@ -37,6 +37,7 @@ namespace DataBaseLayer
         }
         private async Task<int> CreateOriginal(Original original)
         {
+            //original.CreatedDate = DateTime.Now;
             await _context.Originals.AddAsync(original);
             await _context.SaveChangesAsync();
             if (original.Id <= 0) { throw new Exception("Could not Create the original as expected"); }
@@ -174,7 +175,8 @@ namespace DataBaseLayer
 
         public async Task<bool> CheckInventoryNumberAsync(int inventoryNumber)
         {
-            return await _context.Originals.AnyAsync(x => x.InventoryNumber == inventoryNumber);
+            bool result = await _context.Originals.AnyAsync(x => x.InventoryNumber == inventoryNumber);
+            return !result;
         }
     }
 }

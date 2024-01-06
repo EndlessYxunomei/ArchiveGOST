@@ -8,5 +8,9 @@ namespace AcrhiveModels.DTOs
 {
     public class CorrectionListDto
     {
+        public static explicit operator CorrectionListDto(Correction correction)
+        {
+            return new CorrectionListDto();
+        }
     }
 }

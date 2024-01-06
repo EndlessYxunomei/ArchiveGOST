@@ -8,5 +8,9 @@ namespace AcrhiveModels.DTOs
 {
     public class ApplicabilityListDto
     {
+        public static explicit operator ApplicabilityListDto(Applicability applicability)
+        {
+            return new ApplicabilityListDto();
+        }
     }
 }

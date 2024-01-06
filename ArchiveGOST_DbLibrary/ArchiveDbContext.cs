@@ -78,7 +78,7 @@ namespace ArchiveGOST_DbLibrary
             .OnDelete(DeleteBehavior.Cascade));
 
             //Альтернативный ключ для оригинала - инвентарный номер
-            modelBuilder.Entity<Original>().HasAlternateKey(o => o.InventoryNumber);
+            //modelBuilder.Entity<Original>().HasAlternateKey(o => o.InventoryNumber);
 
             //Фильтры для отсеивания объектов, у которых isDeleted = true
             modelBuilder.Entity<Document>().HasQueryFilter(x => x.IsDeleted == false);

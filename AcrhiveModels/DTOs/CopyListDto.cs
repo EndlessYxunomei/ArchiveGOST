@@ -9,6 +9,10 @@ namespace AcrhiveModels.DTOs
     public class CopyListDto
     {
         public required int Id { get; set; }
-        public required string Name { get; set; }
+        public required int Number { get; set; }
+        public static explicit operator CopyListDto(Copy copy)
+        {
+            return new CopyListDto() { Id = copy.Id, Number = copy.CopyNumber };
+        }
     }
 }

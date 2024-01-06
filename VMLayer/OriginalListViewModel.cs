@@ -34,9 +34,9 @@ namespace VMLayer
             ((OriginalListViewModel)r).UpdateOrignalList(m.Value));
 
             //TEST
-            OriginalsList.Add(new() { OriginalId = 9998, OriginalInventoryNumber = 101, OriginalName = "test1", OriginalCaption = "cap1", DocumentName = "doc1", OriginalDate = DateTime.Today });
-            OriginalsList.Add(new() { OriginalId = 9998, OriginalInventoryNumber = 101, OriginalName = "test1", OriginalCaption = "cap1", DocumentName = "doc1", OriginalDate = DateTime.Today });
-            OriginalsList.Add(new() { OriginalId = 9996, OriginalInventoryNumber = 103, OriginalName = "test3", OriginalCaption = "cap3", DocumentName = "doc3", OriginalDate = DateTime.Today });
+            //OriginalsList.Add(new() { OriginalId = 9998, OriginalInventoryNumber = 101, OriginalName = "test1", OriginalCaption = "cap1", DocumentName = "doc1", OriginalDate = DateTime.Today });
+            //OriginalsList.Add(new() { OriginalId = 9998, OriginalInventoryNumber = 101, OriginalName = "test1", OriginalCaption = "cap1", DocumentName = "doc1", OriginalDate = DateTime.Today });
+            //OriginalsList.Add(new() { OriginalId = 9996, OriginalInventoryNumber = 103, OriginalName = "test3", OriginalCaption = "cap3", DocumentName = "doc3", OriginalDate = DateTime.Today });
         }
         //Список оригиналов
         private OriginalListDto? _selectedOriginal;

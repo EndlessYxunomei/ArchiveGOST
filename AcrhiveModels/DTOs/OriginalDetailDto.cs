@@ -25,5 +25,37 @@ namespace AcrhiveModels.DTOs
         public List<CorrectionListDto> Corrections { get; set; } = [];
         //список применяемости
         public List<ApplicabilityListDto> Applicabilities { get; set; } = [];
+
+        public static explicit operator OriginalDetailDto(Original original)
+        {
+            List<Copy> copyList = original.Copies;
+            List<CopyListDto> copyListDtos = [];
+            copyListDtos.AddRange(copyList.Select(copy => (CopyListDto)copy));
+
+            List<Correction> correctionList = original.Corrections;
+            List<CorrectionListDto> corDtos = [];
+            corDtos.AddRange(correctionList.Select(cor => (CorrectionListDto)cor));
+
+            List<Applicability> applicList = original.Applicabilities;
+            List<ApplicabilityListDto> appDtos = [];
+            appDtos.AddRange(applicList.Select(apps => (ApplicabilityListDto)apps));
+
+            return new OriginalDetailDto()
+            {
+                Id = original.Id,
+                InventoryNumber = original.InventoryNumber,
+                Name = original.Name,
+                Caption = original.Caption,
+                PageFormat = original.PageFormat,
+                PageCount = original.PageCount,
+                Notes = original.Notes,
+                Company = original.Company != null ? (CompanyListDto)original.Company : null,
+                Document = original.Document != null ? (DocumentListDto)original.Document : null,
+                Person = original.Person != null ? (PersonListDto)original.Person : null,
+                Copies = copyListDtos,
+                Corrections = corDtos,
+                Applicabilities = appDtos
+            };
+        }
     }
 }
