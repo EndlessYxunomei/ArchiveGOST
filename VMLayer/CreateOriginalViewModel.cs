@@ -127,10 +127,13 @@ public class CreateOriginalViewModel: ObservableValidator
                 Person = Person,
                 Notes = Notes
             };
+            //Пока реализовано так: создаем оригинал и в ответ получаем его id
             int newId = await originalService.UpsertOriginal(originalDetailDto);
+            //получает по id дтошку для отображения в списке инвентарной книги
             OriginalListDto newDto = await originalService.GetOriginalAsync(newId);
-            
+            //Передаём обратно дтошку через мессендже
             WeakReferenceMessenger.Default.Send(new OriginalUpdatedMessage(newDto));
+            //Возможно стоит передавать через GoBackAndReturn
             await navigationService.GoBack();
         }
         else
@@ -147,7 +150,6 @@ public class CreateOriginalViewModel: ObservableValidator
     {
         await Task.Delay(10);//ЗАглушка
         DocumentList.Add(new() { DocumentType = AcrhiveModels.DocumentType.AddOriginal, Id = 33, Name = "Test3", Date = DateTime.Today });
-
     }
     private async Task AddCompany()
     {
