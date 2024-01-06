@@ -11,19 +11,71 @@
     <VerticalStackLayout Spacing="10">
         <HorizontalStackLayout Padding="5" Spacing="5">
             <Label Text="Инвентарный номер:"/>
-            <Entry Placeholder="0" Text="{Binding InventoryNumber}" Keyboard="Numeric" WidthRequest="50"/>
+            <Grid ColumnDefinitions="*, Auto">
+                <Entry Placeholder="0" Text="{Binding InventoryNumber}" Keyboard="Numeric" WidthRequest="50"/>
+                <Label Text="&#xe000;" TextColor="Red" FontFamily="MaterialIconsRegular" FontSize="20" Grid.Column="1">
+                    <Label.Triggers>
+                        <DataTrigger
+                            TargetType="Label"
+                            Value="0"
+                            Binding="{Binding ErrorExposer[InventoryNumber].Count}">
+                            <Setter Property="Text" Value="&#xe86c;"/>
+                            <Setter Property="TextColor" Value="Green"/>
+                        </DataTrigger>
+                    </Label.Triggers>
+                </Label>
+            </Grid>
         </HorizontalStackLayout>
         <HorizontalStackLayout Padding="5" Spacing="5">
             <Label Text="Обозначение:"/>
-            <Entry Placeholder="Новое обозначение" Text="{Binding Name}" MaxLength="100" WidthRequest="200"/>
+            <Grid ColumnDefinitions="*, Auto">
+                <Entry Placeholder="Новое обозначение" Text="{Binding Name}" MaxLength="100" WidthRequest="200"/>
+                <Label Text="&#xe000;" TextColor="Red" FontFamily="MaterialIconsRegular" FontSize="20" Grid.Column="1">
+                    <Label.Triggers>
+                        <DataTrigger
+                            TargetType="Label"
+                            Value="0"
+                            Binding="{Binding ErrorExposer[Name].Count}">
+                            <Setter Property="Text" Value="&#xe86c;"/>
+                            <Setter Property="TextColor" Value="Green"/>
+                        </DataTrigger>
+                    </Label.Triggers>
+                </Label>
+            </Grid>
         </HorizontalStackLayout>
         <HorizontalStackLayout Padding="5" Spacing="5">
             <Label Text="Наименование:"/>
-            <Editor Text="{Binding Caption}" Placeholder="Новое наименование" HeightRequest="100" MaxLength="1000" WidthRequest="200" IsSpellCheckEnabled="True"/>
+            <Grid ColumnDefinitions="*, Auto">
+                <Editor Text="{Binding Caption}" Placeholder="Новое наименование" HeightRequest="100" MaxLength="1000" WidthRequest="200" IsSpellCheckEnabled="True"/>
+                <Label Text="&#xe000;" TextColor="Red" FontFamily="MaterialIconsRegular" FontSize="20" Grid.Column="1">
+                    <Label.Triggers>
+                        <DataTrigger
+                            TargetType="Label"
+                            Value="0"
+                            Binding="{Binding ErrorExposer[Caption].Count}">
+                            <Setter Property="Text" Value="&#xe86c;"/>
+                            <Setter Property="TextColor" Value="Green"/>
+                        </DataTrigger>
+                    </Label.Triggers>
+                </Label>
+            </Grid>
         </HorizontalStackLayout>
         <HorizontalStackLayout Padding="5" Spacing="5">
             <Label Text="Примечания:"/>
-            <Editor Text="{Binding Notes}" MaxLength="1000" WidthRequest="200" HeightRequest="100" IsSpellCheckEnabled="True"/>
+            <Grid ColumnDefinitions="*, Auto">
+                <Editor Text="{Binding Notes}" MaxLength="1000" WidthRequest="200" HeightRequest="100" IsSpellCheckEnabled="True"/>
+                <Label Text="&#xe000;" TextColor="Red" FontFamily="MaterialIconsRegular" FontSize="20" Grid.Column="1">
+                    <Label.Triggers>
+                        <DataTrigger
+                            TargetType="Label"
+                            Value="0"
+                            Binding="{Binding ErrorExposer[Notes].Count}">
+                            <Setter Property="Text" Value="&#xe86c;"/>
+                            <Setter Property="TextColor" Value="Green"/>
+                        </DataTrigger>
+                    </Label.Triggers>
+                </Label>
+            </Grid>
         </HorizontalStackLayout>
         <HorizontalStackLayout Padding="5" Spacing="5">
             <Label Text="Сопроводительный документ:"/>

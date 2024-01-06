@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.7.34221.43
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ArchiveGOST", "ArchiveGOST\ArchiveGOST.csproj", "{EDCEBE74-2DDE-44C5-88A5-37584811AE6E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ArchiveGOST.Migrator", "ArchiveGOST\ArchiveGOST.Migrator.csproj", "{EDCEBE74-2DDE-44C5-88A5-37584811AE6E}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ArchiveGOST_DbLibrary", "ArchiveGOST_DbLibrary\ArchiveGOST_DbLibrary.csproj", "{909FEDAC-A4EB-48E0-9629-0682AAB2A809}"
 EndProject
@@ -17,9 +17,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ServiceLayer", "ServiceLaye
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ArchiveTests", "ArchiveTests\ArchiveTests.csproj", "{5982CA5E-9AA6-4BD9-9D1C-22C74FE37D32}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ArchiveGHOST.Client", "ArchiveGHOST.Client\ArchiveGHOST.Client.csproj", "{6720DA6A-C296-452B-8335-70555EF2F333}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ArchiveGHOST.Client", "ArchiveGHOST.Client\ArchiveGHOST.Client.csproj", "{6720DA6A-C296-452B-8335-70555EF2F333}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VMLayer", "VMLayer\VMLayer.csproj", "{F50A277D-4277-4D21-97B7-D7E7B09D7EBD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VMLayer", "VMLayer\VMLayer.csproj", "{F50A277D-4277-4D21-97B7-D7E7B09D7EBD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

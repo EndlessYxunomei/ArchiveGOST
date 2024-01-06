@@ -21,6 +21,7 @@ namespace ArchiveGHOST.Client
                 .UseMauiApp<App>()
                 .ConfigureFonts(fonts =>
                 {
+                    fonts.AddFont("MaterialIcons-Regular.ttf", "MaterialIconsRegular");
                     fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
                     fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
                 });
@@ -32,7 +33,7 @@ namespace ArchiveGHOST.Client
             //builder.Services.AddTransient<InventoryListPage>();
             //builder.Services.AddTransient<OriginalListViewModel>();
 
-            builder.Services.AddTransientWithShellRoute<OriginalDetailPage, OriginalDetailViewModel>("OriginalDetail");
+            //builder.Services.AddTransientWithShellRoute<OriginalDetailPage, OriginalDetailViewModel>("OriginalDetail");
             //builder.Services.AddTransient<OriginalDetailPage>();
             //builder.Services.AddTransient<OriginalDetailViewModel>();
 
@@ -41,8 +42,8 @@ namespace ArchiveGHOST.Client
             //builder.Services.AddTransient<CreateOriginalViewModel>();
 
 
-            //НАДО РАЗОБРАТЬСЯ КАК ДОБЫТЬ НАШ КОНЕКТИОН СТРИНГ И ГДЕ МАТЬ ВАШУ НАХОДИТСЯ НАША БАЗА
-            //ПОКА РАБОТАЕТ ТОЛЬКО ПРЯМОЙ КС ДЛЯ СЕРВЕРА
+            //НАДО РАЗОБРАТЬСЯ НАХОДИТСЯ НАША БАЗА
+            //ПОКА РАБОТАЕТ ТОЛЬКО СЕРВЕРА
 
             builder.Services.AddDbContext<ArchiveDbContext>(op =>
             op.UseSqlServer(builder.Configuration.GetConnectionString("ArchiveLibrarySQLServer")));

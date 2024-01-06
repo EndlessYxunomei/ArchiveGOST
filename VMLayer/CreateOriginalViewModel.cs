@@ -14,6 +14,7 @@ using System.Threading.Tasks;
 using VMLayer.Messages;
 using VMLayer.Navigation;
 using System.ComponentModel.DataAnnotations;
+using VMLayer.Validation;
 
 namespace VMLayer;
 
@@ -114,7 +115,7 @@ public class CreateOriginalViewModel: ObservableValidator
         //МЕТОД СОЗДАНИЯ НОВОГО ДОКУМЕНТА
         if (await originalService.CheckInventoryNumber(InventoryNumber))
         {
-            OriginalDetailDto originalDetailDto = new OriginalDetailDto()
+            OriginalDetailDto originalDetailDto = new()
             {
                 InventoryNumber = InventoryNumber,
                 Name = Name,
@@ -166,6 +167,8 @@ public class CreateOriginalViewModel: ObservableValidator
         this.personService = personService;
         this.companyService = companyService;
         this.dialogService = dialogService;
+
+        ErrorExposer = new(this);
         
         AcseptCommand = new AsyncRelayCommand(CreateOriginal, () => !HasErrors);
         CancelCommand = new AsyncRelayCommand(CancelCreate);
@@ -198,4 +201,5 @@ public class CreateOriginalViewModel: ObservableValidator
 
     //Обработка события валидатора
     private void CreateOriginalViewModel_ErrorsChanged(object? sender, DataErrorsChangedEventArgs e) =>AcseptCommand.NotifyCanExecuteChanged();
+    public ValidationErrorExposer ErrorExposer { get; }
 }
