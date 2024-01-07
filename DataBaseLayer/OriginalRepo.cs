@@ -64,7 +64,7 @@ namespace DataBaseLayer
             dbOriginal.DocumentId = original.DocumentId;
             dbOriginal.CompanyId = original.CompanyId;
             dbOriginal.PersonId = original.PersonId;
-            if (original.Applicabilities != null)
+            /*if (original.Applicabilities != null)
             {
                 dbOriginal.Applicabilities = original.Applicabilities;
             }
@@ -75,7 +75,7 @@ namespace DataBaseLayer
             if (original.Copies != null)
             {
                 dbOriginal.Copies = original.Copies;
-            }
+            }*/
 
             await _context.SaveChangesAsync();
             return original.Id;

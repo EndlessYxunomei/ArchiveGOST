@@ -10,7 +10,7 @@ using VMLayer.Navigation;
 
 namespace VMLayer
 {
-    public class OriginalListViewModel: ObservableObject
+    public class OriginalListViewModel: ObservableObject, INavigationParameterReceiver
     {
         private readonly IOriginalService originalService;
         private readonly IDialogService dialogService;
@@ -30,8 +30,8 @@ namespace VMLayer
             _ = LoadOriginalListAsync();
 
             //подписываемся на сообщения для обновления списка придобавлении или изменении
-            WeakReferenceMessenger.Default.Register<OriginalUpdatedMessage>(this, (r, m) =>
-            ((OriginalListViewModel)r).UpdateOrignalList(m.Value));
+            //WeakReferenceMessenger.Default.Register<OriginalUpdatedMessage>(this, (r, m) =>
+            //((OriginalListViewModel)r).UpdateOrignalList(m.Value));
 
             //TEST
             //OriginalsList.Add(new() { OriginalId = 9998, OriginalInventoryNumber = 101, OriginalName = "test1", OriginalCaption = "cap1", DocumentName = "doc1", OriginalDate = DateTime.Today });
@@ -124,6 +124,15 @@ namespace VMLayer
             {
                 OriginalsList.Add(originalDto);
             }
+        }
+
+        public Task OnNavigatedTo(Dictionary<string, object> parameters)
+        {
+            if (parameters[NavParamConstants.OrginalList] is OriginalListDto originalListDto)
+            {
+                UpdateOrignalList(originalListDto);
+            }
+            return Task.CompletedTask;
         }
     }
 }

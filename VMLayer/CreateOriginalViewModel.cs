@@ -18,7 +18,7 @@ using VMLayer.Validation;
 
 namespace VMLayer;
 
-public class CreateOriginalViewModel: ObservableValidator
+public class CreateOriginalViewModel: ObservableValidator, INavigationParameterReceiver
 {
     //Сервисы
     private readonly INavigationService navigationService;
@@ -132,9 +132,11 @@ public class CreateOriginalViewModel: ObservableValidator
             //получает по id дтошку для отображения в списке инвентарной книги
             OriginalListDto newDto = await originalService.GetOriginalAsync(newId);
             //Передаём обратно дтошку через мессендже
-            WeakReferenceMessenger.Default.Send(new OriginalUpdatedMessage(newDto));
-            //Возможно стоит передавать через GoBackAndReturn
-            await navigationService.GoBack();
+            //WeakReferenceMessenger.Default.Send(new OriginalUpdatedMessage(newDto));
+            //await navigationService.GoBack();
+            //Навигация назад с передачей параметра
+            //orginal_list
+            await navigationService.GoBackAndReturn(new Dictionary<string, object>() { { NavParamConstants.OrginalList, newDto } });
         }
         else
         {
@@ -204,4 +206,23 @@ public class CreateOriginalViewModel: ObservableValidator
     //Обработка события валидатора
     private void CreateOriginalViewModel_ErrorsChanged(object? sender, DataErrorsChangedEventArgs e) =>AcseptCommand.NotifyCanExecuteChanged();
     public ValidationErrorExposer ErrorExposer { get; }
+
+    //Обработка навигации
+    public Task OnNavigatedTo(Dictionary<string, object> parameters)
+    {
+        if (parameters[NavParamConstants.DocumentList] is DocumentListDto document)
+        {
+            DocumentList.Add(document);
+        }
+        if (parameters[NavParamConstants.CompanyList] is CompanyListDto company)
+        {
+            Companylist.Add(company);
+        }
+        if (parameters[NavParamConstants.PersonList] is PersonListDto person)
+        {
+            PersonList.Add(person);
+        }
+        return Task.CompletedTask;
+    }
+
 }

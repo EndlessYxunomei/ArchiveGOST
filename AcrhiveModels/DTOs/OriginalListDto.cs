@@ -24,7 +24,8 @@ namespace AcrhiveModels.DTOs
                 OriginalName = original.Name,
                 OriginalCaption = original.Caption,
                 OriginalDate = original.CreatedDate,
-                DocumentName = original.Document?.Name
+                //DocumentName = original.Document?.Name,
+                DocumentName = $"{original.Document?.Name} от {original.Document?.Date:d}"
             };
         }
     }
