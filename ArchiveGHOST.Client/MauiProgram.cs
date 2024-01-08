@@ -33,7 +33,7 @@ namespace ArchiveGHOST.Client
             //builder.Services.AddTransient<InventoryListPage>();
             //builder.Services.AddTransient<OriginalListViewModel>();
 
-            //builder.Services.AddTransientWithShellRoute<OriginalDetailPage, OriginalDetailViewModel>("OriginalDetail");
+            builder.Services.AddTransientWithShellRoute<OriginalDetailPage, EditOriginalViewModel>("OriginalDetail");
             //builder.Services.AddTransient<OriginalDetailPage>();
             //builder.Services.AddTransient<OriginalDetailViewModel>();
 

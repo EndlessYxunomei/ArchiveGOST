@@ -30,6 +30,6 @@ namespace ArchiveGHOST.Client.Services
         }
 
         public Task GoToCreateOriginal() => Navigate("CreateOriginal");
-        public Task GoToOriginalDetails(int id) => Navigate("OriginalDetail", new() { { "id", id } });
+        public Task GoToOriginalDetails(int id) => Navigate("OriginalDetail", new() { { "original_detail", id } });
     }
 }

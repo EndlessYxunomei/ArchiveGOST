@@ -80,24 +80,24 @@
         <HorizontalStackLayout Padding="5" Spacing="5">
             <Label Text="Сопроводительный документ:"/>
             <Picker ItemsSource="{Binding DocumentList}" SelectedItem="{Binding Document}" WidthRequest="300"/>
-            <Button Text="+" Command="{Binding AddDocumentCommand}"/>
+            <Button Text="&#xe145;" FontFamily="MaterialIconsRegular" FontSize="20" Command="{Binding AddDocumentCommand}"/>
         </HorizontalStackLayout>
         <HorizontalStackLayout Padding="5" Spacing="5">
             <Label Text="Держатель подлинника:"/>
             <Picker ItemsSource="{Binding Companylist}" ItemDisplayBinding="{Binding Name}" SelectedItem="{Binding Company}" WidthRequest="300"/>
-            <Button Text="+" Command="{Binding AddCompanyCommand}"/>
+            <Button Text="&#xe145;" FontFamily="MaterialIconsRegular" FontSize="20" Command="{Binding AddCompanyCommand}"/>
         </HorizontalStackLayout>
         <HorizontalStackLayout Padding="5" Spacing="5">
             <Label Text="Кем зарегистрирован:"/>
             <Picker ItemsSource="{Binding PersonList}" ItemDisplayBinding="{Binding FullName}" SelectedItem="{Binding Person}" WidthRequest="300"/>
-            <Button Text="+" Command="{Binding AddPersonCommand}"/>
+            <Button Text="&#xe145;" FontFamily="MaterialIconsRegular" FontSize="20" Command="{Binding AddPersonCommand}"/>
         </HorizontalStackLayout>
         <HorizontalStackLayout Padding="5" Spacing="5">
             <Button
-                Text="Добавить документ"
+                Text="&#xe161; Добавить документ" FontFamily="MaterialIconsRegular" FontSize="20"
                 Command="{Binding AcseptCommand}"/>
             <Button
-                Text="Отмена"
+                Text="&#xe166; Отмена" FontFamily="MaterialIconsRegular" FontSize="20"
                 Command="{Binding CancelCommand}"/>
         </HorizontalStackLayout>
     </VerticalStackLayout>

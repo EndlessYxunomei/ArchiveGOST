@@ -1,31 +1,15 @@
 ﻿using AcrhiveModels.DTOs;
-using AcrhiveModels;
-using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Input;
-using CommunityToolkit.Mvvm.Messaging;
 using ServiceLayer;
-using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using VMLayer.Messages;
 using VMLayer.Navigation;
-using System.ComponentModel.DataAnnotations;
 using VMLayer.Validation;
 
 namespace VMLayer;
 
 public class CreateOriginalViewModel: OriginalDetailViewModel
 {
-    //Кнопки
-    public IAsyncRelayCommand AcseptCommand { get; }
-    public IAsyncRelayCommand CancelCommand { get; }
-
-    //Методы кнопок
-    private async Task CreateOriginal()
+    //Переназанчение метода сохранения
+    internal override async Task SaveOriginal()
     {
         //МЕТОД СОЗДАНИЯ НОВОГО ДОКУМЕНТА
         if (await originalService.CheckInventoryNumber(InventoryNumber))
@@ -57,19 +41,12 @@ public class CreateOriginalViewModel: OriginalDetailViewModel
             await dialogService.Notify("Ошибка добавления", "Данный инвентарный номер уже существует");
         }
     }
-    private async Task CancelCreate()
-    {
-        await navigationService.GoBack();
-    }
 
     //Конструктор
     public CreateOriginalViewModel(INavigationService navigationService, IDocumentService documentService, IOriginalService originalService, IPersonService personService, ICompanyService companyService, IDialogService dialogService)
         :base(navigationService,documentService, originalService, personService, companyService,dialogService)
     {
         ErrorExposer = new(this);
-        
-        AcseptCommand = new AsyncRelayCommand(CreateOriginal, () => !HasErrors);
-        CancelCommand = new AsyncRelayCommand(CancelCreate);
 
         //Подписываемся на событие валидации
         ErrorsChanged += CreateOriginalViewModel_ErrorsChanged;
@@ -90,22 +67,4 @@ public class CreateOriginalViewModel: OriginalDetailViewModel
     //Обработка события валидатора
     private void CreateOriginalViewModel_ErrorsChanged(object? sender, DataErrorsChangedEventArgs e) =>AcseptCommand.NotifyCanExecuteChanged();
     public ValidationErrorExposer ErrorExposer { get; }
-
-    //Обработка навигации
-    public override Task OnNavigatedTo(Dictionary<string, object> parameters)
-    {
-        if (parameters[NavParamConstants.DocumentList] is DocumentListDto document)
-        {
-            DocumentList.Add(document);
-        }
-        if (parameters[NavParamConstants.CompanyList] is CompanyListDto company)
-        {
-            Companylist.Add(company);
-        }
-        if (parameters[NavParamConstants.PersonList] is PersonListDto person)
-        {
-            PersonList.Add(person);
-        }
-        return Task.CompletedTask;
-    }
 }

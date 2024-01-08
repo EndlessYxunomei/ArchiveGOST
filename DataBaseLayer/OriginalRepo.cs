@@ -15,7 +15,11 @@ namespace DataBaseLayer
 
         public async Task<Original> GetOriginalAsync(int id)
         {
-            var original = await _context.Originals.FirstOrDefaultAsync(x => x.Id == id);
+            var original = await _context.Originals
+                .Include(x =>x.Copies)
+                .Include(x => x.Applicabilities)
+                .Include(x => x.Corrections)
+                .FirstOrDefaultAsync(x => x.Id == id);
             return original ?? throw new Exception("Original not found");
         }
         public async Task<List<Original>> GetOriginalList()
@@ -82,23 +86,21 @@ namespace DataBaseLayer
         }
         public async Task UpsertOriginals(List<Original> originals)
         {
-            using (var transaction = _context.Database.BeginTransaction(System.Data.IsolationLevel.ReadUncommitted))
+            using var transaction = _context.Database.BeginTransaction(System.Data.IsolationLevel.ReadUncommitted);
+            try
             {
-                try
+                foreach (var original in originals)
                 {
-                    foreach (var original in originals)
-                    {
-                        var success = await UpsertOriginal(original) > 0;
-                        if (!success) { throw new Exception($"Error saving the original {original.Name}"); }
-                    }
-                    await transaction.CommitAsync();
+                    var success = await UpsertOriginal(original) > 0;
+                    if (!success) { throw new Exception($"Error saving the original {original.Name}"); }
                 }
-                catch (Exception ex)
-                {
-                    Debug.WriteLine(ex.ToString());
-                    await transaction.RollbackAsync();
-                    throw;
-                }
+                await transaction.CommitAsync();
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.ToString());
+                await transaction.RollbackAsync();
+                throw;
             }
             //не работает в SQLite
             /*using (var scope = new TransactionScope(TransactionScopeOption.Required,
@@ -130,22 +132,20 @@ namespace DataBaseLayer
         }
         public async Task DeleteOriginals(List<int> originalIds)
         {
-            using (var transaction = _context.Database.BeginTransaction(System.Data.IsolationLevel.ReadUncommitted))
+            using var transaction = _context.Database.BeginTransaction(System.Data.IsolationLevel.ReadUncommitted);
+            try
             {
-                try
+                foreach (var originalId in originalIds)
                 {
-                    foreach (var originalId in originalIds)
-                    {
-                        await DeleteOriginal(originalId);
-                    }
-                    await transaction.CommitAsync();
+                    await DeleteOriginal(originalId);
                 }
-                catch (Exception ex)
-                {
-                    Debug.WriteLine(ex.ToString());
-                    await transaction.RollbackAsync();
-                    throw;
-                }
+                await transaction.CommitAsync();
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.ToString());
+                await transaction.RollbackAsync();
+                throw;
             }
             //не работает в SQLite
             /*using (var scope = new TransactionScope(TransactionScopeOption.Required,

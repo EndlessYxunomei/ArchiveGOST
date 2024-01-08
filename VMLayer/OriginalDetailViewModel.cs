@@ -3,15 +3,9 @@ using AcrhiveModels.DTOs;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using ServiceLayer;
-using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using VMLayer.Navigation;
-using VMLayer.Validation;
 
 namespace VMLayer;
 
@@ -117,6 +111,18 @@ public class OriginalDetailViewModel: ObservableValidator, INavigationParameterR
         await Task.Delay(10);//ЗАглушка
     }
 
+    //Кнопки Сохранить и отмена
+    public IAsyncRelayCommand AcseptCommand { get; }
+    public IAsyncRelayCommand CancelCommand { get; }
+    internal virtual Task SaveOriginal()
+    {
+        return Task.CompletedTask;//Заглушка
+    }
+    private async Task CancelOriginal()
+    {
+        await navigationService.GoBack();
+    }
+
     //Конструктор
     public OriginalDetailViewModel(INavigationService navigationService, IDocumentService documentService, IOriginalService originalService, IPersonService personService, ICompanyService companyService, IDialogService dialogService)
     {
@@ -130,6 +136,9 @@ public class OriginalDetailViewModel: ObservableValidator, INavigationParameterR
         AddCompanyCommand = new AsyncRelayCommand(AddCompany);
         AddDocumentCommand = new AsyncRelayCommand(AddDocument);
         AddPersonCommand = new AsyncRelayCommand(AddPerson);
+
+        AcseptCommand = new AsyncRelayCommand(SaveOriginal, () => !HasErrors);
+        CancelCommand = new AsyncRelayCommand(CancelOriginal);
 
         ValidateAllProperties();//пришлось принудительно запускать валидацию, иначе не работало
     }
@@ -145,6 +154,21 @@ public class OriginalDetailViewModel: ObservableValidator, INavigationParameterR
         newCompanyList.ForEach(Companylist.Add);
         newPersonList.ForEach(PersonList.Add);
     }
-    //Заглушка для навигации
-    public virtual Task OnNavigatedTo(Dictionary<string, object> parameters) => Task.CompletedTask;
+    //Обработка навигации на страницу
+    public virtual Task OnNavigatedTo(Dictionary<string, object> parameters)
+    {
+        if (parameters.TryGetValue(NavParamConstants.DocumentList, out object? value_doc) && value_doc is DocumentListDto document)
+        {
+            DocumentList.Add(document);
+        }
+        if (parameters.TryGetValue(NavParamConstants.CompanyList, out object? value_comp) && value_comp is CompanyListDto company)
+        {
+            Companylist.Add(company);
+        }
+        if (parameters.TryGetValue(NavParamConstants.PersonList, out object? value_per) && value_per is PersonListDto person)
+        {
+            PersonList.Add(person);
+        }
+        return Task.CompletedTask;
+    }
 }

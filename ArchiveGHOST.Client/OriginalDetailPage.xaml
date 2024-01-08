@@ -3,15 +3,156 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="ArchiveGHOST.Client.OriginalDetailPage"
              xmlns:vms="clr-namespace:VMLayer;assembly=VMLayer"
-             x:DataType="vms:OriginalDetailViewModel"
-             Title="OriginalDetailPage">
+             xmlns:dto="clr-namespace:AcrhiveModels.DTOs;assembly=AcrhiveModels"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             x:DataType="vms:EditOriginalViewModel"
+             Title="Подробности">
     <!--<ContentPage.Resources>
         <conv:RatingToColorConverter x:Key="ratingToColorConverter" />
     </ContentPage.Resources>-->
-    <VerticalStackLayout>
-        <Label 
-            Text="Welcome to .NET MAUI!"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
+    <VerticalStackLayout Spacing="10">
+        <HorizontalStackLayout Padding="5" Spacing="5">
+            <Label Text="Инвентарный номер:"/>
+            <Grid ColumnDefinitions="*, Auto">
+                <Entry Placeholder="0" Text="{Binding InventoryNumber}" Keyboard="Numeric" WidthRequest="50"/>
+                <Label Text="&#xe000;" TextColor="Red" FontFamily="MaterialIconsRegular" FontSize="20" Grid.Column="1">
+                    <Label.Triggers>
+                        <DataTrigger
+                            TargetType="Label"
+                            Value="0"
+                            Binding="{Binding ErrorExposer[InventoryNumber].Count}">
+                            <Setter Property="Text" Value="&#xe86c;"/>
+                            <Setter Property="TextColor" Value="Green"/>
+                        </DataTrigger>
+                    </Label.Triggers>
+                </Label>
+            </Grid>
+        </HorizontalStackLayout>
+        <HorizontalStackLayout Padding="5" Spacing="5">
+            <Label Text="Обозначение:"/>
+            <Grid ColumnDefinitions="*, Auto">
+                <Entry Placeholder="Новое обозначение" Text="{Binding Name}" MaxLength="100" WidthRequest="200"/>
+                <Label Text="&#xe000;" TextColor="Red" FontFamily="MaterialIconsRegular" FontSize="20" Grid.Column="1">
+                    <Label.Triggers>
+                        <DataTrigger
+                            TargetType="Label"
+                            Value="0"
+                            Binding="{Binding ErrorExposer[Name].Count}">
+                            <Setter Property="Text" Value="&#xe86c;"/>
+                            <Setter Property="TextColor" Value="Green"/>
+                        </DataTrigger>
+                    </Label.Triggers>
+                </Label>
+            </Grid>
+        </HorizontalStackLayout>
+        <HorizontalStackLayout Padding="5" Spacing="5">
+            <Label Text="Наименование:"/>
+            <Grid ColumnDefinitions="*, Auto">
+                <Editor Text="{Binding Caption}" Placeholder="Новое наименование" HeightRequest="100" MaxLength="1000" WidthRequest="200" IsSpellCheckEnabled="True"/>
+                <Label Text="&#xe000;" TextColor="Red" FontFamily="MaterialIconsRegular" FontSize="20" Grid.Column="1">
+                    <Label.Triggers>
+                        <DataTrigger
+                            TargetType="Label"
+                            Value="0"
+                            Binding="{Binding ErrorExposer[Caption].Count}">
+                            <Setter Property="Text" Value="&#xe86c;"/>
+                            <Setter Property="TextColor" Value="Green"/>
+                        </DataTrigger>
+                    </Label.Triggers>
+                </Label>
+            </Grid>
+        </HorizontalStackLayout>
+        <HorizontalStackLayout Padding="5" Spacing="5">
+            <Label Text="Примечания:"/>
+            <Grid ColumnDefinitions="*, Auto">
+                <Editor Text="{Binding Notes}" MaxLength="1000" WidthRequest="200" HeightRequest="100" IsSpellCheckEnabled="True"/>
+                <Label Text="&#xe000;" TextColor="Red" FontFamily="MaterialIconsRegular" FontSize="20" Grid.Column="1">
+                    <Label.Triggers>
+                        <DataTrigger
+                            TargetType="Label"
+                            Value="0"
+                            Binding="{Binding ErrorExposer[Notes].Count}">
+                            <Setter Property="Text" Value="&#xe86c;"/>
+                            <Setter Property="TextColor" Value="Green"/>
+                        </DataTrigger>
+                    </Label.Triggers>
+                </Label>
+            </Grid>
+        </HorizontalStackLayout>
+        <HorizontalStackLayout Padding="5" Spacing="5">
+            <Label Text="Сопроводительный документ:"/>
+            <Picker ItemsSource="{Binding DocumentList}" SelectedItem="{Binding Document}" WidthRequest="300"/>
+            <Button Text="&#xe145;" FontFamily="MaterialIconsRegular" FontSize="20" Command="{Binding AddDocumentCommand}"/>
+        </HorizontalStackLayout>
+        <HorizontalStackLayout Padding="5" Spacing="5">
+            <Label Text="Держатель подлинника:"/>
+            <Picker ItemsSource="{Binding Companylist}" ItemDisplayBinding="{Binding Name}" SelectedItem="{Binding Company}" WidthRequest="300"/>
+            <Button Text="&#xe145;" FontFamily="MaterialIconsRegular" FontSize="20" Command="{Binding AddCompanyCommand}"/>
+        </HorizontalStackLayout>
+        <HorizontalStackLayout Padding="5" Spacing="5">
+            <Label Text="Кем зарегистрирован:"/>
+            <Picker ItemsSource="{Binding PersonList}" ItemDisplayBinding="{Binding FullName}" SelectedItem="{Binding Person}" WidthRequest="300"/>
+            <Button Text="&#xe145;" FontFamily="MaterialIconsRegular" FontSize="20" Command="{Binding AddPersonCommand}"/>
+        </HorizontalStackLayout>
+        <HorizontalStackLayout>
+            <Button
+                Text="&#xe161; Сохранить изменения" FontFamily="MaterialIconsRegular" FontSize="20"
+                Command="{Binding AcseptCommand}"/>
+            <Button
+                Text="&#xe166; Назад" FontFamily="MaterialIconsRegular" FontSize="20"
+                Command="{Binding CancelCommand}"/>
+        </HorizontalStackLayout>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <VerticalStackLayout Grid.Column="0">
+                <HorizontalStackLayout>
+                    <Button Text="&#xe145;" FontFamily="MaterialIconsRegular" FontSize="20"/>
+                    <Button Text="&#xf88d;" FontFamily="MaterialIconsRegular" FontSize="20"/>
+                    <Button Text="&#xe872;" FontFamily="MaterialIconsRegular" FontSize="20"/>
+                </HorizontalStackLayout>
+                <CollectionView ItemsSource="{Binding CopyList}"
+                        SelectedItem="{Binding SelectedCopy}"
+                        SelectionMode="Single">
+                    <CollectionView.Header>
+                        <Grid RowSpacing="30" ColumnSpacing="10">
+                            <Grid.RowDefinitions>
+                                <RowDefinition/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="100"/>
+                                <ColumnDefinition Width="200"/>
+                            </Grid.ColumnDefinitions>
+                            <Label Text="Номер копии" Grid.Column="0" Grid.Row="0"/>
+                            <Label Text="Дата создания" Grid.Column="1" Grid.Row="0"/>
+                        </Grid>
+                    </CollectionView.Header>
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <Grid x:DataType="dto:CopyListDto" RowSpacing="30" ColumnSpacing="10">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition/>
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="100"/>
+                                    <ColumnDefinition Width="200"/>
+                                </Grid.ColumnDefinitions>
+                                <Label Text="{Binding Number}" Grid.Column="0" Grid.Row="0"/>
+                                <Label Text="{Binding Date, StringFormat='{0:D}'}" Grid.Column="1" Grid.Row="0"/>
+                            </Grid>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+            </VerticalStackLayout>
+            <VerticalStackLayout Grid.Column="1">
+                <Label Text="Применяемости нет!"/>
+            </VerticalStackLayout>
+            <VerticalStackLayout Grid.Column="2">
+                <Label Text="Изменений нет!"/>
+            </VerticalStackLayout>
+        </Grid>
     </VerticalStackLayout>
 </ContentPage>

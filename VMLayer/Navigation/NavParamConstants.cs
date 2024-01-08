@@ -12,5 +12,7 @@ namespace VMLayer.Navigation
         public const string DocumentList = "document_list";
         public const string CompanyList = "company_list";
         public const string PersonList = "person_list";
+
+        public const string OriginalDetail = "original_detail";
     }
 }

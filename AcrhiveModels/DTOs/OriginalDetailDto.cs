@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AcrhiveModels.Interfaces;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -7,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace AcrhiveModels.DTOs
 {
-    public class OriginalDetailDto
+    public class OriginalDetailDto: IIdentityModel
     {
         public int Id { get; set; }
         public int InventoryNumber { get; set; }
@@ -29,8 +30,8 @@ namespace AcrhiveModels.DTOs
         public static explicit operator OriginalDetailDto(Original original)
         {
             List<Copy> copyList = original.Copies;
-            List<CopyListDto> copyListDtos = [];
-            copyListDtos.AddRange(copyList.Select(copy => (CopyListDto)copy));
+            List<CopyListDto> copyDtos = [];
+            copyDtos.AddRange(copyList.Select(copy => (CopyListDto)copy));
 
             List<Correction> correctionList = original.Corrections;
             List<CorrectionListDto> corDtos = [];
@@ -52,7 +53,7 @@ namespace AcrhiveModels.DTOs
                 Company = original.Company != null ? (CompanyListDto)original.Company : null,
                 Document = original.Document != null ? (DocumentListDto)original.Document : null,
                 Person = original.Person != null ? (PersonListDto)original.Person : null,
-                Copies = copyListDtos,
+                Copies = copyDtos,
                 Corrections = corDtos,
                 Applicabilities = appDtos
             };
