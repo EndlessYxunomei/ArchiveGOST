@@ -143,7 +143,7 @@ namespace VMLayer
         }
 
         //Обновление коллекций
-        private static void UpdateList<T>(ObservableCollection<T> list, T updateItem) where T:IIdentityModel
+        /*private static void UpdateList<T>(ObservableCollection<T> list, T updateItem) where T:IIdentityModel
         {
             T? exist = list.FirstOrDefault(x => x?.Id == updateItem.Id);
             if (exist != null)
@@ -154,6 +154,6 @@ namespace VMLayer
             {
                 list.Add(updateItem);
             }
-        }
+        }*/
     }
 }

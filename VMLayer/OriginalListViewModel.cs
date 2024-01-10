@@ -79,7 +79,7 @@ namespace VMLayer
             if (result)
             {
                 //Удаление оригинала
-                await originalService.DeleteOriginal(SelectedOriginal.OriginalId);
+                await originalService.DeleteOriginal(SelectedOriginal.Id);
 
                 //обновление списка
                 OriginalsList.Remove(SelectedOriginal);
@@ -92,7 +92,7 @@ namespace VMLayer
         {
             if (SelectedOriginal != null)
             {
-                await navigationService.GoToOriginalDetails(SelectedOriginal.OriginalId);
+                await navigationService.GoToOriginalDetails(SelectedOriginal.Id);
             }
         }
         private bool CanDeleteOriginal()
@@ -113,9 +113,9 @@ namespace VMLayer
         }
 
         //Обновление листа оригиналов при добавлении или изменении
-        private void UpdateOrignalList(OriginalListDto originalDto)
+        /*private void UpdateOrignalList(OriginalListDto originalDto)
         {
-            OriginalListDto? res = OriginalsList.FirstOrDefault(x => x?.OriginalId == originalDto.OriginalId, null);
+            OriginalListDto? res = OriginalsList.FirstOrDefault(x => x?.Id == originalDto.Id, null);
             if (res != null)
             {
                 OriginalsList[OriginalsList.IndexOf(res)] = originalDto;
@@ -124,13 +124,14 @@ namespace VMLayer
             {
                 OriginalsList.Add(originalDto);
             }
-        }
+        }*/
 
         public Task OnNavigatedTo(Dictionary<string, object> parameters)
         {
             if (parameters[NavParamConstants.OrginalList] is OriginalListDto originalListDto)
             {
-                UpdateOrignalList(originalListDto);
+                //UpdateOrignalList(originalListDto);
+                UtilityService.UpdateList(OriginalsList, originalListDto);
             }
             return Task.CompletedTask;
         }

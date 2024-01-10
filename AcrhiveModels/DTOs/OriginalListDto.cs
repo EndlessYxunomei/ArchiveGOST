@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AcrhiveModels.Interfaces;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace AcrhiveModels.DTOs
 {
-    public class OriginalListDto
+    public class OriginalListDto: IIdentityModel
     {
-        public int OriginalId { get; set; }
+        public int Id { get; set; }
         public int OriginalInventoryNumber { get; set; }
         public string OriginalName { get; set; } = string.Empty;
         public string OriginalCaption {  get; set; } = string.Empty;
@@ -19,7 +20,7 @@ namespace AcrhiveModels.DTOs
         {
             return new OriginalListDto()
             {
-                OriginalId = original.Id,
+                Id = original.Id,
                 OriginalInventoryNumber = original.InventoryNumber,
                 OriginalName = original.Name,
                 OriginalCaption = original.Caption,
