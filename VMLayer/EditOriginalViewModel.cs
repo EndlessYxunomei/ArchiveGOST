@@ -12,7 +12,8 @@ namespace VMLayer
     public class EditOriginalViewModel : OriginalDetailViewModel
     {
         //Приватные поля
-        private int _id;
+        private int id;
+        private int oldInventoryNumber;
         private CopyListDto? _selectedCopy;
         private CorrectionListDto? _selectedCorrection;
         private ApplicabilityListDto? _selectedApplicability;
@@ -59,13 +60,14 @@ namespace VMLayer
         public ObservableCollection<ApplicabilityListDto> ApplicabilityList { get; set; } = [];
 
         //Переназанчение метода сохранения
-        internal override Task SaveOriginal()
+        internal override async Task SaveOriginal()
         {
             //МЕТОД СОЗДАНИЯ НОВОГО ДОКУМЕНТА
-            /*if (await originalService.CheckInventoryNumber(InventoryNumber))
+            if (InventoryNumber == oldInventoryNumber || await originalService.CheckInventoryNumber(InventoryNumber))
             {
                 OriginalDetailDto originalDetailDto = new()
                 {
+                    Id = id,
                     InventoryNumber = InventoryNumber,
                     Name = Name,
                     Caption = Caption,
@@ -88,9 +90,8 @@ namespace VMLayer
             }
             else
             {
-                await dialogService.Notify("Ошибка добавления", "Данный инвентарный номер уже существует");
-            }*/
-            return Task.CompletedTask;
+                await dialogService.Notify("Ошибка сохранения", "Нельзя изменить инвентарный номер на уже существующий");
+            }
         }
 
         //Кнопки
@@ -212,9 +213,10 @@ namespace VMLayer
             if (parameters.TryGetValue(NavParamConstants.OriginalDetail, out object? orig_det) && orig_det is int id)
             {
                 await LoadData();
-                _id = id;
+                this.id = id;
                 OriginalDetailDto original = await originalService.GetOriginalDetailAsync(id);
                 InventoryNumber = original.InventoryNumber;
+                oldInventoryNumber = original.InventoryNumber;
                 Name = original.Name;
                 Caption = original.Caption;
                 Notes = original.Notes;

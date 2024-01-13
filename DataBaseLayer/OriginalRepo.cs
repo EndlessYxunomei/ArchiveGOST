@@ -50,12 +50,12 @@ namespace DataBaseLayer
         private async Task<int> UpdateOriginal(Original original)
         {
             var dbOriginal = await _context.Originals
-                .Include(x => x.Applicabilities)
-                .Include(x => x.Corrections)
-                .Include(x => x.Copies)
-                .Include(x => x.Company)
-                .Include(x => x.Person)
-                .Include(x => x.Document)
+                //.Include(x => x.Applicabilities)
+                //.Include(x => x.Corrections)
+                //.Include(x => x.Copies)
+                //.Include(x => x.Company)
+                //.Include(x => x.Person)
+                //.Include(x => x.Document)
                 .FirstOrDefaultAsync(x => x.Id == original.Id) ?? throw new Exception("Original not found");
 
             dbOriginal.Caption = original.Caption;
