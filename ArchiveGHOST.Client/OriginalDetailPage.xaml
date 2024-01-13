@@ -109,10 +109,11 @@
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
             <VerticalStackLayout Grid.Column="0">
+                <Label Text="Экземпляры:"/>
                 <HorizontalStackLayout>
-                    <Button Text="&#xe145;" FontFamily="MaterialIconsRegular" FontSize="20"/>
-                    <Button Text="&#xf88d;" FontFamily="MaterialIconsRegular" FontSize="20"/>
-                    <Button Text="&#xe872;" FontFamily="MaterialIconsRegular" FontSize="20"/>
+                    <Button Text="&#xe145;" FontFamily="MaterialIconsRegular" FontSize="20" Command="{Binding AddCopyCommand}"/>
+                    <Button Text="&#xf88d;" FontFamily="MaterialIconsRegular" FontSize="20" Command="{Binding EditCopyCommand}"/>
+                    <Button Text="&#xe872;" FontFamily="MaterialIconsRegular" FontSize="20" Command="{Binding DeleteCopyCommand}"/>
                 </HorizontalStackLayout>
                 <CollectionView ItemsSource="{Binding CopyList}"
                         SelectedItem="{Binding SelectedCopy}"
@@ -148,10 +149,80 @@
                 </CollectionView>
             </VerticalStackLayout>
             <VerticalStackLayout Grid.Column="1">
-                <Label Text="Применяемости нет!"/>
+                <Label Text="Применимость:"/>
+                <HorizontalStackLayout>
+                    <Button Text="&#xe145;" FontFamily="MaterialIconsRegular" FontSize="20" Command="{Binding AddApplicabilityCommand}"/>
+                    <Button Text="&#xf88d;" FontFamily="MaterialIconsRegular" FontSize="20" Command="{Binding EditApplicabilityCommand}"/>
+                    <Button Text="&#xe872;" FontFamily="MaterialIconsRegular" FontSize="20" Command="{Binding DeleteApplicabilityCommand}"/>
+                </HorizontalStackLayout>
+                <CollectionView ItemsSource="{Binding ApplicabilityList}"
+                                SelectedItem="{Binding SelectedApplicability}"
+                                SelectionMode="Single">
+                    <CollectionView.Header>
+                        <Grid RowSpacing="30" ColumnSpacing="10">
+                            <Grid.RowDefinitions>
+                                <RowDefinition/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="100"/>
+                            </Grid.ColumnDefinitions>
+                            <Label Text="Двигатель" Grid.Column="0" Grid.Row="0"/>
+                        </Grid>
+                    </CollectionView.Header>
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <Grid x:DataType="dto:ApplicabilityListDto" RowSpacing="30" ColumnSpacing="10">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition/>
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="100"/>
+                                </Grid.ColumnDefinitions>
+                                <Label Text="{Binding Description}" Grid.Column="0" Grid.Row="0"/>
+                            </Grid>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
             </VerticalStackLayout>
             <VerticalStackLayout Grid.Column="2">
-                <Label Text="Изменений нет!"/>
+                <Label Text="Изменения:"/>
+                <HorizontalStackLayout>
+                    <Button Text="&#xe145;" FontFamily="MaterialIconsRegular" FontSize="20" Command="{Binding AddCorrectionCommand}"/>
+                    <Button Text="&#xf88d;" FontFamily="MaterialIconsRegular" FontSize="20" Command="{Binding EditCorrectionCommand}"/>
+                    <Button Text="&#xe872;" FontFamily="MaterialIconsRegular" FontSize="20" Command="{Binding DeleteCorrectionCommand}"/>
+                </HorizontalStackLayout>
+                <CollectionView ItemsSource="{Binding CorrectionList}"
+                                SelectedItem="{Binding SelectedCorrection}"
+                                SelectionMode="Single">
+                    <CollectionView.Header>
+                        <Grid RowSpacing="30" ColumnSpacing="10">
+                            <Grid.RowDefinitions>
+                                <RowDefinition/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="150"/>
+                                <ColumnDefinition Width="200"/>
+                            </Grid.ColumnDefinitions>
+                            <Label Text="Номер изменения" Grid.Column="0" Grid.Row="0"/>
+                            <Label Text="Дата изменения" Grid.Column="1" Grid.Row="0"/>
+                        </Grid>
+                    </CollectionView.Header>
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <Grid x:DataType="dto:CorrectionListDto" RowSpacing="30" ColumnSpacing="10">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition/>
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="150"/>
+                                    <ColumnDefinition Width="200"/>
+                                </Grid.ColumnDefinitions>
+                                <Label Text="{Binding Number}" Grid.Column="0" Grid.Row="0"/>
+                                <Label Text="{Binding Date, StringFormat='{0:D}'}" Grid.Column="1" Grid.Row="0"/>
+                            </Grid>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
             </VerticalStackLayout>
         </Grid>
     </VerticalStackLayout>

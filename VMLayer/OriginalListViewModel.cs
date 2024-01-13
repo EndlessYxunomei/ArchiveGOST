@@ -12,34 +12,15 @@ namespace VMLayer
 {
     public class OriginalListViewModel: ObservableObject, INavigationParameterReceiver
     {
+        //Сервисы
         private readonly IOriginalService originalService;
         private readonly IDialogService dialogService;
         private readonly INavigationService navigationService;
-        
-        public OriginalListViewModel(IOriginalService originalService, IDialogService dialogService, INavigationService navigationService)
-        {
-            this.originalService = originalService;
-            this.dialogService = dialogService;
-            this.navigationService = navigationService;
 
-            //Создание команд
-            CreateCommand = new AsyncRelayCommand(CreateOriginal);
-            DeleteCommand = new AsyncRelayCommand(DeleteOriginal, CanDeleteOriginal);
-            EditCommand = new AsyncRelayCommand(EditOriginal, CanEditOriginal);
-            //Загружаем перовначальный список
-            _ = LoadOriginalListAsync();
-
-            //подписываемся на сообщения для обновления списка придобавлении или изменении
-            //WeakReferenceMessenger.Default.Register<OriginalUpdatedMessage>(this, (r, m) =>
-            //((OriginalListViewModel)r).UpdateOrignalList(m.Value));
-
-            //TEST
-            //OriginalsList.Add(new() { OriginalId = 9998, OriginalInventoryNumber = 101, OriginalName = "test1", OriginalCaption = "cap1", DocumentName = "doc1", OriginalDate = DateTime.Today });
-            //OriginalsList.Add(new() { OriginalId = 9998, OriginalInventoryNumber = 101, OriginalName = "test1", OriginalCaption = "cap1", DocumentName = "doc1", OriginalDate = DateTime.Today });
-            //OriginalsList.Add(new() { OriginalId = 9996, OriginalInventoryNumber = 103, OriginalName = "test3", OriginalCaption = "cap3", DocumentName = "doc3", OriginalDate = DateTime.Today });
-        }
-        //Список оригиналов
+        //Приватные поля
         private OriginalListDto? _selectedOriginal;
+
+        //Свойства
         public OriginalListDto? SelectedOriginal
         {
             get => _selectedOriginal;
@@ -52,23 +33,9 @@ namespace VMLayer
                 }
             }
         }
-
-
-        /*private List<OriginalListDto> _originalsList = 
-            [
-                //Test
-                new OriginalListDto() { OriginalId = 9998, OriginalInventoryNumber = 101, OriginalName = "test1", OriginalCaption = "cap1", DocumentName = "doc1", OriginalDate = DateTime.Today },
-                new OriginalListDto() { OriginalId = 9997, OriginalInventoryNumber = 102, OriginalName = "test2", OriginalCaption = "cap2", DocumentName = "doc2", OriginalDate = DateTime.Today },
-                new OriginalListDto() { OriginalId = 9996, OriginalInventoryNumber = 103, OriginalName = "test3", OriginalCaption = "cap3", DocumentName = "doc3", OriginalDate = DateTime.Today }
-            ];
-
-        public List<OriginalListDto> OriginalsList1
-        {
-            get => _originalsList;
-            set => SetProperty(ref _originalsList, value);
-        }*/
         public ObservableCollection<OriginalListDto> OriginalsList { get; set; } = [];
-        //Кнопки работы с коллекицей
+
+        //Кнопки
         public IAsyncRelayCommand CreateCommand { get; }
         public IAsyncRelayCommand DeleteCommand { get; }
         public IAsyncRelayCommand EditCommand { get; }
@@ -95,42 +62,40 @@ namespace VMLayer
                 await navigationService.GoToOriginalDetails(SelectedOriginal.Id);
             }
         }
-        private bool CanDeleteOriginal()
+        private bool CanEditDeleteOriginal() => SelectedOriginal != null;
+
+        //Конструктор
+        public OriginalListViewModel(IOriginalService originalService, IDialogService dialogService, INavigationService navigationService)
         {
-            if (SelectedOriginal == null) { return false; }
-            return true;
+            this.originalService = originalService;
+            this.dialogService = dialogService;
+            this.navigationService = navigationService;
+
+            //Кнопки
+            CreateCommand = new AsyncRelayCommand(CreateOriginal);
+            DeleteCommand = new AsyncRelayCommand(DeleteOriginal, CanEditDeleteOriginal);
+            EditCommand = new AsyncRelayCommand(EditOriginal, CanEditDeleteOriginal);
+
+            //Загружаем перовначальный список
+            _ = LoadOriginalListAsync();
+
+            //подписываемся на сообщения для обновления списка придобавлении или изменении
+            //WeakReferenceMessenger.Default.Register<OriginalUpdatedMessage>(this, (r, m) =>
+            //((OriginalListViewModel)r).UpdateOrignalList(m.Value));
         }
-        private bool CanEditOriginal()
-        {
-            if (SelectedOriginal == null) { return false; }
-            return true;
-        }
-        //Первоначальная загрузка листа оригиналов
+
+        //Первоначальная загрузка данных
         private async Task LoadOriginalListAsync()
         {
             var originallist = await originalService.GetOriginalListAsync();
             originallist.ForEach(OriginalsList.Add);
         }
-
-        //Обновление листа оригиналов при добавлении или изменении
-        /*private void UpdateOrignalList(OriginalListDto originalDto)
-        {
-            OriginalListDto? res = OriginalsList.FirstOrDefault(x => x?.Id == originalDto.Id, null);
-            if (res != null)
-            {
-                OriginalsList[OriginalsList.IndexOf(res)] = originalDto;
-            }
-            else
-            {
-                OriginalsList.Add(originalDto);
-            }
-        }*/
-
+        
+        //Обработка навигации
         public Task OnNavigatedTo(Dictionary<string, object> parameters)
         {
-            if (parameters[NavParamConstants.OrginalList] is OriginalListDto originalListDto)
+            if (parameters.TryGetValue(NavParamConstants.OrginalList, out object? orig_list) && orig_list is OriginalListDto originalListDto)
             {
-                //UpdateOrignalList(originalListDto);
                 UtilityService.UpdateList(OriginalsList, originalListDto);
             }
             return Task.CompletedTask;

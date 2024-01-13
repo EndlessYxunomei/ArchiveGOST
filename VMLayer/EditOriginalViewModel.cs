@@ -1,5 +1,6 @@
 ﻿using AcrhiveModels.DTOs;
 using AcrhiveModels.Interfaces;
+using CommunityToolkit.Mvvm.Input;
 using ServiceLayer;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -24,8 +25,8 @@ namespace VMLayer
             {
                 if (SetProperty(ref _selectedCopy, value))
                 {
-                    //DeleteCommand.NotifyCanExecuteChanged();
-                    //EditCommand.NotifyCanExecuteChanged();
+                    EditCopyCommand.NotifyCanExecuteChanged();
+                    DeleteCopyCommand.NotifyCanExecuteChanged();
                 };
             }
         }
@@ -36,8 +37,8 @@ namespace VMLayer
             {
                 if (SetProperty(ref _selectedCorrection, value))
                 {
-                    //DeleteCommand.NotifyCanExecuteChanged();
-                    //EditCommand.NotifyCanExecuteChanged();
+                    EditCorrectionCommand.NotifyCanExecuteChanged();
+                    DeleteCorrectionCommand.NotifyCanExecuteChanged();
                 };
             }
         }
@@ -48,8 +49,8 @@ namespace VMLayer
             {
                 if (SetProperty(ref _selectedApplicability, value))
                 {
-                    //DeleteCommand.NotifyCanExecuteChanged();
-                    //EditCommand.NotifyCanExecuteChanged();
+                    EditApplicabilityCommand.NotifyCanExecuteChanged();
+                    DeleteApplicabilityCommand.NotifyCanExecuteChanged();
                 };
             }
         }
@@ -93,6 +94,90 @@ namespace VMLayer
         }
 
         //Кнопки
+        public IAsyncRelayCommand AddCopyCommand { get; }
+        public IAsyncRelayCommand EditCopyCommand { get; }
+        public IAsyncRelayCommand DeleteCopyCommand { get; }
+        public IAsyncRelayCommand AddCorrectionCommand { get; }
+        public IAsyncRelayCommand EditCorrectionCommand { get; }
+        public IAsyncRelayCommand DeleteCorrectionCommand { get; }
+        public IAsyncRelayCommand AddApplicabilityCommand { get; }
+        public IAsyncRelayCommand EditApplicabilityCommand { get; }
+        public IAsyncRelayCommand DeleteApplicabilityCommand { get; }
+        private Task AddCopy()
+        {
+            return Task.CompletedTask;
+        }
+        private Task EditCopy()
+        {
+            return Task.CompletedTask;
+        }
+        private Task DeleteCopy()
+        {
+            return Task.CompletedTask;
+            /*var result = await dialogService.AskYesNo("Удаление данных", $"Вы действительно хотите удалить экземпляр №{SelectedCopy!.Number}?");
+            if (result)
+            {
+                //Удаление оригинала
+                //await originalService.DeleteOriginal(SelectedOriginal.Id);
+
+                //обновление списка
+                CopyList.Remove(SelectedCopy);
+                SelectedCopy = null;
+
+                await dialogService.Notify("Удалено", "Экземпляр удален");
+            }*/
+        }
+        private Task AddCorrection()
+        {
+            return Task.CompletedTask;
+        }
+        private Task EditCorrection()
+        {
+            return Task.CompletedTask;
+        }
+        private Task DeleteCorrection()
+        {
+            return Task.CompletedTask;
+            /*var result = await dialogService.AskYesNo("Удаление данных", $"Вы действительно хотите удалить экземпляр №{SelectedCopy!.Number}?");
+            if (result)
+            {
+                //Удаление оригинала
+                //await originalService.DeleteOriginal(SelectedOriginal.Id);
+
+                //обновление списка
+                CopyList.Remove(SelectedCopy);
+                SelectedCopy = null;
+
+                await dialogService.Notify("Удалено", "Экземпляр удален");
+            }*/
+        }
+        private Task AddApplicability()
+        {
+            return Task.CompletedTask;
+        }
+        private Task EditApplicability()
+        {
+            return Task.CompletedTask;
+        }
+        private Task DeleteApplicability()
+        {
+            return Task.CompletedTask;
+            /*var result = await dialogService.AskYesNo("Удаление данных", $"Вы действительно хотите удалить экземпляр №{SelectedCopy!.Number}?");
+            if (result)
+            {
+                //Удаление оригинала
+                //await originalService.DeleteOriginal(SelectedOriginal.Id);
+
+                //обновление списка
+                CopyList.Remove(SelectedCopy);
+                SelectedCopy = null;
+
+                await dialogService.Notify("Удалено", "Экземпляр удален");
+            }*/
+        }
+        private bool CanEditDeleteCopy() => SelectedCopy != null;
+        private bool CanEditDeleteCorrection() => SelectedCorrection != null;
+        private bool CanEditDeleteApplicability() => SelectedApplicability != null;
 
 
         //Конструктор
@@ -102,6 +187,15 @@ namespace VMLayer
             ErrorExposer = new(this);
 
             //Создание кнопок
+            AddCopyCommand = new AsyncRelayCommand(AddCopy);
+            EditCopyCommand = new AsyncRelayCommand(EditCopy, CanEditDeleteCopy);
+            DeleteCopyCommand = new AsyncRelayCommand(DeleteCopy, CanEditDeleteCopy);
+            AddCorrectionCommand = new AsyncRelayCommand(AddCorrection);
+            EditCorrectionCommand = new AsyncRelayCommand(EditCorrection, CanEditDeleteCorrection);
+            DeleteCorrectionCommand = new AsyncRelayCommand(DeleteCorrection, CanEditDeleteCorrection);
+            AddApplicabilityCommand = new AsyncRelayCommand(AddApplicability);
+            EditApplicabilityCommand = new AsyncRelayCommand(EditApplicability, CanEditDeleteApplicability);
+            DeleteApplicabilityCommand = new AsyncRelayCommand(DeleteApplicability, CanEditDeleteApplicability);
 
 
             //Подписываемся на событие валидации
