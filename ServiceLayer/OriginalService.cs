@@ -54,7 +54,7 @@ namespace ServiceLayer
                 DocumentId = originalDetailDto?.Document?.Id,
                 PersonId = originalDetailDto?.Person?.Id,
 
-                CreatedDate = DateTime.Now
+                //CreatedDate = DateTime.Now
                 //ПРИДУМАТЬ ЧТО ДЕЛАТЬ СО СПИСКАМИ КОПИЙ, КОРРЕКЦИ И ПРИМЕНИМОСТИ
             };
             return await originalRepo.UpsertOriginal(newOriginal);

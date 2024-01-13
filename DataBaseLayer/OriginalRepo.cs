@@ -41,7 +41,7 @@ namespace DataBaseLayer
         }
         private async Task<int> CreateOriginal(Original original)
         {
-            //original.CreatedDate = DateTime.Now;
+            original.CreatedDate = DateTime.Now;
             await _context.Originals.AddAsync(original);
             await _context.SaveChangesAsync();
             if (original.Id <= 0) { throw new Exception("Could not Create the original as expected"); }
@@ -53,9 +53,6 @@ namespace DataBaseLayer
                 //.Include(x => x.Applicabilities)
                 //.Include(x => x.Corrections)
                 //.Include(x => x.Copies)
-                //.Include(x => x.Company)
-                //.Include(x => x.Person)
-                //.Include(x => x.Document)
                 .FirstOrDefaultAsync(x => x.Id == original.Id) ?? throw new Exception("Original not found");
 
             dbOriginal.Caption = original.Caption;
