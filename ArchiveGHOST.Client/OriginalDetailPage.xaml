@@ -63,6 +63,40 @@
             </Grid>
         </HorizontalStackLayout>
         <HorizontalStackLayout Padding="5" Spacing="5">
+            <Label Text="Количесвтво листов:"/>
+            <Grid ColumnDefinitions="*, Auto">
+                <Entry Placeholder="1" Text="{Binding PageCount}" MaxLength="100" WidthRequest="200"/>
+                <Label Text="&#xe000;" TextColor="Red" FontFamily="MaterialIconsRegular" FontSize="20" Grid.Column="1">
+                    <Label.Triggers>
+                        <DataTrigger
+                            TargetType="Label"
+                            Value="0"
+                            Binding="{Binding ErrorExposer[PageCount].Count}">
+                            <Setter Property="Text" Value="&#xe86c;"/>
+                            <Setter Property="TextColor" Value="Green"/>
+                        </DataTrigger>
+                    </Label.Triggers>
+                </Label>
+            </Grid>
+        </HorizontalStackLayout>
+        <HorizontalStackLayout Padding="5" Spacing="5">
+            <Label Text="Формат листов:"/>
+            <Grid ColumnDefinitions="*, Auto">
+                <Entry Placeholder="А4х1" Text="{Binding PageFormat}" MaxLength="100" WidthRequest="200"/>
+                <Label Text="&#xe000;" TextColor="Red" FontFamily="MaterialIconsRegular" FontSize="20" Grid.Column="1">
+                    <Label.Triggers>
+                        <DataTrigger
+                            TargetType="Label"
+                            Value="0"
+                            Binding="{Binding ErrorExposer[PageFormat].Count}">
+                            <Setter Property="Text" Value="&#xe86c;"/>
+                            <Setter Property="TextColor" Value="Green"/>
+                        </DataTrigger>
+                    </Label.Triggers>
+                </Label>
+            </Grid>
+        </HorizontalStackLayout>
+        <HorizontalStackLayout Padding="5" Spacing="5">
             <Label Text="Примечания:"/>
             <Grid ColumnDefinitions="*, Auto">
                 <Editor Text="{Binding Notes}" MaxLength="1000" WidthRequest="200" HeightRequest="100" IsSpellCheckEnabled="True"/>

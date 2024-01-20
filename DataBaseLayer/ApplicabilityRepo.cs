@@ -24,8 +24,16 @@ namespace DataBaseLayer
         {
             //var origina = await _context.Copies.FirstOrDefaultAsync(x => x.Id == copy.Id) ?? throw new Exception("Copy to deliver not found");
             //return await _context.Deliveries.Where(y => y.Copies.Contains(copyToDeliver)).ToListAsync();
-            var dbOriginal = await _context.Originals.FirstOrDefaultAsync(x => x.Id == originalId) ?? throw new Exception("original not found");
-            return await _context.Applicabilities.Where(x => x.Originals.Contains(dbOriginal)).ToListAsync();
+            return await _context.Applicabilities.Where(x => x.Originals.Contains(_context.Originals.First(x => x.Id == originalId))).ToListAsync();
+        }
+        public async Task<List<Applicability>> GetFreeApplicabilityList(int originalId)
+        {
+            return await _context.Applicabilities.Except(_context.Applicabilities.Where(x => x.Originals.Contains(_context.Originals.First(y => y.Id == originalId)))).ToListAsync();
+        }
+        public async Task<Applicability?> GetApplicabilityAsync(int id)
+        {
+            var appl = await _context.Applicabilities.Include(x => x.Originals).FirstOrDefaultAsync(x => x.Id == id);
+            return appl;// ?? throw new Exception("Original not found");
         }
 
         public async Task UpsertApplicabilities(List<Applicability> applicabilities)

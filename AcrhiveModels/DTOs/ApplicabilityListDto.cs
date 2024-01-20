@@ -11,6 +11,7 @@ namespace AcrhiveModels.DTOs
     {
         public required int Id { get; set; }
         public required string Description { get; set; }
+        public int OriginalId { get; set; }
         public static explicit operator ApplicabilityListDto(Applicability applicability)
         {
             return new ApplicabilityListDto()

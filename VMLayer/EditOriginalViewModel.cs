@@ -152,9 +152,9 @@ namespace VMLayer
                 await dialogService.Notify("Удалено", "Экземпляр удален");
             }*/
         }
-        private Task AddApplicability()
+        private async Task AddApplicability()
         {
-            return Task.CompletedTask;
+            await dialogService.ShowApplicabilityPopup(id);
         }
         private Task EditApplicability()
         {

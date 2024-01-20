@@ -11,6 +11,8 @@ namespace DataBaseLayer
     {
         Task<List<Applicability>> GetApplicabilityList();
         Task<List<Applicability>> GetApplicabilityListByOriginal(int originalId);
+        Task<List<Applicability>> GetFreeApplicabilityList(int originalId);
+        Task<Applicability?> GetApplicabilityAsync(int id);
 
         Task<int> UpsertApplicability(Applicability applicability);
         Task UpsertApplicabilities(List<Applicability> applicabilities);

@@ -1,4 +1,5 @@
-﻿using ArchiveGHOST.Client.Services;
+﻿using ArchiveGHOST.Client.Popups;
+using ArchiveGHOST.Client.Services;
 using ArchiveGOST_DbLibrary;
 using CommunityToolkit.Maui;
 using Microsoft.EntityFrameworkCore;
@@ -53,8 +54,11 @@ namespace ArchiveGHOST.Client
             builder.Services.AddTransient<IDocumentService, DocumentService>();
             builder.Services.AddTransient<ICompanyService, CompanyService>();
             builder.Services.AddTransient<IPersonService, PersonService>();
+            builder.Services.AddTransient<IApplicabilityService, ApplicabilityService>();
             builder.Services.AddSingleton<IDialogService, DialogService>();
             builder.Services.AddSingleton<INavigationService, NavigationService>();
+
+            builder.Services.AddTransientPopup<ApplicabilityDetailPopup, ApplicabilityDetailViewModel>();
 
 #if DEBUG
     		builder.Logging.AddDebug();

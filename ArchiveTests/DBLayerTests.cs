@@ -50,7 +50,7 @@ namespace ArchiveTests
         {
             var result = await _originalRepo.GetOriginalList();
             result.Count.ShouldBe(15);
-            result[5].Name.ShouldBe("47Б-128-202");
+            result[5].Name.ShouldBe("7-2Д42.35.12 СПЧ");
             result[5].Notes.ShouldBeNull();
             result[14].InventoryNumber.ShouldBeGreaterThan(200);
 
@@ -63,18 +63,23 @@ namespace ArchiveTests
 
             var testoriginal = await _originalRepo.GetOriginalAsync(2);
             testoriginal.PageCount.ShouldBeGreaterThan(400);
+
+            var testfreeoroginal = await _originalRepo.CheckInventoryNumberAsync(2);
+            testfreeoroginal.ShouldBeTrue();
+            var testfreeoroginal2 = await _originalRepo.CheckInventoryNumberAsync(201);
+            testfreeoroginal2.ShouldBeFalse();
         }
         [TestMethod]
         public async Task DocumentTest()
         {
             var result = await _documentRepo.GetDocumentAsync(1);
-            result.DocumentType.ShouldBe(AcrhiveModels.DocumentType.AddOriginal);
+            result.DocumentType.ShouldBe(DocumentType.AddOriginal);
             result.Date.ShouldBe(new DateOnly(2000, 12, 7));
 
             var testlist = await _documentRepo.GetDocumentList();
             testlist.Count.ShouldBe(12);
 
-            var testtypelist = await _documentRepo.GetDocumentList(AcrhiveModels.DocumentType.DeleteCopy);
+            var testtypelist = await _documentRepo.GetDocumentList(DocumentType.DeleteCopy);
             testtypelist.Count.ShouldBe(1);
             testtypelist[0].Description?.ShouldContain("состояние");
         }
@@ -87,6 +92,11 @@ namespace ArchiveTests
             var listbyoriginal = await _applicabilityRepo.GetApplicabilityListByOriginal(1);
             listbyoriginal.Count.ShouldBe(1);
             listbyoriginal[0].Description.ShouldBe("Д42");
+
+            var listnoused = await _applicabilityRepo.GetFreeApplicabilityList(4);
+            listnoused.Count.ShouldBe(2);
+            var listnoused2 = await _applicabilityRepo.GetFreeApplicabilityList(10);
+            listnoused2.Count.ShouldBe(2);
         }
         [TestMethod]
         public async Task CompanyTest()
