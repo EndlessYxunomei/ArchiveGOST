@@ -14,5 +14,6 @@ namespace ServiceLayer
         Task<List<ApplicabilityListDto>> GetFreeApplicabilities(int originalId);
         Task<int> UpsertApplicability(ApplicabilityListDto applicability);
         Task DeleteApplicability(int id);
+        Task DeleteOriginalFromApplicability(int id, int originalId);
     }
 }

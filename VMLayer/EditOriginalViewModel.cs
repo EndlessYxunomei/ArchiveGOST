@@ -1,5 +1,4 @@
 ﻿using AcrhiveModels.DTOs;
-using AcrhiveModels.Interfaces;
 using CommunityToolkit.Mvvm.Input;
 using ServiceLayer;
 using System.Collections.ObjectModel;
@@ -11,6 +10,9 @@ namespace VMLayer
 {
     public class EditOriginalViewModel : OriginalDetailViewModel
     {
+        //Сервисы
+        private readonly IApplicabilityService applicabilityService;
+        
         //Приватные поля
         private int id;
         private int oldInventoryNumber;
@@ -154,27 +156,37 @@ namespace VMLayer
         }
         private async Task AddApplicability()
         {
-            await dialogService.ShowApplicabilityPopup(id);
+            var result = await dialogService.ShowApplicabilityPopup(id);
+            await UpsertApplicability(result);
         }
-        private Task EditApplicability()
+        private async Task EditApplicability()
         {
-            return Task.CompletedTask;
+            var result = await dialogService.ShowApplicabilityPopup(id, SelectedApplicability);
+            await UpsertApplicability(result);
         }
-        private Task DeleteApplicability()
+        private async Task UpsertApplicability(object? result)
         {
-            return Task.CompletedTask;
-            /*var result = await dialogService.AskYesNo("Удаление данных", $"Вы действительно хотите удалить экземпляр №{SelectedCopy!.Number}?");
+            if (result != null && result is ApplicabilityListDto dto)
+            {
+                UtilityService.UpdateList(ApplicabilityList, dto);
+                dto.OriginalId = id;
+                await applicabilityService.UpsertApplicability(dto);
+            }
+        }
+        private async Task DeleteApplicability()
+        {
+            var result = await dialogService.AskYesNo("Удаление данных", $"Вы действительно хотите удалить применимость {SelectedApplicability!.Description}?\nПрименимость будет удалена только из данного чертежа и может быть выбрана вновь.");
             if (result)
             {
-                //Удаление оригинала
-                //await originalService.DeleteOriginal(SelectedOriginal.Id);
+                //Удаление оригинала из списка у применимости
+                await applicabilityService.DeleteOriginalFromApplicability(SelectedApplicability.Id, id);
 
                 //обновление списка
-                CopyList.Remove(SelectedCopy);
-                SelectedCopy = null;
+                ApplicabilityList.Remove(SelectedApplicability!);
+                SelectedApplicability = null;
 
-                await dialogService.Notify("Удалено", "Экземпляр удален");
-            }*/
+                await dialogService.Notify("Удалено", "Применимость удалена");
+            }
         }
         private bool CanEditDeleteCopy() => SelectedCopy != null;
         private bool CanEditDeleteCorrection() => SelectedCorrection != null;
@@ -182,9 +194,11 @@ namespace VMLayer
 
 
         //Конструктор
-        public EditOriginalViewModel(INavigationService navigationService, IDocumentService documentService, IOriginalService originalService, IPersonService personService, ICompanyService companyService, IDialogService dialogService)
+        public EditOriginalViewModel(INavigationService navigationService, IDocumentService documentService, IOriginalService originalService, IPersonService personService, ICompanyService companyService, IDialogService dialogService, IApplicabilityService applicabilityService)
             : base(navigationService, documentService, originalService, personService, companyService, dialogService)
         {
+            this.applicabilityService = applicabilityService;
+            
             ErrorExposer = new(this);
 
             //Создание кнопок
@@ -237,19 +251,5 @@ namespace VMLayer
             }
             await base.OnNavigatedTo(parameters);
         }
-
-        //Обновление коллекций
-        /*private static void UpdateList<T>(ObservableCollection<T> list, T updateItem) where T:IIdentityModel
-        {
-            T? exist = list.FirstOrDefault(x => x?.Id == updateItem.Id);
-            if (exist != null)
-            {
-                list[list.IndexOf(exist)] = updateItem;
-            }
-            else
-            {
-                list.Add(updateItem);
-            }
-        }*/
     }
 }

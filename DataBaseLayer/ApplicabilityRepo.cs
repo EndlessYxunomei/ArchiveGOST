@@ -38,7 +38,26 @@ namespace DataBaseLayer
 
         public async Task UpsertApplicabilities(List<Applicability> applicabilities)
         {
-            using (var transaction = _context.Database.BeginTransaction(System.Data.IsolationLevel.ReadUncommitted))
+            using var transaction = _context.Database.BeginTransaction(System.Data.IsolationLevel.ReadUncommitted);
+            try
+            {
+                foreach (var applicability in applicabilities)
+                {
+                    var success = await UpsertApplicability(applicability) > 0;
+                    if (!success) { throw new Exception($"Error saving the applicability {applicability.Id}"); }
+                }
+                await transaction.CommitAsync();
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.ToString());
+                await transaction.RollbackAsync();
+                throw;
+            }
+            //не работает в SQLite
+            /*using (var scope = new TransactionScope(TransactionScopeOption.Required,
+                new TransactionOptions { IsolationLevel = IsolationLevel.ReadUncommitted },
+                TransactionScopeAsyncFlowOption.Enabled))
             {
                 try
                 {
@@ -47,35 +66,14 @@ namespace DataBaseLayer
                         var success = await UpsertApplicability(applicability) > 0;
                         if (!success) { throw new Exception($"Error saving the applicability {applicability.Id}"); }
                     }
-                    await transaction.CommitAsync();
+                    scope.Complete();
                 }
                 catch (Exception ex)
                 {
                     Debug.WriteLine(ex.ToString());
-                    await transaction.RollbackAsync();
                     throw;
                 }
-            }
-            //не работает в SQLite
-                /*using (var scope = new TransactionScope(TransactionScopeOption.Required,
-                    new TransactionOptions { IsolationLevel = IsolationLevel.ReadUncommitted },
-                    TransactionScopeAsyncFlowOption.Enabled))
-                {
-                    try
-                    {
-                        foreach (var applicability in applicabilities)
-                        {
-                            var success = await UpsertApplicability(applicability) > 0;
-                            if (!success) { throw new Exception($"Error saving the applicability {applicability.Id}"); }
-                        }
-                        scope.Complete();
-                    }
-                    catch (Exception ex)
-                    {
-                        Debug.WriteLine(ex.ToString());
-                        throw;
-                    }
-                }*/
+            }*/
         }
         public async Task<int> UpsertApplicability(Applicability applicability)
         {
@@ -87,6 +85,7 @@ namespace DataBaseLayer
         }
         private async Task<int> CreateApplicability(Applicability applicability)
         {
+            applicability.CreatedDate = DateTime.Now;
             await _context.Applicabilities.AddAsync(applicability);
             await _context.SaveChangesAsync();
             if (applicability.Id <= 0) { throw new Exception("Could not Create the applicability as expected"); }
@@ -103,28 +102,26 @@ namespace DataBaseLayer
             {
                 dbApplicability.Originals = applicability.Originals;
             }
-
+            dbApplicability.LastModifiedDate = DateTime.Now;
             await _context.SaveChangesAsync();
             return applicability.Id;
         }
         public async Task DeleteApplicabilities(List<int> applicabilityIds)
         {
-            using (var transaction = _context.Database.BeginTransaction(System.Data.IsolationLevel.ReadUncommitted))
+            using var transaction = _context.Database.BeginTransaction(System.Data.IsolationLevel.ReadUncommitted);
+            try
             {
-                try
+                foreach (var applicabilityId in applicabilityIds)
                 {
-                    foreach (var applicabilityId in applicabilityIds)
-                    {
-                        await DeleteApplicability(applicabilityId);
-                    }
-                    await transaction.CommitAsync();
+                    await DeleteApplicability(applicabilityId);
                 }
-                catch (Exception ex)
-                {
-                    Debug.WriteLine(ex.ToString());
-                    await transaction.RollbackAsync();
-                    throw;
-                }
+                await transaction.CommitAsync();
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.ToString());
+                await transaction.RollbackAsync();
+                throw;
             }
             //не работает в SQLite
             /*using (var scope = new TransactionScope(TransactionScopeOption.Required,

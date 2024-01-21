@@ -78,5 +78,10 @@ namespace ServiceLayer
             return await applicabilityRepo.UpsertApplicability(newapp);
         }
         public async Task DeleteApplicability(int id) => await applicabilityRepo.DeleteApplicability(id);
+        public async Task DeleteOriginalFromApplicability(int id, int originalId)
+        {
+            var existAppl = await applicabilityRepo.GetApplicabilityAsync(id);
+            existAppl?.Originals.RemoveAll(x => x.Id == originalId);
+        }
     }
 }

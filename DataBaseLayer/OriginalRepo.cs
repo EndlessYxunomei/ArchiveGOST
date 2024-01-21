@@ -65,6 +65,7 @@ namespace DataBaseLayer
             dbOriginal.DocumentId = original.DocumentId;
             dbOriginal.CompanyId = original.CompanyId;
             dbOriginal.PersonId = original.PersonId;
+            dbOriginal.LastModifiedDate = DateTime.Now;
             /*if (original.Applicabilities != null)
             {
                 dbOriginal.Applicabilities = original.Applicabilities;
