@@ -15,6 +15,7 @@ namespace AcrhiveModels.DTOs
         public string OriginalCaption {  get; set; } = string.Empty;
         public DateTime OriginalDate {  get; set; }
         public string? DocumentName { get; set; }
+        public DateOnly? DocumentDate { get; set; }
 
         public static explicit operator OriginalListDto(Original original)
         {
@@ -25,8 +26,9 @@ namespace AcrhiveModels.DTOs
                 OriginalName = original.Name,
                 OriginalCaption = original.Caption,
                 OriginalDate = original.CreatedDate,
-                //DocumentName = original.Document?.Name,
-                DocumentName = $"{original.Document?.Name} от {original.Document?.Date:d}"
+                DocumentName = original.Document?.Name,
+                DocumentDate = original.Document?.Date,
+                //DocumentName = $"{original.Document?.Name} от {original.Document?.Date:d}"
             };
         }
     }

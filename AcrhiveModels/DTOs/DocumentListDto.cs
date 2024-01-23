@@ -12,10 +12,6 @@ namespace AcrhiveModels.DTOs
         public required int Id { get; set; }
         public required DocumentType DocumentType { get; set; }
         public DateTime Date { get; set; }
-        public override string ToString()
-        {
-            return $"{Name} от {Date:d}";
-        }
 
         public static explicit operator DocumentListDto(Document document)
         {

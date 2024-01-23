@@ -115,7 +115,14 @@
         </HorizontalStackLayout>
         <HorizontalStackLayout Padding="5" Spacing="5">
             <Label Text="Сопроводительный документ:"/>
-            <Picker ItemsSource="{Binding DocumentList}" SelectedItem="{Binding Document}" WidthRequest="300"/>
+            <Picker ItemsSource="{Binding DocumentList}" SelectedItem="{Binding Document}" WidthRequest="300">
+                <Picker.ItemDisplayBinding>
+                    <MultiBinding StringFormat="{}{0} от {1:d}">
+                        <Binding Path="Name"/>
+                        <Binding Path="Date"/>
+                    </MultiBinding>
+                </Picker.ItemDisplayBinding>
+            </Picker>
             <Button Text="&#xe145;" FontFamily="MaterialIconsRegular" FontSize="20" Command="{Binding AddDocumentCommand}"/>
         </HorizontalStackLayout>
         <HorizontalStackLayout Padding="5" Spacing="5">

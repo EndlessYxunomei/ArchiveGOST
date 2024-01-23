@@ -57,7 +57,14 @@
                         <Label Text="{Binding OriginalName}" Grid.Column="1" Grid.Row="0"/>
                         <Label Text="{Binding OriginalCaption}" Grid.Column="2" Grid.Row="0"/>
                         <Label Text="{Binding OriginalDate, StringFormat='{0:D}'}" Grid.Column="3" Grid.Row="0"/>
-                        <Label Text="{Binding DocumentName}" Grid.Column="4" Grid.Row="0"/>
+                        <Label Grid.Column="4" Grid.Row="0">
+                            <Label.Text>
+                                <MultiBinding StringFormat="{}{0}{1:d}">
+                                    <Binding Path="DocumentName" StringFormat="{}{0} от " TargetNullValue="не задан"/>
+                                    <Binding Path="DocumentDate"/>
+                                </MultiBinding>
+                            </Label.Text>
+                        </Label>
                     </Grid>
                 </DataTemplate>
             </CollectionView.ItemTemplate>
