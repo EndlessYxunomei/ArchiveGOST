@@ -25,7 +25,7 @@ namespace AcrhiveModels.DTOs
         //список корекций
         public List<CorrectionListDto> Corrections { get; set; } = [];
         //список применяемости
-        public List<ApplicabilityListDto> Applicabilities { get; set; } = [];
+        public List<ApplicabilityDto> Applicabilities { get; set; } = [];
 
         public static explicit operator OriginalDetailDto(Original original)
         {
@@ -38,8 +38,8 @@ namespace AcrhiveModels.DTOs
             corDtos.AddRange(correctionList.Select(cor => (CorrectionListDto)cor));
 
             List<Applicability> applicList = original.Applicabilities;
-            List<ApplicabilityListDto> appDtos = [];
-            appDtos.AddRange(applicList.Select(apps => (ApplicabilityListDto)apps));
+            List<ApplicabilityDto> appDtos = [];
+            appDtos.AddRange(applicList.Select(apps => (ApplicabilityDto)apps));
 
             return new OriginalDetailDto()
             {

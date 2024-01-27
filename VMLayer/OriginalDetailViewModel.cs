@@ -4,6 +4,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using ServiceLayer;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using VMLayer.Navigation;
 
@@ -116,10 +117,12 @@ public class OriginalDetailViewModel: ObservableValidator, INavigationParameterR
     public IAsyncRelayCommand CancelCommand { get; }
     internal virtual Task SaveOriginal()
     {
+        ErrorsChanged -= OriginalViewModel_ErrorsChanged;
         return Task.CompletedTask;//Заглушка
     }
     private async Task CancelOriginal()
     {
+        ErrorsChanged -= OriginalViewModel_ErrorsChanged;
         await navigationService.GoBack();
     }
 
@@ -140,6 +143,8 @@ public class OriginalDetailViewModel: ObservableValidator, INavigationParameterR
         AcseptCommand = new AsyncRelayCommand(SaveOriginal, () => !HasErrors);
         CancelCommand = new AsyncRelayCommand(CancelOriginal);
 
+        ErrorsChanged += OriginalViewModel_ErrorsChanged;
+
         ValidateAllProperties();//пришлось принудительно запускать валидацию, иначе не работало
     }
 
@@ -159,16 +164,19 @@ public class OriginalDetailViewModel: ObservableValidator, INavigationParameterR
     {
         if (parameters.TryGetValue(NavParamConstants.DocumentList, out object? value_doc) && value_doc is DocumentListDto document)
         {
-            DocumentList.Add(document);
+            UtilityService.UpdateList(DocumentList, document);
         }
         if (parameters.TryGetValue(NavParamConstants.CompanyList, out object? value_comp) && value_comp is CompanyListDto company)
         {
-            Companylist.Add(company);
+            UtilityService.UpdateList(Companylist, company);
         }
         if (parameters.TryGetValue(NavParamConstants.PersonList, out object? value_per) && value_per is PersonListDto person)
         {
-            PersonList.Add(person);
+            UtilityService.UpdateList(PersonList, person);
         }
         return Task.CompletedTask;
     }
+
+    //Обработка валидатора
+    private void OriginalViewModel_ErrorsChanged(object? sender, DataErrorsChangedEventArgs e) => AcseptCommand.NotifyCanExecuteChanged();
 }

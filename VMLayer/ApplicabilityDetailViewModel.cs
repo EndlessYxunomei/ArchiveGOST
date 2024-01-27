@@ -26,7 +26,7 @@ namespace VMLayer
         private int id;
         private bool _isCreatingMode;
         private int originalId;
-        private ApplicabilityListDto? _selectedDto;
+        private ApplicabilityDto? _selectedDto;
 
         //Свойсва
         public bool IsCreatingMode
@@ -45,7 +45,7 @@ namespace VMLayer
                 SetProperty(ref _description, value, true);
             }
         }
-        public ApplicabilityListDto? SelectedDto
+        public ApplicabilityDto? SelectedDto
         {
             get => _selectedDto;
             set
@@ -54,7 +54,7 @@ namespace VMLayer
                 ValidateProperty(Description, nameof(Description));
             }
         }
-        public ObservableCollection<ApplicabilityListDto> DtoList { get; set; } = [];
+        public ObservableCollection<ApplicabilityDto> DtoList { get; set; } = [];
 
         //Конструктор
         public ApplicabilityDetailViewModel(IDialogService dialogService, IApplicabilityService applicabilityService): base(dialogService)
@@ -69,7 +69,7 @@ namespace VMLayer
         {
             originalId = original;
             
-            if (paprams != null && paprams is ApplicabilityListDto dto)
+            if (paprams != null && paprams is ApplicabilityDto dto)
             {
                 IsCreatingMode = false;
                 Description = dto.Description;
@@ -90,7 +90,7 @@ namespace VMLayer
             {
                 return SelectedDto;
             }
-            return new ApplicabilityListDto()
+            return new ApplicabilityDto()
             {
                 Description = Description,
                 Id = id,

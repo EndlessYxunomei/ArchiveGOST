@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AcrhiveModels.DTOs;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,5 +13,6 @@ namespace VMLayer.Navigation
         Task GoBackAndReturn(Dictionary<string, object> parameters);
         Task GoToCreateOriginal();
         Task GoToOriginalDetails(int id);
+        Task GoToCorrectionDetails(OriginalListDto original, int id = 0);
     }
 }

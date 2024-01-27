@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vms="clr-namespace:VMLayer;assembly=VMLayer"
+             xmlns:dto="clr-namespace:AcrhiveModels.DTOs;assembly=AcrhiveModels"
+             x:Class="ArchiveGHOST.Client.CorrectionDetailPage"
+             x:DataType="vms:CorrectionDetailViewModel"
+             Title="Изменение">
+    <VerticalStackLayout  Spacing="10">
+        <HorizontalStackLayout Padding="5" Spacing="5">
+            <Label>
+                <Label.Text>
+                    <MultiBinding StringFormat="Изменение к {0} &quot;{1}&quot;">
+                        <Binding Path="OriginalName"/>
+                        <Binding Path="OriginalCaption"/>
+                    </MultiBinding>
+                </Label.Text>
+            </Label>
+        </HorizontalStackLayout>
+        <HorizontalStackLayout Padding="5" Spacing="5">
+            <Label Text="Номер изменения:"/>
+            <Grid ColumnDefinitions="*, Auto">
+                <Entry Placeholder="0" Text="{Binding CorrectionNumber}" Keyboard="Numeric" WidthRequest="50"/>
+                <Label Text="&#xe000;" TextColor="Red" FontFamily="MaterialIconsRegular" FontSize="20" Grid.Column="1">
+                    <Label.Triggers>
+                        <DataTrigger
+                            TargetType="Label"
+                            Value="0"
+                            Binding="{Binding ErrorExposer[CorrectionNumber].Count}">
+                            <Setter Property="Text" Value="&#xe86c;"/>
+                            <Setter Property="TextColor" Value="Green"/>
+                        </DataTrigger>
+                    </Label.Triggers>
+                </Label>
+            </Grid>
+        </HorizontalStackLayout>
+        <HorizontalStackLayout Padding="5" Spacing="5">
+            <Label Text="Описание:"/>
+            <Grid ColumnDefinitions="*, Auto">
+                <Editor Text="{Binding Description}" MaxLength="1000" WidthRequest="200" HeightRequest="100" IsSpellCheckEnabled="True"/>
+                <Label Text="&#xe000;" TextColor="Red" FontFamily="MaterialIconsRegular" FontSize="20" Grid.Column="1">
+                    <Label.Triggers>
+                        <DataTrigger
+                            TargetType="Label"
+                            Value="0"
+                            Binding="{Binding ErrorExposer[Description].Count}">
+                            <Setter Property="Text" Value="&#xe86c;"/>
+                            <Setter Property="TextColor" Value="Green"/>
+                        </DataTrigger>
+                    </Label.Triggers>
+                </Label>
+            </Grid>
+        </HorizontalStackLayout>
+        <HorizontalStackLayout Padding="5" Spacing="5">
+            <Label Text="Сопроводительный документ:"/>
+            <Picker ItemsSource="{Binding DocumentList}" SelectedItem="{Binding Document}" WidthRequest="300">
+                <Picker.ItemDisplayBinding>
+                    <MultiBinding StringFormat="{}{0} от {1:d}">
+                        <Binding Path="Name"/>
+                        <Binding Path="Date"/>
+                    </MultiBinding>
+                </Picker.ItemDisplayBinding>
+            </Picker>
+            <Button Text="&#xe145;" FontFamily="MaterialIconsRegular" FontSize="20" Command="{Binding AddDocumentCommand}"/>
+        </HorizontalStackLayout>
+        <HorizontalStackLayout>
+            <Button
+                Text="&#xe161; Сохранить" FontFamily="MaterialIconsRegular" FontSize="20"
+                Command="{Binding AcseptCommand}"/>
+            <Button
+                Text="&#xe166; Назад" FontFamily="MaterialIconsRegular" FontSize="20"
+                Command="{Binding CancelCommand}"/>
+        </HorizontalStackLayout>
+    </VerticalStackLayout>
+</ContentPage>

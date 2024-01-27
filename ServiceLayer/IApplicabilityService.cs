@@ -9,10 +9,10 @@ namespace ServiceLayer
 {
     public interface IApplicabilityService
     {
-        Task<List<ApplicabilityListDto>> GetApplicabilityListAsync();
-        Task<List<ApplicabilityListDto>> GetApplicabilityListByOriginalAsync(int id);
-        Task<List<ApplicabilityListDto>> GetFreeApplicabilities(int originalId);
-        Task<int> UpsertApplicability(ApplicabilityListDto applicability);
+        Task<List<ApplicabilityDto>> GetApplicabilityListAsync();
+        Task<List<ApplicabilityDto>> GetApplicabilityListByOriginalAsync(int id);
+        Task<List<ApplicabilityDto>> GetFreeApplicabilities(int originalId);
+        Task<int> UpsertApplicability(ApplicabilityDto applicability);
         Task DeleteApplicability(int id);
         Task DeleteOriginalFromApplicability(int id, int originalId);
     }

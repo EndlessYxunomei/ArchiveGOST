@@ -36,6 +36,7 @@ namespace DataBaseLayer
         }
         private async Task<int> CreateCorrection(Correction correction)
         {
+            correction.CreatedDate = DateTime.Now;
             await _context.Corrections.AddAsync(correction);
             await _context.SaveChangesAsync();
             if (correction.Id <= 0) { throw new Exception("Could not Create the correction as expected"); }
@@ -52,29 +53,27 @@ namespace DataBaseLayer
             dbCorrection.DocumentId = correction.DocumentId;
             dbCorrection.CorrectionNumber = correction.CorrectionNumber;
             dbCorrection.Description = correction.Description;
-
+            dbCorrection.LastModifiedDate = DateTime.Now;
             await _context.SaveChangesAsync();
             return correction.Id;
         }
         public async Task UpsertCorrections(List<Correction> corrections)
         {
-            using (var transaction = _context.Database.BeginTransaction(System.Data.IsolationLevel.ReadUncommitted))
+            using var transaction = _context.Database.BeginTransaction(System.Data.IsolationLevel.ReadUncommitted);
+            try
             {
-                try
+                foreach (var correction in corrections)
                 {
-                    foreach (var correction in corrections)
-                    {
-                        var success = await UpsertCorrection(correction) > 0;
-                        if (!success) { throw new Exception($"Error saving the original {correction.CorrectionNumber}"); }
-                    }
-                    await transaction.CommitAsync();
+                    var success = await UpsertCorrection(correction) > 0;
+                    if (!success) { throw new Exception($"Error saving the original {correction.CorrectionNumber}"); }
                 }
-                catch (Exception ex)
-                {
-                    Debug.WriteLine(ex.ToString());
-                    await transaction.RollbackAsync();
-                    throw;
-                }
+                await transaction.CommitAsync();
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.ToString());
+                await transaction.RollbackAsync();
+                throw;
             }
             //не работает в SQLite
             /*using (var scope = new TransactionScope(TransactionScopeOption.Required,
@@ -106,22 +105,20 @@ namespace DataBaseLayer
         }
         public async Task DeleteCorrections(List<int> correctionIds)
         {
-            using (var transaction = _context.Database.BeginTransaction(System.Data.IsolationLevel.ReadUncommitted))
+            using var transaction = _context.Database.BeginTransaction(System.Data.IsolationLevel.ReadUncommitted);
+            try
             {
-                try
+                foreach (var correctionId in correctionIds)
                 {
-                    foreach (var correctionId in correctionIds)
-                    {
-                        await DeleteCorrection(correctionId);
-                    }
-                    await transaction.CommitAsync();
+                    await DeleteCorrection(correctionId);
                 }
-                catch (Exception ex)
-                {
-                    Debug.WriteLine(ex.ToString());
-                    await transaction.RollbackAsync();
-                    throw;
-                }
+                await transaction.CommitAsync();
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.ToString());
+                await transaction.RollbackAsync();
+                throw;
             }
             //не работает в SQLite
             /*using (var scope = new TransactionScope(TransactionScopeOption.Required,
@@ -146,12 +143,19 @@ namespace DataBaseLayer
 
         public async Task<int> GetLastCorectionNumberAsync(int originalId)
         {
-            return await _context.Corrections.Where(x => x.OriginalId == originalId).MaxAsync(y => y.CorrectionNumber);
+            var list = await _context.Corrections.Where(x => x.OriginalId == originalId).ToListAsync();
+            return list.Count == 0 ? 0 : list.Max(y => y.CorrectionNumber);
         }
 
         public async Task<List<Correction>> GetCorrectionListByDocument(int documentId)
         {
             return await _context.Corrections.Where(x => x.DocumentId == documentId).ToListAsync();
+        }
+
+        public async Task<bool> CheckCorrectionNumber(int id, int number)
+        {
+            bool result = await _context.Corrections.AnyAsync(x => x.OriginalId == id && x.CorrectionNumber == number);
+            return !result;
         }
     }
 }

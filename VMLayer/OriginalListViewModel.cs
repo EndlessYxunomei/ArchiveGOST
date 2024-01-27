@@ -94,7 +94,7 @@ namespace VMLayer
         //Обработка навигации
         public Task OnNavigatedTo(Dictionary<string, object> parameters)
         {
-            if (parameters.TryGetValue(NavParamConstants.OrginalList, out object? orig_list) && orig_list is OriginalListDto originalListDto)
+            if (parameters.TryGetValue(NavParamConstants.OriginalList, out object? orig_list) && orig_list is OriginalListDto originalListDto)
             {
                 UtilityService.UpdateList(OriginalsList, originalListDto);
             }

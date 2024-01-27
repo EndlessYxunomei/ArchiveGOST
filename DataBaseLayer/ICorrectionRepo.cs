@@ -13,6 +13,7 @@ namespace DataBaseLayer
         Task<List<Correction>> GetCorrectionList(int originalId);
         Task<List<Correction>> GetCorrectionListByDocument(int documentId);
         Task<int> GetLastCorectionNumberAsync(int originalId);
+        Task<bool> CheckCorrectionNumber(int id, int number);
         Task<int> UpsertCorrection(Correction correction);
         Task UpsertCorrections(List<Correction> corrections);
         Task DeleteCorrection(int id);

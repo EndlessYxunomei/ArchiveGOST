@@ -212,7 +212,7 @@
                     </CollectionView.Header>
                     <CollectionView.ItemTemplate>
                         <DataTemplate>
-                            <Grid x:DataType="dto:ApplicabilityListDto" RowSpacing="30" ColumnSpacing="10">
+                            <Grid x:DataType="dto:ApplicabilityDto" RowSpacing="30" ColumnSpacing="10">
                                 <Grid.RowDefinitions>
                                     <RowDefinition/>
                                 </Grid.RowDefinitions>

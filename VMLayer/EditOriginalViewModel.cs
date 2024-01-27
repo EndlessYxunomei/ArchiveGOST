@@ -12,13 +12,14 @@ namespace VMLayer
     {
         //Сервисы
         private readonly IApplicabilityService applicabilityService;
+        private readonly ICorrectionService correctionService;
         
         //Приватные поля
         private int id;
         private int oldInventoryNumber;
         private CopyListDto? _selectedCopy;
         private CorrectionListDto? _selectedCorrection;
-        private ApplicabilityListDto? _selectedApplicability;
+        private ApplicabilityDto? _selectedApplicability;
 
         //Свойства
         public CopyListDto? SelectedCopy
@@ -45,7 +46,7 @@ namespace VMLayer
                 };
             }
         }
-        public ApplicabilityListDto? SelectedApplicability
+        public ApplicabilityDto? SelectedApplicability
         {
             get => _selectedApplicability;
             set
@@ -59,7 +60,7 @@ namespace VMLayer
         }
         public ObservableCollection<CopyListDto> CopyList { get; set; } = [];
         public ObservableCollection<CorrectionListDto> CorrectionList { get; set; } = [];
-        public ObservableCollection<ApplicabilityListDto> ApplicabilityList { get; set; } = [];
+        public ObservableCollection<ApplicabilityDto> ApplicabilityList { get; set; } = [];
 
         //Переназанчение метода сохранения
         internal override async Task SaveOriginal()
@@ -88,7 +89,8 @@ namespace VMLayer
                 //WeakReferenceMessenger.Default.Send(new OriginalUpdatedMessage(newDto));
                 //await navigationService.GoBack();
                 //Навигация назад с передачей параметра
-                await navigationService.GoBackAndReturn(new Dictionary<string, object>() { { NavParamConstants.OrginalList, newDto } });
+                await base.SaveOriginal();
+                await navigationService.GoBackAndReturn(new Dictionary<string, object>() { { NavParamConstants.OriginalList, newDto } });
             }
             else
             {
@@ -130,29 +132,28 @@ namespace VMLayer
                 await dialogService.Notify("Удалено", "Экземпляр удален");
             }*/
         }
-        private Task AddCorrection()
+        private async Task AddCorrection()
         {
-            return Task.CompletedTask;
+            await navigationService.GoToCorrectionDetails(new OriginalListDto() { Id = id, OriginalName = Name, OriginalCaption = Caption });
         }
-        private Task EditCorrection()
+        private async Task EditCorrection()
         {
-            return Task.CompletedTask;
+            await navigationService.GoToCorrectionDetails(new OriginalListDto() { Id = id, OriginalName = Name, OriginalCaption = Caption }, SelectedCorrection!.Id);
         }
-        private Task DeleteCorrection()
+        private async Task DeleteCorrection()
         {
-            return Task.CompletedTask;
-            /*var result = await dialogService.AskYesNo("Удаление данных", $"Вы действительно хотите удалить экземпляр №{SelectedCopy!.Number}?");
+            var result = await dialogService.AskYesNo("Удаление данных", $"Вы действительно хотите удалить изменение №{SelectedCorrection!.Number}?");
             if (result)
             {
-                //Удаление оригинала
-                //await originalService.DeleteOriginal(SelectedOriginal.Id);
+                //Удаление
+                await correctionService.DeleteCorrection(SelectedCorrection.Id);
 
                 //обновление списка
-                CopyList.Remove(SelectedCopy);
-                SelectedCopy = null;
+                CorrectionList.Remove(SelectedCorrection);
+                SelectedCorrection = null;
 
-                await dialogService.Notify("Удалено", "Экземпляр удален");
-            }*/
+                await dialogService.Notify("Удалено", "Изменение удалено");
+            }
         }
         private async Task AddApplicability()
         {
@@ -166,7 +167,7 @@ namespace VMLayer
         }
         private async Task UpsertApplicability(object? result)
         {
-            if (result != null && result is ApplicabilityListDto dto)
+            if (result != null && result is ApplicabilityDto dto)
             {
                 UtilityService.UpdateList(ApplicabilityList, dto);
                 dto.OriginalId = id;
@@ -194,10 +195,11 @@ namespace VMLayer
 
 
         //Конструктор
-        public EditOriginalViewModel(INavigationService navigationService, IDocumentService documentService, IOriginalService originalService, IPersonService personService, ICompanyService companyService, IDialogService dialogService, IApplicabilityService applicabilityService)
+        public EditOriginalViewModel(INavigationService navigationService, IDocumentService documentService, IOriginalService originalService, IPersonService personService, ICompanyService companyService, IDialogService dialogService, IApplicabilityService applicabilityService, ICorrectionService correctionService)
             : base(navigationService, documentService, originalService, personService, companyService, dialogService)
         {
             this.applicabilityService = applicabilityService;
+            this.correctionService = correctionService;
             
             ErrorExposer = new(this);
 
@@ -214,16 +216,20 @@ namespace VMLayer
 
 
             //Подписываемся на событие валидации
-            ErrorsChanged += EditOriginalViewModel_ErrorsChanged;
+            //ErrorsChanged += EditOriginalViewModel_ErrorsChanged;
         }
 
         //Обработка события валидатора
-        private void EditOriginalViewModel_ErrorsChanged(object? sender, DataErrorsChangedEventArgs e) => AcseptCommand.NotifyCanExecuteChanged();
+        //private void EditOriginalViewModel_ErrorsChanged(object? sender, DataErrorsChangedEventArgs e) => AcseptCommand.NotifyCanExecuteChanged();
         public ValidationErrorExposer ErrorExposer { get; }
 
         //Обработка навигации
         public override async Task OnNavigatedTo(Dictionary<string, object> parameters)
         {
+            if (parameters.TryGetValue(NavParamConstants.CorrectionList, out object? cor_list) && cor_list is CorrectionListDto correction)
+            {
+                UtilityService.UpdateList(CorrectionList, correction);
+            }
             if (parameters.TryGetValue(NavParamConstants.OriginalDetail, out object? orig_det) && orig_det is int id)
             {
                 await LoadData();
@@ -243,7 +249,7 @@ namespace VMLayer
                 if (original.Person != null) Person = PersonList.FirstOrDefault(x => x.Id == original.Person.Id);
 
                 List<CopyListDto> copyList = original.Copies;
-                List<ApplicabilityListDto> appList = original.Applicabilities;
+                List<ApplicabilityDto> appList = original.Applicabilities;
                 List<CorrectionListDto> corList = original.Corrections;
                 copyList.ForEach(CopyList.Add);
                 appList.ForEach(ApplicabilityList.Add);

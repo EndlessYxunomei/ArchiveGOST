@@ -30,31 +30,23 @@ namespace ArchiveGHOST.Client
 
             builder.Configuration.AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
 
-            builder.Services.AddTransientWithShellRoute<InventoryListPage, OriginalListViewModel>("InventoryPage");
-            //builder.Services.AddTransient<InventoryListPage>();
-            //builder.Services.AddTransient<OriginalListViewModel>();
-
-            builder.Services.AddTransientWithShellRoute<OriginalDetailPage, EditOriginalViewModel>("OriginalDetail");
-            //builder.Services.AddTransient<OriginalDetailPage>();
-            //builder.Services.AddTransient<OriginalDetailViewModel>();
-
-            builder.Services.AddTransientWithShellRoute<CreateOriginalPage, CreateOriginalViewModel>("CreateOriginal");
-            //builder.Services.AddTransient<CreateOriginalPage>();
-            //builder.Services.AddTransient<CreateOriginalViewModel>();
-
+            builder.Services.AddTransientWithShellRoute<InventoryListPage, OriginalListViewModel>(NavigationConstants.InventoryPage);
+            builder.Services.AddTransientWithShellRoute<OriginalDetailPage, EditOriginalViewModel>(NavigationConstants.OriginalDetail);
+            builder.Services.AddTransientWithShellRoute<CreateOriginalPage, CreateOriginalViewModel>(NavigationConstants.CreateOriginal);
+            builder.Services.AddTransientWithShellRoute<CorrectionDetailPage, CorrectionDetailViewModel>(NavigationConstants.CorrectionDetail);
 
             //НАДО РАЗОБРАТЬСЯ НАХОДИТСЯ НАША БАЗА
             //ПОКА РАБОТАЕТ ТОЛЬКО СЕРВЕРА
 
             builder.Services.AddDbContext<ArchiveDbContext>(op =>
             op.UseSqlServer(builder.Configuration.GetConnectionString("ArchiveLibrarySQLServer")));
-            //op.UseSqlServer("Data Source=localhost;Initial Catalog=ArchiveGostDb;Trusted_Connection=True;Encrypt = True;Trust Server Certificate=True"));
 
             builder.Services.AddTransient<IOriginalService, OriginalService>();
             builder.Services.AddTransient<IDocumentService, DocumentService>();
             builder.Services.AddTransient<ICompanyService, CompanyService>();
             builder.Services.AddTransient<IPersonService, PersonService>();
             builder.Services.AddTransient<IApplicabilityService, ApplicabilityService>();
+            builder.Services.AddTransient<ICorrectionService, CorrectionService>();
             builder.Services.AddSingleton<IDialogService, DialogService>();
             builder.Services.AddSingleton<INavigationService, NavigationService>();
 

@@ -82,6 +82,9 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <MauiXaml Update="CorrectionDetailPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	  <MauiXaml Update="CreateOriginalPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>

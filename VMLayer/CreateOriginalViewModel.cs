@@ -34,7 +34,9 @@ public class CreateOriginalViewModel: OriginalDetailViewModel
             //WeakReferenceMessenger.Default.Send(new OriginalUpdatedMessage(newDto));
             //await navigationService.GoBack();
             //Навигация назад с передачей параметра
-            await navigationService.GoBackAndReturn(new Dictionary<string, object>() { { NavParamConstants.OrginalList, newDto } });
+            await base.SaveOriginal();
+            //ErrorsChanged -= OriginalViewModel_ErrorsChanged;
+            await navigationService.GoBackAndReturn(new Dictionary<string, object>() { { NavParamConstants.OriginalList, newDto } });
         }
         else
         {
@@ -49,7 +51,7 @@ public class CreateOriginalViewModel: OriginalDetailViewModel
         ErrorExposer = new(this);
 
         //Подписываемся на событие валидации
-        ErrorsChanged += CreateOriginalViewModel_ErrorsChanged;
+        //ErrorsChanged += CreateOriginalViewModel_ErrorsChanged;
 
         _ = LoadData();
         //ValidateAllProperties();//пришлось принудительно запускать валидацию, иначе не работало
@@ -65,6 +67,6 @@ public class CreateOriginalViewModel: OriginalDetailViewModel
     }
 
     //Обработка события валидатора
-    private void CreateOriginalViewModel_ErrorsChanged(object? sender, DataErrorsChangedEventArgs e) =>AcseptCommand.NotifyCanExecuteChanged();
+    //private void CreateOriginalViewModel_ErrorsChanged(object? sender, DataErrorsChangedEventArgs e) =>AcseptCommand.NotifyCanExecuteChanged();
     public ValidationErrorExposer ErrorExposer { get; }
 }

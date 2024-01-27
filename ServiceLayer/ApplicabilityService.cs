@@ -26,29 +26,29 @@ namespace ServiceLayer
             originalRepo = new OriginalRepo(context);
         }
 
-        public async Task<List<ApplicabilityListDto>> GetApplicabilityListAsync()
+        public async Task<List<ApplicabilityDto>> GetApplicabilityListAsync()
         {
             var list = await applicabilityRepo.GetApplicabilityList();
-            List<ApplicabilityListDto> dtolist = [];
-            dtolist.AddRange(list.Select(item => (ApplicabilityListDto)item));
+            List<ApplicabilityDto> dtolist = [];
+            dtolist.AddRange(list.Select(item => (ApplicabilityDto)item));
             return dtolist;
         }
-        public async Task<List<ApplicabilityListDto>> GetApplicabilityListByOriginalAsync(int id)
+        public async Task<List<ApplicabilityDto>> GetApplicabilityListByOriginalAsync(int id)
         {
             var list = await applicabilityRepo.GetApplicabilityListByOriginal(id);
-            List<ApplicabilityListDto> dtolist = [];
-            dtolist.AddRange(list.Select(item => (ApplicabilityListDto)item));
+            List<ApplicabilityDto> dtolist = [];
+            dtolist.AddRange(list.Select(item => (ApplicabilityDto)item));
             return dtolist;
         }
-        public async Task<List<ApplicabilityListDto>> GetFreeApplicabilities(int originalId)
+        public async Task<List<ApplicabilityDto>> GetFreeApplicabilities(int originalId)
         {
             var list = await applicabilityRepo.GetFreeApplicabilityList(originalId);
-            List<ApplicabilityListDto> dtolist = [];
-            dtolist.AddRange(list.Select(item => (ApplicabilityListDto)item));
+            List<ApplicabilityDto> dtolist = [];
+            dtolist.AddRange(list.Select(item => (ApplicabilityDto)item));
             return dtolist;
         }
 
-        public async Task<int> UpsertApplicability(ApplicabilityListDto applicability)
+        public async Task<int> UpsertApplicability(ApplicabilityDto applicability)
         {
             //Создаем новый лист для оригиналов, которые имеют данную применимость
             List<Original> originalList = [];
