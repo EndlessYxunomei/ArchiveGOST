@@ -13,5 +13,6 @@ namespace ServiceLayer
         Task<string?> Ask(string title, string message, string accepButtonText = "ОК", string cancelButtonText = "Отмена");
         Task<object?> ShowApplicabilityPopup(int originalId, object? parameters = null);
         Task ClosePopup(object? popupView, object? parameters = null);
+        Task<object?> ShowCompanyDetailPopup(int id = 0);
     }
 }

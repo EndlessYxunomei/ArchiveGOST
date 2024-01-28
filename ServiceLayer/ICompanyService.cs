@@ -9,7 +9,9 @@ namespace ServiceLayer
 {
     public interface ICompanyService
     {
-        Task<List<CompanyListDto>> GetCompanyList();
-        Task CreateCompany();
+        Task<List<CompanyDto>> GetCompanyList();
+        Task<CompanyDto> GetCompanyAsync(int id);
+        Task<int> UpsertCompany(CompanyDto company);
+        Task DeleteCompany(int id);
     }
 }

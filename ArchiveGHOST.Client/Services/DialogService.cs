@@ -18,6 +18,8 @@ namespace ArchiveGHOST.Client.Services
 
         public async Task<object?> ShowApplicabilityPopup(int originalId, object? parameters = null)
             => await popupService.ShowPopupAsync<ApplicabilityDetailViewModel>(onPresenting: x => x.LoadData(originalId, parameters));
+        public async Task<object?> ShowCompanyDetailPopup(int id = 0)
+            => await popupService.ShowPopupAsync<CompanyDetailViewModel>(onPresenting: x => x.LoadData(id));
         public async Task ClosePopup(object? popupView, object? parameters = null)
         {
             if (popupView != null && popupView is Popup popup)

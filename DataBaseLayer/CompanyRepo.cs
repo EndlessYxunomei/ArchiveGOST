@@ -28,23 +28,21 @@ namespace DataBaseLayer
 
         public async Task UpsertCompanies(List<Company> companies)
         {
-            using (var transaction = _context.Database.BeginTransaction(System.Data.IsolationLevel.ReadUncommitted))
+            using var transaction = _context.Database.BeginTransaction(System.Data.IsolationLevel.ReadUncommitted);
+            try
             {
-                try
+                foreach (var company in companies)
                 {
-                    foreach (var company in companies)
-                    {
-                        var success = await UpsertCompany(company) > 0;
-                        if (!success) { throw new Exception($"Error saving the company {company.Name}"); }
-                    }
-                    await transaction.CommitAsync();
+                    var success = await UpsertCompany(company) > 0;
+                    if (!success) { throw new Exception($"Error saving the company {company.Name}"); }
                 }
-                catch (Exception ex)
-                {
-                    Debug.WriteLine(ex.ToString());
-                    await transaction.RollbackAsync();
-                    throw;
-                }
+                await transaction.CommitAsync();
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.ToString());
+                await transaction.RollbackAsync();
+                throw;
             }
             //не работает в SQLite
             /*using (var scope = new TransactionScope(TransactionScopeOption.Required,
@@ -77,6 +75,7 @@ namespace DataBaseLayer
         }
         private async Task<int>CreateCompany(Company company)
         {
+            company.CreatedDate = DateTime.Now;
             await _context.Companies.AddAsync(company);
             await _context.SaveChangesAsync();
             if (company.Id <= 0) { throw new Exception("Could not Create the company as expected"); }
@@ -86,6 +85,7 @@ namespace DataBaseLayer
         {
             var dbCompany = await _context.Companies.FirstOrDefaultAsync(x => x.Id == company.Id) ?? throw new Exception("Company not found");
 
+            dbCompany.LastModifiedDate = DateTime.Now;
             dbCompany.Name = company.Name;
             dbCompany.Description = company.Description;
             
@@ -94,22 +94,20 @@ namespace DataBaseLayer
         }
         public async Task DeleteCompanies(List<int> companyIds)
         {
-            using (var transaction = _context.Database.BeginTransaction(System.Data.IsolationLevel.ReadUncommitted))
+            using var transaction = _context.Database.BeginTransaction(System.Data.IsolationLevel.ReadUncommitted);
+            try
             {
-                try
+                foreach (var companyId in companyIds)
                 {
-                    foreach (var companyId in companyIds)
-                    {
-                        await DeleteCompany(companyId);
-                    }
-                    await transaction.CommitAsync();
+                    await DeleteCompany(companyId);
                 }
-                catch (Exception ex)
-                {
-                    Debug.WriteLine(ex.ToString());
-                    await transaction.RollbackAsync();
-                    throw;
-                }
+                await transaction.CommitAsync();
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.ToString());
+                await transaction.RollbackAsync();
+                throw;
             }
             //не работает в SQLite
             /*using (var scope = new TransactionScope(TransactionScopeOption.Required,

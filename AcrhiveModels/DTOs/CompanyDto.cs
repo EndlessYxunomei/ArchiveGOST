@@ -7,14 +7,14 @@ using System.Threading.Tasks;
 
 namespace AcrhiveModels.DTOs
 {
-    public class CompanyListDto: IIdentityModel
+    public class CompanyDto: IIdentityModel
     {
         public required int Id { get; set; }
         public required string Name { get; set; }
         public string? Description { get; set; }
-        public static explicit operator CompanyListDto(Company company)
+        public static explicit operator CompanyDto(Company company)
         {
-            return new CompanyListDto()
+            return new CompanyDto()
             { 
                 Id = company.Id,
                 Name = company.Name,

@@ -35,7 +35,7 @@ namespace ArchiveGHOST.Client
             builder.Services.AddTransientWithShellRoute<CreateOriginalPage, CreateOriginalViewModel>(NavigationConstants.CreateOriginal);
             builder.Services.AddTransientWithShellRoute<CorrectionDetailPage, CorrectionDetailViewModel>(NavigationConstants.CorrectionDetail);
 
-            //НАДО РАЗОБРАТЬСЯ НАХОДИТСЯ НАША БАЗА
+            //НАДО РАЗОБРАТЬСЯ ГДЕ НАХОДИТСЯ НАША БАЗА
             //ПОКА РАБОТАЕТ ТОЛЬКО СЕРВЕРА
 
             builder.Services.AddDbContext<ArchiveDbContext>(op =>
@@ -51,6 +51,7 @@ namespace ArchiveGHOST.Client
             builder.Services.AddSingleton<INavigationService, NavigationService>();
 
             builder.Services.AddTransientPopup<ApplicabilityDetailPopup, ApplicabilityDetailViewModel>();
+            builder.Services.AddTransientPopup<CompanyDetailPopup, CompanyDetailViewModel>();
 
 #if DEBUG
     		builder.Logging.AddDebug();

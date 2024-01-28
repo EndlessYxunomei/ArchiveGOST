@@ -16,7 +16,7 @@ namespace AcrhiveModels.DTOs
         public string Caption { get; set; } = string.Empty;
         public string? PageFormat { get; set; }
         public int PageCount { get; set; }
-        public CompanyListDto? Company { get; set; }
+        public CompanyDto? Company { get; set; }
         public DocumentListDto? Document { get; set; }
         public string? Notes { get; set; }
         public PersonListDto? Person { get; set; }
@@ -50,7 +50,7 @@ namespace AcrhiveModels.DTOs
                 PageFormat = original.PageFormat,
                 PageCount = original.PageCount,
                 Notes = original.Notes,
-                Company = original.Company != null ? (CompanyListDto)original.Company : null,
+                Company = original.Company != null ? (CompanyDto)original.Company : null,
                 Document = original.Document != null ? (DocumentListDto)original.Document : null,
                 Person = original.Person != null ? (PersonListDto)original.Person : null,
                 Copies = copyDtos,

@@ -1,4 +1,5 @@
-﻿using AcrhiveModels.DTOs;
+﻿using AcrhiveModels;
+using AcrhiveModels.DTOs;
 using ArchiveGOST_DbLibrary;
 using DataBaseLayer;
 using System;
@@ -21,21 +22,35 @@ namespace ServiceLayer
             companyRepo = new CompanyRepo(dbContext);
         }
 
-        public Task CreateCompany()
+        public async Task DeleteCompany(int id)
         {
-            throw new NotImplementedException();
+            await companyRepo.DeleteCompany(id);
         }
-
-        public async Task<List<CompanyListDto>> GetCompanyList()
+        public async Task<CompanyDto> GetCompanyAsync(int id)
+        {
+            var company = await companyRepo.GetCompanyAsync(id);
+            return (CompanyDto)company;
+        }
+        public async Task<List<CompanyDto>> GetCompanyList()
         {
             var necopmany = await companyRepo.GetCompanyList();
-            List<CompanyListDto> list = [];
+            List<CompanyDto> list = [];
             foreach (var company in necopmany)
             {
-                CompanyListDto dto = (CompanyListDto)company;
+                CompanyDto dto = (CompanyDto)company;
                 list.Add(dto);
             }
             return list;
+        }
+        public async Task<int> UpsertCompany(CompanyDto company)
+        {
+            Company newComp = new()
+            {
+                Name = company.Name,
+                Id = company.Id,
+                Description = company.Description,
+            };
+            return await companyRepo.UpsertCompany(newComp);
         }
     }
 }

@@ -27,7 +27,7 @@ public class OriginalDetailViewModel: ObservableValidator, INavigationParameterR
     private protected string? _pageFormat;
     private protected string? _notes;
     private protected int _pageCount = 1;
-    private protected CompanyListDto? _company;
+    private protected CompanyDto? _company;
     private protected DocumentListDto? _document;
     private protected PersonListDto? _person;
 
@@ -67,7 +67,7 @@ public class OriginalDetailViewModel: ObservableValidator, INavigationParameterR
         get => _pageCount;
         set => SetProperty(ref _pageCount, value, true);
     }
-    public CompanyListDto? Company
+    public CompanyDto? Company
     {
         get => _company;
         set => SetProperty(ref _company, value);
@@ -92,7 +92,7 @@ public class OriginalDetailViewModel: ObservableValidator, INavigationParameterR
     //Списки для выбора
     public ObservableCollection<PersonListDto> PersonList { get; set; } = [];
     public ObservableCollection<DocumentListDto> DocumentList { get; set; } = [];
-    public ObservableCollection<CompanyListDto> Companylist { get; set; } = [];
+    public ObservableCollection<CompanyDto> Companylist { get; set; } = [];
 
     //Кнопки добавления в списки
     public IAsyncRelayCommand AddDocumentCommand { get; }
@@ -166,7 +166,7 @@ public class OriginalDetailViewModel: ObservableValidator, INavigationParameterR
         {
             UtilityService.UpdateList(DocumentList, document);
         }
-        if (parameters.TryGetValue(NavParamConstants.CompanyList, out object? value_comp) && value_comp is CompanyListDto company)
+        if (parameters.TryGetValue(NavParamConstants.CompanyList, out object? value_comp) && value_comp is CompanyDto company)
         {
             UtilityService.UpdateList(Companylist, company);
         }
