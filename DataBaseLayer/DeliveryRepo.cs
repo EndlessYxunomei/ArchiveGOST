@@ -19,19 +19,19 @@ namespace DataBaseLayer
 
         public async Task<List<Delivery>> GetDeliveriesByCopy(int copyId)
         {
-            var copyToDeliver = await _context.Copies.FirstOrDefaultAsync(x => x.Id == copyId) ?? throw new Exception("Copy to deliver not found");
-            return await _context.Deliveries.Where(y => y.Copies.Contains(copyToDeliver)).ToListAsync();
+            var copyToDeliver = await _context.Copies.AsNoTracking().FirstOrDefaultAsync(x => x.Id == copyId) ?? throw new Exception("Copy to deliver not found");
+            return await _context.Deliveries.AsNoTracking().Where(y => y.Copies.Contains(copyToDeliver)).ToListAsync();
         }
         public async Task<List<Delivery>> GetDeliveriesByDocument(int documentId)
         {
             //return await _context.Deliveries.Where(x => x.DeliveryDocumentId == document.Id || x.ReturnDocumentId == document.Id).ToListAsync();
             return await _context.Deliveries.Where(x => x.DeliveryDocumentId == documentId)
                 .Union(_context.Deliveries.Where(x => x.ReturnDocumentId == documentId))
-                .ToListAsync();
+                .AsNoTracking().ToListAsync();
         }
         public async Task<List<Delivery>> GetDeliveriesByPerson(int personId)
         {
-            return await _context.Deliveries.Where(x => x.PersonId == personId).ToListAsync();
+            return await _context.Deliveries.AsNoTracking().Where(x => x.PersonId == personId).ToListAsync();
         }
         public async Task<Delivery> GetDeliveryAsync(int id)
         {
@@ -40,6 +40,7 @@ namespace DataBaseLayer
                 .Include(x => x.Person)
                 .Include(x => x.DeliveryDocument)
                 .Include(x => x.ReturnDocument)
+                .AsNoTracking()
                 .FirstOrDefaultAsync(x => x.Id == id);
             return delivery ?? throw new Exception("Delivery not found");
         }

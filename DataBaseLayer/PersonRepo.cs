@@ -19,12 +19,12 @@ namespace DataBaseLayer
 
         public async Task<Person> GetPersonAsync(int id)
         {
-            var person = await _context.People.FirstOrDefaultAsync(x => x.Id == id);
+            var person = await _context.People.AsNoTracking().FirstOrDefaultAsync(x => x.Id == id);
             return person ?? throw new Exception("Person not found");
         }
         public async Task<List<Person>> GetPersonList()
         {
-            return await _context.People.ToListAsync();
+            return await _context.People.AsNoTracking().ToListAsync();
         }
 
         public async Task UpsertPeople(List<Person> people)

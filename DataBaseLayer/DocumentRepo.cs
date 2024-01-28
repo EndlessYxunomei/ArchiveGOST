@@ -133,15 +133,15 @@ namespace DataBaseLayer
 
         public async Task<List<Document>> GetDocumentList()
         {
-            return await _context.Documents.ToListAsync();
+            return await _context.Documents.AsNoTracking().ToListAsync();
         }
         public async Task<List<Document>> GetDocumentList(DocumentType type)
         {
-            return await _context.Documents.Where(x => x.DocumentType == type).ToListAsync();
+            return await _context.Documents.AsNoTracking().Where(x => x.DocumentType == type).ToListAsync();
         }
         public async Task<Document> GetDocumentAsync(int id)
         {
-            var document = await _context.Documents.FirstOrDefaultAsync(x => x.Id == id);
+            var document = await _context.Documents.AsNoTracking().FirstOrDefaultAsync(x => x.Id == id);
             return document ?? throw new Exception("Document not found");
         }
     }

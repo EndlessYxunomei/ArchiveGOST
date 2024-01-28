@@ -18,12 +18,12 @@ namespace DataBaseLayer
 
         public async Task<Company> GetCompanyAsync(int id)
         {
-            var company = await _context.Companies.FirstOrDefaultAsync(x => x.Id == id);
+            var company = await _context.Companies.AsNoTracking().FirstOrDefaultAsync(x => x.Id == id);
             return company ?? throw new Exception("Company not found");
         }
         public async Task<List<Company>> GetCompanyList()
         {
-            return await _context.Companies.ToListAsync();
+            return await _context.Companies.AsNoTracking().ToListAsync();
         }
 
         public async Task UpsertCompanies(List<Company> companies)

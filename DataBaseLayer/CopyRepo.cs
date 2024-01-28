@@ -18,21 +18,21 @@ namespace DataBaseLayer
 
         public async Task<Copy> GetCopyAsync(int id)
         {
-            var copy = await _context.Copies.FirstOrDefaultAsync(x => x.Id == id);
+            var copy = await _context.Copies.AsNoTracking().FirstOrDefaultAsync(x => x.Id == id);
             return copy ?? throw new Exception("Copy not found");
         }
         public async Task<List<Copy>> GetCopyListByDelivery(int deliveryId)
         {
-            var dbDelivery = await _context.Deliveries.FirstOrDefaultAsync(x => x.Id == deliveryId) ?? throw new Exception("Delivery not found");
-            return await _context.Copies.Where(y => y.Deliveries.Contains(dbDelivery)).ToListAsync();
+            var dbDelivery = await _context.Deliveries.AsNoTracking().FirstOrDefaultAsync(x => x.Id == deliveryId) ?? throw new Exception("Delivery not found");
+            return await _context.Copies.AsNoTracking().Where(y => y.Deliveries.Contains(dbDelivery)).ToListAsync();
         }
         public async Task<List<Copy>> GetCopyListByDocument(int documentId)
         {
-            return await _context.Copies.Where(x => x.CreationDocumentId == documentId || x.DeletionDocumentId == documentId).ToListAsync();
+            return await _context.Copies.AsNoTracking().Where(x => x.CreationDocumentId == documentId || x.DeletionDocumentId == documentId).ToListAsync();
         }
         public async Task<List<Copy>> GetCopyListByOriginal(int originalId)
         {
-            return await _context.Copies.Where(x => x.OriginalId == originalId).ToListAsync();
+            return await _context.Copies.AsNoTracking().Where(x => x.OriginalId == originalId).ToListAsync();
         }
 
         public async Task UpsertCopies(List<Copy> copies)
