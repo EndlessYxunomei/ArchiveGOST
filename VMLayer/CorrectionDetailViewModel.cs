@@ -13,6 +13,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel;
 using VMLayer.Validation;
+using System.Diagnostics.CodeAnalysis;
 
 namespace VMLayer
 {
@@ -31,6 +32,8 @@ namespace VMLayer
         private int id;
         private int originalId;
         private int oldCorrectionNumber;
+        private string _originalName = string.Empty;
+        private string _originalCaption = string.Empty;
 
         //Свойства
         [Required]
@@ -48,12 +51,21 @@ namespace VMLayer
             get => _description;
             set => SetProperty(ref _description, value, true);
         }
-        public string OriginalName { get; private set; } = string.Empty;
-        public string OriginalCaption { get; private set; } = string.Empty;
+        public string OriginalName
+        {
+            get => _originalName;
+            private set => SetProperty(ref _originalName,value);
+        }
+        public string OriginalCaption
+        {
+            get => _originalCaption;
+            private set => SetProperty(ref _originalCaption, value);
+        }
+        [Required]
         public DocumentListDto? Document
         {
             get => _document;
-            set => SetProperty(ref _document, value);
+            set => SetProperty(ref _document, value,true);
         }
         public ObservableCollection<DocumentListDto> DocumentList { get; set; } = [];
 
@@ -118,8 +130,12 @@ namespace VMLayer
         //Обработка навигации и загрузка данных
         public async Task OnNavigatedTo(Dictionary<string, object> parameters)
         {
-            var documentList = await documentService.GetDocumentList(DocumentType.AddCorrection);
-            documentList.ForEach(DocumentList.Add);
+            List<DocumentListDto> documentList = await documentService.GetDocumentList(DocumentType.AddCorrection);
+            foreach (DocumentListDto doc in documentList)
+            {
+                UtilityService.UpdateList(DocumentList, doc);
+            }
+            
 
             if (parameters.TryGetValue(NavParamConstants.DocumentList, out object? value_doc) && value_doc is DocumentListDto document)
             {
@@ -140,7 +156,7 @@ namespace VMLayer
                 oldCorrectionNumber = dto.CorrectionNumber;
                 Description = dto.Description;
 
-                Document = DocumentList.FirstOrDefault(x => x.Id == dto.Document!.Id);
+                Document = DocumentList.First(x => x.Id == dto.Document!.Id);
             }
             else
             {

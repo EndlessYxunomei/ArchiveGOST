@@ -19,16 +19,17 @@ namespace DataBaseLayer
                 .Include(x =>x.Copies)
                 .Include(x => x.Applicabilities)
                 .Include(x => x.Corrections)
+                .AsNoTracking()
                 .FirstOrDefaultAsync(x => x.Id == id);
             return original ?? throw new Exception("Original not found");
         }
         public async Task<List<Original>> GetOriginalList()
         {
-            return await _context.Originals.Include(x => x.Document).OrderBy(x => x.InventoryNumber).ToListAsync();
+            return await _context.Originals.AsNoTracking().Include(x => x.Document).OrderBy(x => x.InventoryNumber).ToListAsync();
         }
         public async Task<List<Original>> GetOriginalsByDocument(int docunentId)
         {
-            return await _context.Originals.Where(x => x.DocumentId == docunentId).ToListAsync();
+            return await _context.Originals.AsNoTracking().Where(x => x.DocumentId == docunentId).ToListAsync();
         }
 
         public async Task<int> UpsertOriginal(Original original)
@@ -170,7 +171,6 @@ namespace DataBaseLayer
         {
             return await _context.Originals.MaxAsync(y => y.InventoryNumber);
         }
-
         public async Task<bool> CheckInventoryNumberAsync(int inventoryNumber)
         {
             bool result = await _context.Originals.AnyAsync(x => x.InventoryNumber == inventoryNumber);

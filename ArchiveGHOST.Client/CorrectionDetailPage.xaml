@@ -10,9 +10,9 @@
         <HorizontalStackLayout Padding="5" Spacing="5">
             <Label>
                 <Label.Text>
-                    <MultiBinding StringFormat="Изменение к {0} &quot;{1}&quot;">
-                        <Binding Path="OriginalName"/>
-                        <Binding Path="OriginalCaption"/>
+                    <MultiBinding StringFormat="{}Изменение к {0} &quot;{1}&quot;" Mode="OneWay">
+                        <Binding Path="OriginalName" Mode="OneWay"/>
+                        <Binding Path="OriginalCaption" Mode="OneWay"/>
                     </MultiBinding>
                 </Label.Text>
             </Label>
@@ -53,7 +53,8 @@
         </HorizontalStackLayout>
         <HorizontalStackLayout Padding="5" Spacing="5">
             <Label Text="Сопроводительный документ:"/>
-            <Picker ItemsSource="{Binding DocumentList}" SelectedItem="{Binding Document}" WidthRequest="300">
+            <Grid ColumnDefinitions="*,*, Auto">
+                <Picker ItemsSource="{Binding DocumentList}" SelectedItem="{Binding Document}" WidthRequest="300" Grid.Column="0">
                 <Picker.ItemDisplayBinding>
                     <MultiBinding StringFormat="{}{0} от {1:d}">
                         <Binding Path="Name"/>
@@ -61,7 +62,19 @@
                     </MultiBinding>
                 </Picker.ItemDisplayBinding>
             </Picker>
-            <Button Text="&#xe145;" FontFamily="MaterialIconsRegular" FontSize="20" Command="{Binding AddDocumentCommand}"/>
+            <Button Text="&#xe145;" FontFamily="MaterialIconsRegular" FontSize="20" Command="{Binding AddDocumentCommand}" Grid.Column="1"/>
+                <Label Text="&#xe000;" TextColor="Red" FontFamily="MaterialIconsRegular" FontSize="20" Grid.Column="2">
+                    <Label.Triggers>
+                        <DataTrigger
+                            TargetType="Label"
+                            Value="0"
+                            Binding="{Binding ErrorExposer[Document].Count}">
+                            <Setter Property="Text" Value="&#xe86c;"/>
+                            <Setter Property="TextColor" Value="Green"/>
+                        </DataTrigger>
+                    </Label.Triggers>
+                </Label>
+            </Grid>
         </HorizontalStackLayout>
         <HorizontalStackLayout>
             <Button

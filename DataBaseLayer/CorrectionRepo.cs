@@ -18,12 +18,15 @@ namespace DataBaseLayer
 
         public async Task<Correction> GetCorrectionAsync(int id)
         {
-            var correction = await _context.Corrections.FirstOrDefaultAsync(x => x.Id == id);
+            var correction = await _context.Corrections
+                .Include(x => x.Document)
+                .Include(x => x.Original)
+                .AsNoTracking().FirstOrDefaultAsync(x => x.Id == id);
             return correction ?? throw new Exception("Correction not found");
         }
         public async Task<List<Correction>> GetCorrectionList(int originalId)
         {
-            return await _context.Corrections.Where(x => x.OriginalId == originalId).ToListAsync();
+            return await _context.Corrections.Where(x => x.OriginalId == originalId).AsNoTracking().ToListAsync();
         }
 
         public async Task<int> UpsertCorrection(Correction correction)

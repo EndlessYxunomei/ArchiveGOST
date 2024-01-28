@@ -251,9 +251,24 @@ namespace VMLayer
                 List<CopyListDto> copyList = original.Copies;
                 List<ApplicabilityDto> appList = original.Applicabilities;
                 List<CorrectionListDto> corList = original.Corrections;
-                copyList.ForEach(CopyList.Add);
-                appList.ForEach(ApplicabilityList.Add);
-                corList.ForEach(CorrectionList.Add);
+                //copyList.ForEach(CopyList.Add);
+                //appList.ForEach(ApplicabilityList.Add);
+                //corList.ForEach(CorrectionList.Add);
+                CorrectionList.Clear();
+                CopyList.Clear();
+                ApplicabilityList.Clear();
+                foreach (var cor in corList)
+                {
+                    UtilityService.UpdateList(CorrectionList, cor);
+                }
+                foreach (var app in appList)
+                {
+                    UtilityService.UpdateList(ApplicabilityList, app);
+                }
+                foreach (var copy in copyList)
+                {
+                    UtilityService.UpdateList(CopyList, copy);
+                }
             }
             await base.OnNavigatedTo(parameters);
         }
