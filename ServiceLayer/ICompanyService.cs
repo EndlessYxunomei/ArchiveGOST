@@ -13,5 +13,6 @@ namespace ServiceLayer
         Task<CompanyDto> GetCompanyAsync(int id);
         Task<int> UpsertCompany(CompanyDto company);
         Task DeleteCompany(int id);
+        Task<bool> CheckCompany(string name);
     }
 }

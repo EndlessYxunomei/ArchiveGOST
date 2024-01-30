@@ -150,5 +150,11 @@ namespace DataBaseLayer
             applicability.IsDeleted = true;
             await _context.SaveChangesAsync();
         }
+
+        public async Task<bool> CheckApplicability(string description)
+        {
+            var result = await _context.Applicabilities.AnyAsync(x => x.Description == description);
+            return !result;
+        }
     }
 }

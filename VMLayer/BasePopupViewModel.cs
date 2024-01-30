@@ -19,6 +19,8 @@ namespace VMLayer
         //Сервисы
         private readonly IDialogService dialogService;
 
+        internal string validationCheckError = string.Empty;
+
         //Список ошибок
         public ObservableCollection<ValidationResult> Errors { get; } = [];
 
@@ -27,8 +29,15 @@ namespace VMLayer
         public IAsyncRelayCommand<object?> CancelCommand { get; }
         private async Task ClosePopupAndSave(object? popup)
         {
-            ErrorsChanged -= BasePopupViewModel_ErrorsChanged;
-            await dialogService.ClosePopup(popup, ReturnValue());
+            if (await ValidationCheck())
+            {
+                ErrorsChanged -= BasePopupViewModel_ErrorsChanged;
+                await dialogService.ClosePopup(popup, ReturnValue());
+            }
+            else
+            {
+                await dialogService.Notify("Ошибка добавления", validationCheckError);
+            }
         }
         private async Task ClosePopup(object? popup)
         {
@@ -57,5 +66,9 @@ namespace VMLayer
 
         //Возвращение данных
         internal virtual object? ReturnValue() => null;
+        internal virtual Task<bool> ValidationCheck()
+        {
+            return Task.FromResult(false);
+        }
     }
 }

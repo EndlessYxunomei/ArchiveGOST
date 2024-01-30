@@ -15,5 +15,6 @@ namespace DataBaseLayer
         Task UpsertCompanies(List<Company> companies);
         Task DeleteCompany(int id);
         Task DeleteCompanies(List<int> companyIds);
+        Task<bool> CheckCompany(string name);
     }
 }

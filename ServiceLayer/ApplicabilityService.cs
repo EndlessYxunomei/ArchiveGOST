@@ -83,5 +83,10 @@ namespace ServiceLayer
             var existAppl = await applicabilityRepo.GetApplicabilityAsync(id);
             existAppl?.Originals.RemoveAll(x => x.Id == originalId);
         }
+
+        public async Task<bool> CheckApplicability(string description)
+        {
+            return await applicabilityRepo.CheckApplicability(description);
+        }
     }
 }

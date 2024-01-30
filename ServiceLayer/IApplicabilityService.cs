@@ -12,6 +12,7 @@ namespace ServiceLayer
         Task<List<ApplicabilityDto>> GetApplicabilityListAsync();
         Task<List<ApplicabilityDto>> GetApplicabilityListByOriginalAsync(int id);
         Task<List<ApplicabilityDto>> GetFreeApplicabilities(int originalId);
+        Task<bool> CheckApplicability(string description);
         Task<int> UpsertApplicability(ApplicabilityDto applicability);
         Task DeleteApplicability(int id);
         Task DeleteOriginalFromApplicability(int id, int originalId);

@@ -136,5 +136,11 @@ namespace DataBaseLayer
             company.IsDeleted = true;
             await _context.SaveChangesAsync();
         }
+
+        public async Task<bool> CheckCompany(string name)
+        {
+            var result = await _context.Companies.AnyAsync(x => x.Name == name);
+            return !result;
+        }
     }
 }

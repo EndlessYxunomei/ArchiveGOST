@@ -48,6 +48,8 @@ namespace VMLayer
         {
             this.companyService = companyService;
 
+            validationCheckError = "Компания с подобным именем уже существует";
+
             ErrorExposer = new(this);
         }
 
@@ -77,6 +79,10 @@ namespace VMLayer
                 Name = Name,
                 Description = Description
             };
+        }
+        internal override async Task<bool> ValidationCheck()
+        {
+            return await companyService.CheckCompany(Name);
         }
 
         //Обработка события валидатора

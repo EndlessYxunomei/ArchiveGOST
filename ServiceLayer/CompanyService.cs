@@ -22,6 +22,11 @@ namespace ServiceLayer
             companyRepo = new CompanyRepo(dbContext);
         }
 
+        public async Task<bool> CheckCompany(string name)
+        {
+            return await companyRepo.CheckCompany(name);
+        }
+
         public async Task DeleteCompany(int id)
         {
             await companyRepo.DeleteCompany(id);

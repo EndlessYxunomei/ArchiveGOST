@@ -8,11 +8,11 @@
              x:Class="ArchiveGHOST.Client.Popups.ApplicabilityDetailPopup"
              CanBeDismissedByTappingOutsideOfPopup="False"
              x:Name="PopupObject">
-    <toolkit:Popup.Resources>
+    <!--<toolkit:Popup.Resources>
         <ResourceDictionary>
             <toolkit:InvertedBoolConverter x:Key="InvertedBoolConverter" />
         </ResourceDictionary>
-    </toolkit:Popup.Resources>
+    </toolkit:Popup.Resources>-->
     <VerticalStackLayout>
         <Label Text="Выберите применимость из списка:" VerticalOptions="Center" HorizontalOptions="Center"
                IsVisible="{Binding IsCreatingMode, Mode=OneWay}"/>
@@ -23,10 +23,7 @@
                 IsVisible="{Binding IsCreatingMode, Mode=OneWay}"/>
         <Label Text="или" VerticalOptions="Center" HorizontalOptions="Center"
                IsVisible="{Binding IsCreatingMode, Mode=OneWay}"/>
-        <Label Text="Введите новую:" VerticalOptions="Center" HorizontalOptions="Center"
-               IsVisible="{Binding IsCreatingMode, Mode=OneWay}"/>
-        <Label Text="Редактировать применимость:" VerticalOptions="Center" HorizontalOptions="Center"
-               IsVisible="{Binding IsCreatingMode, Converter={StaticResource InvertedBoolConverter}, Mode=OneWay}"/>
+        <Label Text="{Binding Caption, Mode=OneWay}" VerticalOptions="Center" HorizontalOptions="Center"/>
         <Editor Text="{Binding Description}" Placeholder="Новый двигатель"
                 HeightRequest="100" MaxLength="1000" WidthRequest="200"/>
         <VerticalStackLayout BindableLayout.ItemsSource="{Binding Errors}">

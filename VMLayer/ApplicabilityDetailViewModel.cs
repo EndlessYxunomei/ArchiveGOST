@@ -27,8 +27,14 @@ namespace VMLayer
         private bool _isCreatingMode;
         private int originalId;
         private ApplicabilityDto? _selectedDto;
+        private string _caption = string.Empty;
 
         //Свойсва
+        public string Caption
+        {
+            get => _caption;
+            set => SetProperty(ref _caption, value);
+        }
         public bool IsCreatingMode
         { 
             get => _isCreatingMode;
@@ -60,26 +66,33 @@ namespace VMLayer
         public ApplicabilityDetailViewModel(IDialogService dialogService, IApplicabilityService applicabilityService): base(dialogService)
         { 
             this.applicabilityService = applicabilityService;
+            validationCheckError = "Подобная применимость уже существует";
 
             ErrorExposer = new(this);
         }
 
         //Загрузка данных
-        public async void LoadData(int original, object? paprams = null)
+        public async void LoadData(int original=0, object? paprams = null)
         {
             originalId = original;
-            
-            if (paprams != null && paprams is ApplicabilityDto dto)
+            if (originalId == 0)
+            {
+                IsCreatingMode = false;
+                Caption = "Введите новую применимость:";
+            }
+            else if (paprams != null && paprams is ApplicabilityDto dto)
             {
                 IsCreatingMode = false;
                 Description = dto.Description;
                 id = dto.Id;
+                Caption = "Редактировать применимость:";
             }
             else
             {
                 IsCreatingMode = true;
                 var list = await applicabilityService.GetFreeApplicabilities(originalId);
                 list.ForEach(DtoList.Add);
+                Caption = "введите новую:";
             }
         }
 
@@ -97,7 +110,8 @@ namespace VMLayer
                 OriginalId = originalId
             };
         }
-        
+        internal override async Task<bool> ValidationCheck() => await applicabilityService.CheckApplicability(Description);
+
         //Обработка события валидатора
         public ValidationErrorExposer ErrorExposer { get; }
         //Дополниетльный атрибут для валидации
