@@ -9,7 +9,7 @@ namespace ArchiveGOST_DbLibrary
     {
         //Конструкторы: для Scuffold и для dependensy injection
         public ArchiveDbContext() { }
-        public ArchiveDbContext(DbContextOptions options): base(options) { }
+        public ArchiveDbContext(DbContextOptions options): base(options) { Database.EnsureCreatedAsync(); }
 
         //Конфигурация по умолчанию
         private static IConfigurationRoot _configuration;
@@ -22,11 +22,11 @@ namespace ArchiveGOST_DbLibrary
                     .SetBasePath(Directory.GetCurrentDirectory())
                     .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
                 _configuration = builder.Build();
-                //var cnstr = _configuration.GetConnectionString("ArchiveLibrary");
-                var cnstr = _configuration.GetConnectionString("ArchiveLibrarySQLServer");
+                var cnstr = _configuration.GetConnectionString("ArchiveLibrary");
+                //var cnstr = _configuration.GetConnectionString("ArchiveLibrarySQLServer");
 
-                //optionsBuilder.UseSqlite(cnstr);
-                optionsBuilder.UseSqlServer(cnstr);
+                optionsBuilder.UseSqlite(cnstr);
+                //optionsBuilder.UseSqlServer(cnstr);
 
             }
         }
