@@ -16,9 +16,12 @@ namespace DataBaseLayer
         public async Task<Original> GetOriginalAsync(int id)
         {
             var original = await _context.Originals
-                .Include(x =>x.Copies)
+                .Include(x => x.Copies)
                 .Include(x => x.Applicabilities)
                 .Include(x => x.Corrections)
+                .Include(x => x.Company)
+                .Include(x => x.Document)
+                .Include(x => x.Person)
                 .AsNoTracking()
                 .FirstOrDefaultAsync(x => x.Id == id);
             return original ?? throw new Exception("Original not found");

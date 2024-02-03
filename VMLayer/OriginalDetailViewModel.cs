@@ -101,11 +101,16 @@ public class OriginalDetailViewModel: ObservableValidator, INavigationParameterR
     private protected async Task AddDocument()
     {
         await Task.Delay(10);//ЗАглушка
-        DocumentList.Add(new() { DocumentType = DocumentType.AddOriginal, Id = 33, Name = "Test3", Date = DateTime.Today });
     }
     private protected async Task AddCompany()
     {
-        await Task.Delay(10);//ЗАглушка
+        var result = await dialogService.ShowCompanyDetailPopup();
+        if (result != null && result is CompanyDto company)
+        {
+            var newid = await companyService.UpsertCompany(company);
+            var newDto = await companyService.GetCompanyAsync(newid);
+            UtilityService.UpdateList(Companylist, newDto);
+        }
     }
     private protected async Task AddPerson()
     {
