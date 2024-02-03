@@ -34,6 +34,9 @@ namespace ArchiveGHOST.Client
             builder.Services.AddTransientWithShellRoute<OriginalDetailPage, EditOriginalViewModel>(NavigationConstants.OriginalDetail);
             builder.Services.AddTransientWithShellRoute<CreateOriginalPage, CreateOriginalViewModel>(NavigationConstants.CreateOriginal);
             builder.Services.AddTransientWithShellRoute<CorrectionDetailPage, CorrectionDetailViewModel>(NavigationConstants.CorrectionDetail);
+            builder.Services.AddTransientWithShellRoute<DocumentListPage, DocumentListViewModel>(NavigationConstants.DocumentList);
+            builder.Services.AddTransientWithShellRoute<CompanyListPage, CompanyListViewModel>(NavigationConstants.CompanyList);
+            builder.Services.AddTransientWithShellRoute<ApplicabilityListPage, ApplicabilityListViewModel>(NavigationConstants.ApplicabilityList);
 
             //НАДО РАЗОБРАТЬСЯ ГДЕ НАХОДИТСЯ НАША БАЗА
             //ПОКА РАБОТАЕТ ТОЛЬКО СЕРВЕРА

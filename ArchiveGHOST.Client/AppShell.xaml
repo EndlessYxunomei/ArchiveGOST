@@ -4,23 +4,36 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:local="clr-namespace:ArchiveGHOST.Client"
-    Shell.FlyoutBehavior="Disabled"
+    Shell.FlyoutBehavior="Flyout"
     Title="ArchiveGHOST.Client">
 
-    <TabBar>
+
+    <FlyoutItem FlyoutDisplayOptions="AsMultipleItems">
+        <ShellContent Title="Инвентарная книга" ContentTemplate="{DataTemplate local:InventoryListPage}"/>
+    </FlyoutItem>
+    <FlyoutItem FlyoutDisplayOptions="AsMultipleItems">
+        <ShellContent Title="Документы" ContentTemplate="{DataTemplate local:DocumentListPage}"/>
+    </FlyoutItem>
+    <FlyoutItem FlyoutDisplayOptions="AsSingleItem" Title="Прочее">
+        <ShellContent Title="Компании" ContentTemplate="{DataTemplate local:CompanyListPage}"/>
+        <ShellContent Title="Применимость" ContentTemplate="{DataTemplate local:ApplicabilityListPage}"/>
+    </FlyoutItem>
+
+
+    <!--<TabBar>
         <Tab Title="Home">
             <ShellContent
                 Title="Home"
                 ContentTemplate="{DataTemplate local:InventoryListPage}"
                 Route="MainPage" />
         </Tab>
-        <!--<Tab Title="Create Original">
+        <Tab Title="Create Original">
             <ShellContent
                 Title="Create Original"
                 ContentTemplate="{DataTemplate local:CreateOriginalPage}"
                 Route="CreateOriginal" />
-        </Tab>-->
-    </TabBar>
+        </Tab>
+    </TabBar>-->
 
 
 </Shell>

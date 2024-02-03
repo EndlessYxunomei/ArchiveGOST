@@ -12,5 +12,8 @@ namespace ArchiveGHOST.Client.Services
         public const string OriginalDetail = "OriginalDetail";
         public const string CreateOriginal = "CreateOriginal";
         public const string CorrectionDetail = "CorrectionDetail";
+        public const string DocumentList = "DocumentList";
+        public const string ApplicabilityList = "ApplicabilityList";
+        public const string CompanyList = "CompanyList";
     }
 }
