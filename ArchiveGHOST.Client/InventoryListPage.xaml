@@ -10,9 +10,13 @@
     <!--<ContentPage.Resources>
         <conv:RatingToColorConverter x:Key="ratingToColorConverter" />
     </ContentPage.Resources>-->
-    <VerticalStackLayout>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="60"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
         <!--<Label Text="{Binding SelectedOriginal.OriginalName, Mode=OneWay, TargetNullValue='Ничего не выбрано',FallbackValue='Не инициаоизировано'}"/>-->
-        <HorizontalStackLayout Padding="5" Spacing="5">
+        <HorizontalStackLayout Padding="5" Spacing="5" Grid.Row="0">
             <Button Text="&#xe145;" FontFamily="MaterialIconsRegular" FontSize="20" Command="{Binding CreateCommand}"/>
             <Button Text="&#xf88d;" FontFamily="MaterialIconsRegular" FontSize="20" Command="{Binding EditCommand}"/>
             <Button Text="&#xe872;" FontFamily="MaterialIconsRegular" FontSize="20" Command="{Binding DeleteCommand}"/>
@@ -20,7 +24,8 @@
         <CollectionView ItemsSource="{Binding OriginalsList}"
                         SelectionMode="Single"
                         SelectedItem="{Binding SelectedOriginal}"
-                        EmptyView="Данные отсуствуют">
+                        EmptyView="Данные отсуствуют"
+                        Grid.Row="1">
             <CollectionView.Header>
                 <Grid RowSpacing="30" ColumnSpacing="10">
                     <Grid.RowDefinitions>
@@ -69,5 +74,5 @@
                 </DataTemplate>
             </CollectionView.ItemTemplate>
         </CollectionView>
-    </VerticalStackLayout>
+    </Grid>
 </ContentPage>

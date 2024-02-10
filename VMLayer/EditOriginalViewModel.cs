@@ -251,6 +251,10 @@ namespace VMLayer
                 List<CopyListDto> copyList = original.Copies;
                 List<ApplicabilityDto> appList = original.Applicabilities;
                 List<CorrectionListDto> corList = original.Corrections;
+
+                //CopyList = new ObservableCollection<CopyListDto>(original.Copies);
+                //CorrectionList = new ObservableCollection<CorrectionListDto>(original.Corrections);
+                //ApplicabilityList = new ObservableCollection<ApplicabilityDto>(original.Applicabilities);
                 //copyList.ForEach(CopyList.Add);
                 //appList.ForEach(ApplicabilityList.Add);
                 //corList.ForEach(CorrectionList.Add);

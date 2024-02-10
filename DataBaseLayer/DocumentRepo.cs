@@ -25,22 +25,20 @@ namespace DataBaseLayer
         }
         public async Task DeleteDocuments(List<int> documentIds)
         {
-            using (var transaction = _context.Database.BeginTransaction(System.Data.IsolationLevel.ReadUncommitted))
+            using var transaction = _context.Database.BeginTransaction(System.Data.IsolationLevel.ReadUncommitted);
+            try
             {
-                try
+                foreach (var documentId in documentIds)
                 {
-                    foreach (var documentId in documentIds)
-                    {
-                        await DeleteDocument(documentId);
-                    }
-                    await transaction.CommitAsync();
+                    await DeleteDocument(documentId);
                 }
-                catch (Exception ex)
-                {
-                    Debug.WriteLine(ex.ToString());
-                    await transaction.RollbackAsync();
-                    throw;
-                }
+                await transaction.CommitAsync();
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.ToString());
+                await transaction.RollbackAsync();
+                throw;
             }
             //не работает в SQLite
             /*using (var scope = new TransactionScope(TransactionScopeOption.Required,
@@ -91,23 +89,21 @@ namespace DataBaseLayer
         }
         public async Task UpsertDocuments(List<Document> documents)
         {
-            using (var transaction = _context.Database.BeginTransaction(System.Data.IsolationLevel.ReadUncommitted))
+            using var transaction = _context.Database.BeginTransaction(System.Data.IsolationLevel.ReadUncommitted);
+            try
             {
-                try
+                foreach (var document in documents)
                 {
-                    foreach (var document in documents)
-                    {
-                        var success = await UpsertDocument(document) > 0;
-                        if (!success) { throw new Exception($"Error saving the document {document.Name}"); }
-                    }
-                    await transaction.CommitAsync();
+                    var success = await UpsertDocument(document) > 0;
+                    if (!success) { throw new Exception($"Error saving the document {document.Name}"); }
                 }
-                catch (Exception ex)
-                {
-                    Debug.WriteLine(ex.ToString());
-                    await transaction.RollbackAsync();
-                    throw;
-                }
+                await transaction.CommitAsync();
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.ToString());
+                await transaction.RollbackAsync();
+                throw;
             }
             //не работает в SQLite
             /*using (var scope = new TransactionScope(TransactionScopeOption.Required,
@@ -143,6 +139,11 @@ namespace DataBaseLayer
         {
             var document = await _context.Documents.AsNoTracking().FirstOrDefaultAsync(x => x.Id == id);
             return document ?? throw new Exception("Document not found");
+        }
+
+        public async Task<List<Document>> GetDocumentsByCompany(int companyId)
+        {
+            return await _context.Documents.AsNoTracking().Where(x => x.CompanyId == companyId).ToListAsync();
         }
     }
 }

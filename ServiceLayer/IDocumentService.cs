@@ -12,6 +12,7 @@ namespace ServiceLayer
     {
         Task<List<DocumentListDto>> GetDocumentListAsync();
         Task<List<DocumentListDto>> GetDocumentList(DocumentType type);
+        Task<List<DocumentListDto>> GetDocumentsByCompany(int companyId);
         Task CreateDocument (DocumentDetailDto document);
     }
 }

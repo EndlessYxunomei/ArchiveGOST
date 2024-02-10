@@ -67,5 +67,13 @@ namespace ServiceLayer
             var result = await originalRepo.GetOriginalAsync(id);
             return (OriginalListDto)result;
         }
+
+        public async Task<List<OriginalListDto>> GetOriginalsByCompany(int companyId)
+        {
+            var originalList = await originalRepo.GetOriginalsByCompany(companyId);
+            List<OriginalListDto> list = [];
+            list.AddRange(originalList.Select(original => (OriginalListDto)original));
+            return list;
+        }
     }
 }

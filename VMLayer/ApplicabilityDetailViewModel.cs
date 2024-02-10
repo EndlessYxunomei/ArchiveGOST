@@ -91,7 +91,8 @@ namespace VMLayer
             {
                 IsCreatingMode = true;
                 var list = await applicabilityService.GetFreeApplicabilities(originalId);
-                list.ForEach(DtoList.Add);
+                DtoList = new ObservableCollection<ApplicabilityDto>(list);
+                //list.ForEach(DtoList.Add);
                 Caption = "введите новую:";
             }
         }

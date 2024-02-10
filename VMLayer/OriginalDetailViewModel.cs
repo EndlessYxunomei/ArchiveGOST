@@ -160,6 +160,10 @@ public class OriginalDetailViewModel: ObservableValidator, INavigationParameterR
         var newCompanyList = await companyService.GetCompanyList();
         var newPersonList = await personService.GetPersonList();
 
+        //DocumentList = new ObservableCollection<DocumentListDto>(await documentService.GetDocumentList(DocumentType.AddOriginal));
+        //Companylist = new ObservableCollection<CompanyDto>(await companyService.GetCompanyList());
+        //PersonList = new ObservableCollection<PersonListDto>(await personService.GetPersonList());
+
         newDocumentList.ForEach(DocumentList.Add);
         newCompanyList.ForEach(Companylist.Add);
         newPersonList.ForEach(PersonList.Add);

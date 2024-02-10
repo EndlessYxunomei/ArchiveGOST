@@ -49,5 +49,13 @@ namespace ServiceLayer
             }
             return result;
         }
+
+        public async Task<List<DocumentListDto>> GetDocumentsByCompany(int companyId)
+        {
+            var nelist = await documentRepo.GetDocumentsByCompany(companyId);
+            List<DocumentListDto> result = [];
+            result.AddRange(nelist.Select(document => (DocumentListDto)document));
+            return result;
+        }
     }
 }

@@ -3,9 +3,6 @@ using AcrhiveModels.DTOs;
 using System.Collections.ObjectModel;
 using CommunityToolkit.Mvvm.Input;
 using ServiceLayer;
-using Azure.Identity;
-using CommunityToolkit.Mvvm.Messaging;
-using VMLayer.Messages;
 using VMLayer.Navigation;
 
 namespace VMLayer
@@ -77,7 +74,7 @@ namespace VMLayer
             EditCommand = new AsyncRelayCommand(EditOriginal, CanEditDeleteOriginal);
 
             //Загружаем перовначальный список
-            _ = LoadOriginalListAsync();
+            LoadOriginalListAsync();
 
             //подписываемся на сообщения для обновления списка придобавлении или изменении
             //WeakReferenceMessenger.Default.Register<OriginalUpdatedMessage>(this, (r, m) =>
@@ -85,9 +82,10 @@ namespace VMLayer
         }
 
         //Первоначальная загрузка данных
-        private async Task LoadOriginalListAsync()
+        private async void LoadOriginalListAsync()
         {
             var originallist = await originalService.GetOriginalListAsync();
+            //OriginalsList = new ObservableCollection<OriginalListDto>(originallist);
             originallist.ForEach(OriginalsList.Add);
         }
         

@@ -179,5 +179,10 @@ namespace DataBaseLayer
             bool result = await _context.Originals.AnyAsync(x => x.InventoryNumber == inventoryNumber);
             return !result;
         }
+
+        public async Task<List<Original>> GetOriginalsByCompany(int companyId)
+        {
+            return await _context.Originals.AsNoTracking().Where(x => x.CompanyId == companyId).ToListAsync();
+        }
     }
 }

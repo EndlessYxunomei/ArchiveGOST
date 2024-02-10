@@ -21,6 +21,7 @@ namespace VMLayer
         private string _name = string.Empty;
         private string? _description;
         private bool _isCreatingMode;
+        private string oldName = string.Empty;
 
         //свойства
         public bool IsCreatingMode
@@ -56,11 +57,12 @@ namespace VMLayer
         //Загрузка данный
         public async void LoadData(int id = 0)
         {
-            if (id < 0)
+            if (id > 0)
             {
                 var dto = await companyService.GetCompanyAsync(id);
                 this.id = dto.Id;
                 Name = dto.Name;
+                oldName = dto.Name;
                 Description = dto.Description;
                 IsCreatingMode = false;
             }
@@ -82,7 +84,7 @@ namespace VMLayer
         }
         internal override async Task<bool> ValidationCheck()
         {
-            return await companyService.CheckCompany(Name);
+            return Name == oldName || await companyService.CheckCompany(Name);
         }
 
         //Обработка события валидатора

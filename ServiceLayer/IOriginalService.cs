@@ -1,4 +1,5 @@
-﻿using AcrhiveModels.DTOs;
+﻿using AcrhiveModels;
+using AcrhiveModels.DTOs;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,5 +17,6 @@ namespace ServiceLayer
         Task<bool> CheckInventoryNumber(int inventorynumber);
         Task<int> UpsertOriginal(OriginalDetailDto originalDetailDto);
         Task DeleteOriginal(int id);
+        Task<List<OriginalListDto>> GetOriginalsByCompany(int companyId);
     }
 }
