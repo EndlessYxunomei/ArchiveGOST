@@ -75,5 +75,15 @@ namespace ServiceLayer
             list.AddRange(originalList.Select(original => (OriginalListDto)original));
             return list;
         }
+
+        public async Task UpdateOriginalsApplicabilities(int id, List<ApplicabilityDto> applicabilityDtos)
+        {
+            List<int> applicabilityIds = [];
+            foreach (ApplicabilityDto app in  applicabilityDtos)
+            {
+                applicabilityIds.Add(app.Id);
+            }
+            await originalRepo.UpdateOriginalApplicabilities(id, applicabilityIds);
+        }
     }
 }

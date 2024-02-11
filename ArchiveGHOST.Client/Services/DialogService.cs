@@ -16,7 +16,7 @@ namespace ArchiveGHOST.Client.Services
         public Task Notify(string title, string message, string buttonText = "ОК")
             => Application.Current?.MainPage?.DisplayAlert(title, message, buttonText) ?? throw new NullReferenceException();
 
-        public async Task<object?> ShowApplicabilityPopup(int originalId, object? parameters = null)
+        public async Task<object?> ShowApplicabilityPopup(int originalId = 0, object? parameters = null)
             => await popupService.ShowPopupAsync<ApplicabilityDetailViewModel>(onPresenting: x => x.LoadData(originalId, parameters));
         public async Task<object?> ShowCompanyDetailPopup(int id = 0)
             => await popupService.ShowPopupAsync<CompanyDetailViewModel>(onPresenting: x => x.LoadData(id));

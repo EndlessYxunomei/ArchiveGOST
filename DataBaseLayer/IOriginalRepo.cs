@@ -19,5 +19,6 @@ namespace DataBaseLayer
         Task UpsertOriginals(List<Original> originals);
         Task DeleteOriginal(int id);
         Task DeleteOriginals(List<int> originalIds);
+        Task UpdateOriginalApplicabilities(int id, List<int> applicabilityId);
     }
 }

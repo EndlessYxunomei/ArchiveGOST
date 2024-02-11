@@ -75,12 +75,8 @@ namespace VMLayer
         public async void LoadData(int original=0, object? paprams = null)
         {
             originalId = original;
-            if (originalId == 0)
-            {
-                IsCreatingMode = false;
-                Caption = "Введите новую применимость:";
-            }
-            else if (paprams != null && paprams is ApplicabilityDto dto)
+
+            if (paprams != null && paprams is ApplicabilityDto dto)
             {
                 IsCreatingMode = false;
                 Description = dto.Description;
@@ -89,11 +85,18 @@ namespace VMLayer
             }
             else
             {
-                IsCreatingMode = true;
-                var list = await applicabilityService.GetFreeApplicabilities(originalId);
-                DtoList = new ObservableCollection<ApplicabilityDto>(list);
-                //list.ForEach(DtoList.Add);
-                Caption = "введите новую:";
+                if (originalId == 0)
+                {
+                    IsCreatingMode = false;
+                    Caption = "Введите новую применимость:";
+                }
+                else
+                {
+                    IsCreatingMode = true;
+                    var list = await applicabilityService.GetFreeApplicabilities(originalId);
+                    list.ForEach(DtoList.Add);
+                    Caption = "введите новую:";
+                }
             }
         }
 

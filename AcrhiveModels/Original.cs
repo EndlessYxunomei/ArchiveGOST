@@ -40,5 +40,19 @@ namespace AcrhiveModels
         public virtual List<Correction> Corrections { get; set; } = [];
         //список применяемости
         public virtual List<Applicability> Applicabilities { get; set; } = [];
+
+        public override bool Equals(object? obj)
+        {
+            if (obj == null || GetType() != obj.GetType())
+            {
+                return false;
+            }
+            Original original = (Original)obj;
+            return original.Id == Id;
+        }
+        public override int GetHashCode()
+        {
+            return Id;
+        }
     }
 }

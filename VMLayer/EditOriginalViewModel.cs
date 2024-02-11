@@ -79,12 +79,13 @@ namespace VMLayer
                     Company = Company,
                     Document = Document,
                     Person = Person,
-                    Notes = Notes
+                    Notes = Notes,
                 };
                 //Пока реализовано так: создаем оригинал и в ответ получаем его id
                 int newId = await originalService.UpsertOriginal(originalDetailDto);
                 //получает по id дтошку для отображения в списке инвентарной книги
                 OriginalListDto newDto = await originalService.GetOriginalAsync(newId);
+                await originalService.UpdateOriginalsApplicabilities(id, [.. ApplicabilityList]);
                 //Передаём обратно дтошку через мессендже
                 //WeakReferenceMessenger.Default.Send(new OriginalUpdatedMessage(newDto));
                 //await navigationService.GoBack();
@@ -172,6 +173,7 @@ namespace VMLayer
                 UtilityService.UpdateList(ApplicabilityList, dto);
                 dto.OriginalId = id;
                 await applicabilityService.UpsertApplicability(dto);
+                //await applicabilityService.AddOriginalToApplicability(dto.Id, dto.OriginalId);
             }
         }
         private async Task DeleteApplicability()

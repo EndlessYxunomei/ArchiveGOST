@@ -51,10 +51,10 @@ namespace ServiceLayer
         public async Task<int> UpsertApplicability(ApplicabilityDto applicability)
         {
             //Создаем новый лист для оригиналов, которые имеют данную применимость
-            List<Original> originalList = [];
+            //List<Original> originalList = [];
 
             //Узанем новая ли это будет применимость или нет
-            var existAppl = await applicabilityRepo.GetApplicabilityAsync(applicability.Id);
+            /*var existAppl = await applicabilityRepo.GetApplicabilityAsync(applicability.Id);
             if (existAppl != null)
             {
                 //Если применимость уже существует, то берем её список оригиналов
@@ -65,13 +65,18 @@ namespace ServiceLayer
             {
                 var newOrig = await originalRepo.GetOriginalAsync(applicability.OriginalId);
                 originalList.Add(newOrig);
-            }
+            }*/
+
+            /*if (applicability.OriginalId > 0)
+            {
+
+            }*/
 
             //Создаем применимость на базе нашей дтошки и списка оригиналов
             Applicability newapp = new()
             {
                 Description = applicability.Description,
-                Originals = originalList,
+                //Originals = originalList,
                 Id = applicability.Id
             };
             //Сохраняем изменнения
@@ -81,12 +86,35 @@ namespace ServiceLayer
         public async Task DeleteOriginalFromApplicability(int id, int originalId)
         {
             var existAppl = await applicabilityRepo.GetApplicabilityAsync(id);
-            existAppl?.Originals.RemoveAll(x => x.Id == originalId);
+            if (existAppl != null)
+            {
+                existAppl.Originals.RemoveAll(x => x.Id == originalId);
+                await applicabilityRepo.UpsertApplicability(existAppl);
+            }
+        }
+        public async Task AddOriginalToApplicability(int id, int originalId)
+        {
+            var existAppl = await applicabilityRepo.GetApplicabilityAsync(id);
+            if (existAppl != null && existAppl.Originals.Any(x => x.Id == originalId) == false)
+            {
+                var newOriginal = await originalRepo.GetOriginalAsync(originalId);
+                if (newOriginal != null)
+                {
+                    existAppl.Originals.Add(newOriginal);
+                    await applicabilityRepo.UpsertApplicability(existAppl);
+                }
+            }
         }
 
         public async Task<bool> CheckApplicability(string description)
         {
             return await applicabilityRepo.CheckApplicability(description);
+        }
+
+        public async Task<ApplicabilityDto?> GetApplicabilityAsync(int id)
+        {
+            var result = await applicabilityRepo.GetApplicabilityAsync(id);
+            return result == null ? null : (ApplicabilityDto)result;
         }
     }
 }

@@ -12,10 +12,10 @@
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
             <Grid Grid.Column="0">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="60"/>
-                <RowDefinition/>
-            </Grid.RowDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="60"/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
                 <HorizontalStackLayout Padding="5" Spacing="5" Grid.Row="0">
                     <Button Text="&#xe145;" FontFamily="MaterialIconsRegular" FontSize="20" Command="{Binding CreateCommand}"/>
                     <Button Text="&#xf88d;" FontFamily="MaterialIconsRegular" FontSize="20" Command="{Binding EditCommand}"/>
@@ -45,48 +45,48 @@
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
             </CollectionView>
-        </Grid>
-        <Grid Grid.Column="1">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="20"/>
-                <RowDefinition/>
-                <RowDefinition Height="20"/>
-                <RowDefinition/>
-            </Grid.RowDefinitions>
-            <Label Text="Зависимые оригиналы:" Grid.Row="0"/>
-            <CollectionView Grid.Row="1" ItemsSource="{Binding OriginalList}"
-                        SelectionMode="None"
-                        EmptyView="Данные отсуствуют">
-                <CollectionView.ItemTemplate>
-                    <DataTemplate>
-                        <Grid x:DataType="dto:OriginalListDto" RowSpacing="30" ColumnSpacing="10">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="100"/>
-                                <ColumnDefinition Width="200"/>
-                            </Grid.ColumnDefinitions>
-                            <Label Text="{Binding OriginalInventoryNumber}" Grid.Column="0"/>
-                            <Label Text="{Binding OriginalName}" Grid.Column="1"/>
-                        </Grid>
-                    </DataTemplate>
-                </CollectionView.ItemTemplate>
-            </CollectionView>
-            <Label Text="Зависимые документы:" Grid.Row="2"/>
-            <CollectionView Grid.Row="3" ItemsSource="{Binding DocumentList}"
+            </Grid>
+            <Grid Grid.Column="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="20"/>
+                    <RowDefinition/>
+                    <RowDefinition Height="20"/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <Label Text="Зависимые оригиналы:" Grid.Row="0"/>
+                <CollectionView Grid.Row="1" ItemsSource="{Binding OriginalList}"
                             SelectionMode="None"
                             EmptyView="Данные отсуствуют">
-                <CollectionView.ItemTemplate>
-                    <DataTemplate>
-                        <Label>
-                            <Label.Text x:DataType="dto:DocumentListDto">
-                                <MultiBinding StringFormat="{}{0}{1:d}">
-                                    <Binding Path="Name" StringFormat="{}{0} от " TargetNullValue="не задан"/>
-                                    <Binding Path="Date"/>
-                                </MultiBinding>
-                            </Label.Text>
-                        </Label>
-                    </DataTemplate>
-                </CollectionView.ItemTemplate>
-            </CollectionView>
-        </Grid>
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <Grid x:DataType="dto:OriginalListDto" RowSpacing="30" ColumnSpacing="10">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="100"/>
+                                    <ColumnDefinition Width="200"/>
+                                </Grid.ColumnDefinitions>
+                                <Label Text="{Binding OriginalInventoryNumber}" Grid.Column="0"/>
+                                <Label Text="{Binding OriginalName}" Grid.Column="1"/>
+                            </Grid>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+                <Label Text="Зависимые документы:" Grid.Row="2"/>
+                <CollectionView Grid.Row="3" ItemsSource="{Binding DocumentList}"
+                                SelectionMode="None"
+                                EmptyView="Данные отсуствуют">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <Label>
+                                <Label.Text x:DataType="dto:DocumentListDto">
+                                    <MultiBinding StringFormat="{}{0}{1:d}">
+                                        <Binding Path="Name" StringFormat="{}{0} от " TargetNullValue="не задан"/>
+                                        <Binding Path="Date"/>
+                                    </MultiBinding>
+                                </Label.Text>
+                            </Label>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+            </Grid>
         </Grid>
 </ContentPage>

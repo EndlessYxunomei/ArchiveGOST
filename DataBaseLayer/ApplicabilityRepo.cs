@@ -94,14 +94,14 @@ namespace DataBaseLayer
         private async Task<int> UpdateApplicability(Applicability applicability)
         {
             var dbApplicability = await _context.Applicabilities
-                .Include(x => x.Originals)
+                //.Include(x => x.Originals)
                 .FirstOrDefaultAsync(x => x.Id == applicability.Id) ?? throw new Exception("Applicability not found");
 
             dbApplicability.Description = applicability.Description;
-            if (applicability.Originals != null)
+           /* if (applicability.Originals != null)
             {
                 dbApplicability.Originals = applicability.Originals;
-            }
+            }*/
             dbApplicability.LastModifiedDate = DateTime.Now;
             await _context.SaveChangesAsync();
             return applicability.Id;

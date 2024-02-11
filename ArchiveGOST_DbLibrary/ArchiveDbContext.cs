@@ -9,7 +9,10 @@ namespace ArchiveGOST_DbLibrary
     {
         //Конструкторы: для Scuffold и для dependensy injection
         public ArchiveDbContext() { }
-        public ArchiveDbContext(DbContextOptions options): base(options) { }
+        public ArchiveDbContext(DbContextOptions options): base(options)
+        {
+            //Database.Migrate();
+        }
 
         //Конфигурация по умолчанию
         private static IConfigurationRoot _configuration;
@@ -53,12 +56,12 @@ namespace ArchiveGOST_DbLibrary
             .WithMany()
             .HasForeignKey("ApplicabilityId")
             .HasConstraintName("FK_OriginalApplicability_Applicabilities_ApplicabilityId")
-            .OnDelete(DeleteBehavior.ClientCascade),
+            .OnDelete(DeleteBehavior.Cascade),
             ip => ip.HasOne<Original>()
             .WithMany()
             .HasForeignKey("OriginalId")
             .HasConstraintName("FK_ApplicabilityOriginal_Originals_OriginalId")
-            .OnDelete(DeleteBehavior.Cascade));
+            .OnDelete(DeleteBehavior.ClientCascade));
 
             //связь много-много для копий и выдач
             modelBuilder.Entity<Copy>()

@@ -184,5 +184,20 @@ namespace DataBaseLayer
         {
             return await _context.Originals.AsNoTracking().Where(x => x.CompanyId == companyId).ToListAsync();
         }
+
+        public async Task UpdateOriginalApplicabilities(int id, List<int> applicabilityIds)
+        {
+            var dbOriginal = await _context.Originals.Include(x => x.Applicabilities).FirstOrDefaultAsync(x => x.Id == id);
+            List<Applicability> dbApps = [];
+            foreach (var applicability in applicabilityIds)
+            {
+                dbApps.Add(await _context.Applicabilities.FirstAsync(y => y.Id == applicability));
+            }
+            if (dbOriginal != null)
+            {
+                dbOriginal.Applicabilities = dbApps;
+                await _context.SaveChangesAsync();
+            }
+        }
     }
 }
