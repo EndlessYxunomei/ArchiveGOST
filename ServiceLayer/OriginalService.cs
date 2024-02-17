@@ -85,5 +85,13 @@ namespace ServiceLayer
             }
             await originalRepo.UpdateOriginalApplicabilities(id, applicabilityIds);
         }
+
+        public async Task<List<OriginalListDto>> GetOriginalsByApplicability(int applicabilityId)
+        {
+            var originalList = await originalRepo.GetOriginalsByApplicability(applicabilityId);
+            List<OriginalListDto> list = [];
+            list.AddRange(originalList.Select(original => (OriginalListDto)original));
+            return list;
+        }
     }
 }

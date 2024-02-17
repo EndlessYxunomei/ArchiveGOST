@@ -13,6 +13,7 @@ namespace DataBaseLayer
         Task<Original> GetOriginalAsync(int id);
         Task<List<Original>> GetOriginalsByDocument(int docunentId);
         Task<List<Original>> GetOriginalsByCompany(int companyId);
+        Task<List<Original>> GetOriginalsByApplicability(int applicabilityId);
         Task<int> GetLastInventoryNumberAsync();
         Task<bool> CheckInventoryNumberAsync(int inventoryNumber);
         Task<int> UpsertOriginal(Original original);

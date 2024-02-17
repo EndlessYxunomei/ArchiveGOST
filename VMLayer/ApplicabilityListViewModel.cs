@@ -103,7 +103,7 @@ namespace VMLayer
         {
             if (SelectedApplicability != null)
             {
-                var origlist = await originalService.GetOriginalsByCompany(SelectedApplicability.Id);
+                var origlist = await originalService.GetOriginalsByApplicability(SelectedApplicability.Id);
                 OriginalList.Clear();
                 origlist.ForEach(OriginalList.Add);
             }

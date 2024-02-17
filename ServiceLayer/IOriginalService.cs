@@ -18,6 +18,7 @@ namespace ServiceLayer
         Task<int> UpsertOriginal(OriginalDetailDto originalDetailDto);
         Task DeleteOriginal(int id);
         Task<List<OriginalListDto>> GetOriginalsByCompany(int companyId);
+        Task<List<OriginalListDto>> GetOriginalsByApplicability(int applicabilityId);
         Task UpdateOriginalsApplicabilities(int id, List<ApplicabilityDto> applicabilityDtos);
     }
 }

@@ -1,6 +1,7 @@
 ﻿using AcrhiveModels;
 using ArchiveGOST_DbLibrary;
 using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.Design;
 using System.Diagnostics;
 using System.Reflection.Metadata;
 using System.Transactions;
@@ -198,6 +199,11 @@ namespace DataBaseLayer
                 dbOriginal.Applicabilities = dbApps;
                 await _context.SaveChangesAsync();
             }
+        }
+
+        public async Task<List<Original>> GetOriginalsByApplicability(int applicabilityId)
+        {
+            return await _context.Originals.AsNoTracking().Where(x => x.Applicabilities.Contains(_context.Applicabilities.First(y => y.Id == applicabilityId))).ToListAsync();
         }
     }
 }
