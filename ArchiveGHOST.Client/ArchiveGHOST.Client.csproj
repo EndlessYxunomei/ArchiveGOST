@@ -77,6 +77,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <ProjectReference Include="..\AcrhiveModels\AcrhiveModels.csproj" />
 	  <ProjectReference Include="..\ArchiveGOST_DbLibrary\ArchiveGOST_DbLibrary.csproj" />
 	  <ProjectReference Include="..\VMLayer\VMLayer.csproj" />
 	</ItemGroup>
@@ -92,6 +93,9 @@
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="CreateOriginalPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="DocumentDetailPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="DocumentListPage.xaml">

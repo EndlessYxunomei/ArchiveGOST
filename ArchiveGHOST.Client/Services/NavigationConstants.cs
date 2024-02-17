@@ -15,5 +15,6 @@ namespace ArchiveGHOST.Client.Services
         public const string DocumentList = "DocumentList";
         public const string ApplicabilityList = "ApplicabilityList";
         public const string CompanyList = "CompanyList";
+        public const string DocumentDetail = "DocumentDetail";
     }
 }

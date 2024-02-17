@@ -35,6 +35,7 @@ namespace ArchiveGHOST.Client
             builder.Services.AddTransientWithShellRoute<CreateOriginalPage, CreateOriginalViewModel>(NavigationConstants.CreateOriginal);
             builder.Services.AddTransientWithShellRoute<CorrectionDetailPage, CorrectionDetailViewModel>(NavigationConstants.CorrectionDetail);
             builder.Services.AddTransientWithShellRoute<DocumentListPage, DocumentListViewModel>(NavigationConstants.DocumentList);
+            builder.Services.AddTransientWithShellRoute<DocumentDetailPage, DocumentDetailViewModel>(NavigationConstants.DocumentDetail);
             builder.Services.AddTransientWithShellRoute<CompanyListPage, CompanyListViewModel>(NavigationConstants.CompanyList);
             builder.Services.AddTransientWithShellRoute<ApplicabilityListPage, ApplicabilityListViewModel>(NavigationConstants.ApplicabilityList);
 

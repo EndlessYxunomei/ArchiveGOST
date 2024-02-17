@@ -22,7 +22,7 @@ namespace ServiceLayer
             documentRepo = new DocumentRepo(dbContext);
         }
 
-        public Task CreateDocument(DocumentDetailDto document)
+        public Task UpsertDocument(DocumentDetailDto document)
         {
             throw new NotImplementedException();
         }
@@ -57,5 +57,7 @@ namespace ServiceLayer
             result.AddRange(nelist.Select(document => (DocumentListDto)document));
             return result;
         }
+
+        public async Task DeleteDocument(int id) => await documentRepo.DeleteDocument(id);
     }
 }
