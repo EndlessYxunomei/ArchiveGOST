@@ -12,7 +12,7 @@ namespace AcrhiveModels
         //Инвентарный номер (не является id но является уникальным)
         public required int InventoryNumber { get; set; }
         //Обозначение документа
-        [StringLength(ArchiveConstants.MAX_ORIGINAL_NAME_LENGTH)]
+        [StringLength(ArchiveConstants.MAX_NAME_LENGTH)]
         public required string Name { get; set; }
         //Наименование документа
         [StringLength(ArchiveConstants.MAX_ORIGINAL_CAPTION_LENGTH)]

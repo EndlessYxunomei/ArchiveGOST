@@ -145,5 +145,11 @@ namespace DataBaseLayer
         {
             return await _context.Documents.AsNoTracking().Where(x => x.CompanyId == companyId).ToListAsync();
         }
+
+        public async Task<bool> CheckDocument(string name, DateOnly date)
+        {
+            bool result = await _context.Documents.AnyAsync(x => x.Name == name && x.Date == date);
+            return !result;
+        }
     }
 }

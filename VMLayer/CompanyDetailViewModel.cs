@@ -30,7 +30,7 @@ namespace VMLayer
             set => SetProperty(ref _isCreatingMode, value);
         }
         [Required]
-        [MaxLength(ArchiveConstants.MAX_ORIGINAL_NAME_LENGTH)]
+        [MaxLength(ArchiveConstants.MAX_NAME_LENGTH)]
         [MinLength(1)]
         public string Name
         {

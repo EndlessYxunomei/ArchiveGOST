@@ -13,7 +13,10 @@ namespace ServiceLayer
         Task<List<DocumentListDto>> GetDocumentListAsync();
         Task<List<DocumentListDto>> GetDocumentList(DocumentType type);
         Task<List<DocumentListDto>> GetDocumentsByCompany(int companyId);
-        Task UpsertDocument (DocumentDetailDto document);
+        Task<int> UpsertDocument (DocumentDetailDto document);
+        Task<DocumentDetailDto> GetDocumentDetail(int id);
+        Task<DocumentListDto> GetDocumentAsync(int id);
         Task DeleteDocument (int id);
+        Task<bool> CheckDocument(string name, DateOnly date);
     }
 }

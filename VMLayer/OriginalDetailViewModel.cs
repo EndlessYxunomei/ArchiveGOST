@@ -40,7 +40,7 @@ public class OriginalDetailViewModel: ObservableValidator, INavigationParameterR
         set => SetProperty(ref _inventoryNumber, value, true);
     }
     [Required]
-    [MaxLength(ArchiveConstants.MAX_ORIGINAL_NAME_LENGTH)]
+    [MaxLength(ArchiveConstants.MAX_NAME_LENGTH)]
     [MinLength(1)]
     public string Name
     {
@@ -100,7 +100,7 @@ public class OriginalDetailViewModel: ObservableValidator, INavigationParameterR
     public IAsyncRelayCommand AddPersonCommand { get; }
     private protected async Task AddDocument()
     {
-        await Task.Delay(10);//ЗАглушка
+        await navigationService.GoToCreateDocument();
     }
     private protected async Task AddCompany()
     {

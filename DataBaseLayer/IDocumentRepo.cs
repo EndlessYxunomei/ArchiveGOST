@@ -17,5 +17,6 @@ namespace DataBaseLayer
         Task UpsertDocuments(List<Document> documents);
         Task DeleteDocument(int id);
         Task DeleteDocuments(List<int> documentIds);
+        Task<bool> CheckDocument(string name, DateOnly date);
     }
 }

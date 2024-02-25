@@ -8,7 +8,7 @@ namespace AcrhiveModels
 {
     public class ArchiveConstants
     {
-        public const int MAX_ORIGINAL_NAME_LENGTH = 100;
+        public const int MAX_NAME_LENGTH = 100;
         public const int MAX_ORIGINAL_CAPTION_LENGTH = 1000;
         public const int MAX_ORIGINAL_PAGES_FORMAT_LENGTH = 100;
         public const int MAX_ORIGINAL_NOTES_LENGTH = 1000;
