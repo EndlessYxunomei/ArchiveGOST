@@ -39,6 +39,7 @@
             <HorizontalStackLayout Padding="5" Spacing="5">
                 <Label Text="Дата документа:"/>
                 <Grid ColumnDefinitions="*, Auto">
+                    <DatePicker Date="{Binding Date}" Format="d"/>
                     <!--<Entry Placeholder="0" Text="{Binding InventoryNumber}" WidthRequest="50"/>-->
                     <Label Text="&#xe000;" TextColor="Red" FontFamily="MaterialIconsRegular" FontSize="20" Grid.Column="1">
                         <Label.Triggers>
