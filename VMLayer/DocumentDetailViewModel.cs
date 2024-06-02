@@ -34,6 +34,8 @@ namespace VMLayer
         private string oldName = string.Empty;
         private DateTime oldDate;
 
+        public IReadOnlyList<DocumentType> DocumentTypes { get;} = (IReadOnlyList<DocumentType>)Enum.GetValues(typeof(DocumentType));
+        //public IReadOnlyList<string> Types { get; } = Enum.GetNames(typeof(DocumentType));
 
         //свойства
         public ObservableCollection<CompanyDto> Companylist { get; set; } = [];
@@ -51,21 +53,23 @@ namespace VMLayer
             get => _description;
             set => SetProperty(ref _description, value, true);
         }
+        [Required]
         public DateTime Date
         {
             get => _date;
-            set => SetProperty(ref _date, value);
+            set => SetProperty(ref _date, value, true);
         }
         [Required]
         public CompanyDto? Company
         {
             get => _company;
-            set => SetProperty(ref _company, value);
+            set => SetProperty(ref _company, value, true);
         }
+        [Required]
         public DocumentType DocumentType
         {
             get => _documentType;
-            set => SetProperty(ref _documentType, value);
+            set => SetProperty(ref _documentType, value, true);
         }
 
         //кнопки

@@ -1,12 +1,119 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vms="clr-namespace:VMLayer;assembly=VMLayer"
+             xmlns:dto="clr-namespace:AcrhiveModels.DTOs;assembly=AcrhiveModels"
+             xmlns:mod="clr-namespace:AcrhiveModels;assembly=AcrhiveModels"
+             xmlns:conv="clr-namespace:ArchiveGHOST.Client.Converters"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              x:Class="ArchiveGHOST.Client.DocumentDetailPage"
-             Title="DocumentDetailPage">
-    <VerticalStackLayout>
-        <Label 
-            Text="Welcome to .NET MAUI!"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
-    </VerticalStackLayout>
+             x:DataType="vms:DocumentDetailViewModel"
+             Title="Сопроводительный документ">
+    <ContentPage.Resources>
+        <conv:DocumentTypeConverter x:Key="documentTypeConverter"/>
+        <toolkit:EnumToIntConverter x:Key="enumDocumentConverter"/>
+    </ContentPage.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <VerticalStackLayout Spacing="10" Grid.Row="0">
+            <HorizontalStackLayout Padding="5" Spacing="5">
+                <Label Text="Номер документа:"/>
+                <Grid ColumnDefinitions="*, Auto">
+                    <Entry Placeholder="б/н" Text="{Binding Name}" WidthRequest="50"/>
+                    <Label Text="&#xe000;" TextColor="Red" FontFamily="MaterialIconsRegular" FontSize="20" Grid.Column="1">
+                        <Label.Triggers>
+                            <DataTrigger
+                            TargetType="Label"
+                            Value="0"
+                            Binding="{Binding ErrorExposer[Name].Count}">
+                                <Setter Property="Text" Value="&#xe86c;"/>
+                                <Setter Property="TextColor" Value="Green"/>
+                            </DataTrigger>
+                        </Label.Triggers>
+                    </Label>
+                </Grid>
+            </HorizontalStackLayout>
+            <HorizontalStackLayout Padding="5" Spacing="5">
+                <Label Text="Дата документа:"/>
+                <Grid ColumnDefinitions="*, Auto">
+                    <!--<Entry Placeholder="0" Text="{Binding InventoryNumber}" WidthRequest="50"/>-->
+                    <Label Text="&#xe000;" TextColor="Red" FontFamily="MaterialIconsRegular" FontSize="20" Grid.Column="1">
+                        <Label.Triggers>
+                            <DataTrigger
+                            TargetType="Label"
+                            Value="0"
+                            Binding="{Binding ErrorExposer[Date].Count}">
+                                <Setter Property="Text" Value="&#xe86c;"/>
+                                <Setter Property="TextColor" Value="Green"/>
+                            </DataTrigger>
+                        </Label.Triggers>
+                    </Label>
+                </Grid>
+            </HorizontalStackLayout>
+            <HorizontalStackLayout Padding="5" Spacing="5">
+                <Label Text="Описание документа:"/>
+                <Grid ColumnDefinitions="*, Auto">
+                    <Editor Text="{Binding Description}" MaxLength="1000" WidthRequest="200" HeightRequest="100" IsSpellCheckEnabled="True"/>
+                    <Label Text="&#xe000;" TextColor="Red" FontFamily="MaterialIconsRegular" FontSize="20" Grid.Column="1">
+                        <Label.Triggers>
+                            <DataTrigger
+                            TargetType="Label"
+                            Value="0"
+                            Binding="{Binding ErrorExposer[Description].Count}">
+                                <Setter Property="Text" Value="&#xe86c;"/>
+                                <Setter Property="TextColor" Value="Green"/>
+                            </DataTrigger>
+                        </Label.Triggers>
+                    </Label>
+                </Grid>
+            </HorizontalStackLayout>
+            <HorizontalStackLayout Padding="5" Spacing="5">
+                <Label Text="Тип документа:"/>
+                <Grid ColumnDefinitions="*, Auto">
+                    <Picker ItemsSource="{Binding DocumentTypes, Converter={StaticResource documentTypeConverter}}"
+                            SelectedIndex="{Binding DocumentType, Converter={StaticResource enumDocumentConverter}, ConverterParameter={x:Type mod:DocumentType}}"/>
+                    <Label Text="&#xe000;" TextColor="Red" FontFamily="MaterialIconsRegular" FontSize="20" Grid.Column="1">
+                        <Label.Triggers>
+                            <DataTrigger
+                            TargetType="Label"
+                            Value="0"
+                            Binding="{Binding ErrorExposer[DocumentType].Count}">
+                                <Setter Property="Text" Value="&#xe86c;"/>
+                                <Setter Property="TextColor" Value="Green"/>
+                            </DataTrigger>
+                        </Label.Triggers>
+                    </Label>
+                </Grid>
+            </HorizontalStackLayout>
+            <HorizontalStackLayout Padding="5" Spacing="5">
+                <Label Text="Организация:"/>
+                <Grid ColumnDefinitions="*, Auto, Auto">
+                    <Picker ItemsSource="{Binding Companylist}" ItemDisplayBinding="{Binding Name}" SelectedItem="{Binding Company}" WidthRequest="300" Grid.Column="0"/>
+                    <Button Text="&#xe145;" FontFamily="MaterialIconsRegular" FontSize="20" Command="{Binding AddCompanyCommand}" Grid.Column="1"/>
+                    <Label Text="&#xe000;" TextColor="Red" FontFamily="MaterialIconsRegular" FontSize="20" Grid.Column="2">
+                        <Label.Triggers>
+                            <DataTrigger
+                            TargetType="Label"
+                            Value="0"
+                            Binding="{Binding ErrorExposer[Company].Count}">
+                                <Setter Property="Text" Value="&#xe86c;"/>
+                                <Setter Property="TextColor" Value="Green"/>
+                            </DataTrigger>
+                        </Label.Triggers>
+                    </Label>
+                </Grid>
+            </HorizontalStackLayout>
+            <HorizontalStackLayout>
+                <Button
+                    Text="&#xe161; Сохранить изменения" FontFamily="MaterialIconsRegular" FontSize="20"
+                    Command="{Binding AcseptCommand}"/>
+                <Button
+                    Text="&#xe166; Назад" FontFamily="MaterialIconsRegular" FontSize="20"
+                    Command="{Binding CancelCommand}"/>
+            </HorizontalStackLayout>
+        </VerticalStackLayout>
+    </Grid>
 </ContentPage>
