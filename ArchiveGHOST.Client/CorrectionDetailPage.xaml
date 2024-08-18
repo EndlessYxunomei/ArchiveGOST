@@ -6,83 +6,88 @@
              x:Class="ArchiveGHOST.Client.CorrectionDetailPage"
              x:DataType="vms:CorrectionDetailViewModel"
              Title="Изменение">
-    <VerticalStackLayout  Spacing="10">
-        <HorizontalStackLayout Padding="5" Spacing="5">
-            <Label>
-                <Label.Text>
-                    <MultiBinding StringFormat="{}Изменение к {0} &quot;{1}&quot;" Mode="OneWay">
-                        <Binding Path="OriginalName" Mode="OneWay"/>
-                        <Binding Path="OriginalCaption" Mode="OneWay"/>
-                    </MultiBinding>
-                </Label.Text>
-            </Label>
-        </HorizontalStackLayout>
-        <HorizontalStackLayout Padding="5" Spacing="5">
-            <Label Text="Номер изменения:"/>
-            <Grid ColumnDefinitions="*, Auto">
-                <Entry Placeholder="0" Text="{Binding CorrectionNumber}" Keyboard="Numeric" WidthRequest="50"/>
-                <Label Text="&#xe000;" TextColor="Red" FontFamily="MaterialIconsRegular" FontSize="20" Grid.Column="1">
-                    <Label.Triggers>
-                        <DataTrigger
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <VerticalStackLayout  Spacing="10" Grid.Row="0">
+            <HorizontalStackLayout Padding="5" Spacing="5">
+                <Label>
+                    <Label.Text>
+                        <MultiBinding StringFormat="{}Изменение к {0} &quot;{1}&quot;" Mode="OneWay">
+                            <Binding Path="OriginalName" Mode="OneWay"/>
+                            <Binding Path="OriginalCaption" Mode="OneWay"/>
+                        </MultiBinding>
+                    </Label.Text>
+                </Label>
+            </HorizontalStackLayout>
+            <HorizontalStackLayout Padding="5" Spacing="5">
+                <Label Text="Номер изменения:"/>
+                <Grid ColumnDefinitions="*, Auto">
+                    <Entry Placeholder="0" Text="{Binding CorrectionNumber}" Keyboard="Numeric" WidthRequest="50"/>
+                    <Label Text="&#xe000;" TextColor="Red" FontFamily="MaterialIconsRegular" FontSize="20" Grid.Column="1">
+                        <Label.Triggers>
+                            <DataTrigger
                             TargetType="Label"
                             Value="0"
                             Binding="{Binding ErrorExposer[CorrectionNumber].Count}">
-                            <Setter Property="Text" Value="&#xe86c;"/>
-                            <Setter Property="TextColor" Value="Green"/>
-                        </DataTrigger>
-                    </Label.Triggers>
-                </Label>
-            </Grid>
-        </HorizontalStackLayout>
-        <HorizontalStackLayout Padding="5" Spacing="5">
-            <Label Text="Описание:"/>
-            <Grid ColumnDefinitions="*, Auto">
-                <Editor Text="{Binding Description}" MaxLength="1000" WidthRequest="200" HeightRequest="100" IsSpellCheckEnabled="True"/>
-                <Label Text="&#xe000;" TextColor="Red" FontFamily="MaterialIconsRegular" FontSize="20" Grid.Column="1">
-                    <Label.Triggers>
-                        <DataTrigger
+                                <Setter Property="Text" Value="&#xe86c;"/>
+                                <Setter Property="TextColor" Value="Green"/>
+                            </DataTrigger>
+                        </Label.Triggers>
+                    </Label>
+                </Grid>
+            </HorizontalStackLayout>
+            <HorizontalStackLayout Padding="5" Spacing="5">
+                <Label Text="Описание:"/>
+                <Grid ColumnDefinitions="*, Auto">
+                    <Editor Text="{Binding Description}" MaxLength="1000" WidthRequest="200" HeightRequest="100" IsSpellCheckEnabled="True"/>
+                    <Label Text="&#xe000;" TextColor="Red" FontFamily="MaterialIconsRegular" FontSize="20" Grid.Column="1">
+                        <Label.Triggers>
+                            <DataTrigger
                             TargetType="Label"
                             Value="0"
                             Binding="{Binding ErrorExposer[Description].Count}">
-                            <Setter Property="Text" Value="&#xe86c;"/>
-                            <Setter Property="TextColor" Value="Green"/>
-                        </DataTrigger>
-                    </Label.Triggers>
-                </Label>
-            </Grid>
-        </HorizontalStackLayout>
-        <HorizontalStackLayout Padding="5" Spacing="5">
-            <Label Text="Сопроводительный документ:"/>
-            <Grid ColumnDefinitions="*,*, Auto">
-                <Picker ItemsSource="{Binding DocumentList}" SelectedItem="{Binding Document}" WidthRequest="300" Grid.Column="0">
-                <Picker.ItemDisplayBinding>
-                    <MultiBinding StringFormat="{}{0} от {1:d}">
-                        <Binding Path="Name"/>
-                        <Binding Path="Date"/>
-                    </MultiBinding>
-                </Picker.ItemDisplayBinding>
-            </Picker>
-            <Button Text="&#xe145;" FontFamily="MaterialIconsRegular" FontSize="20" Command="{Binding AddDocumentCommand}" Grid.Column="1"/>
-                <Label Text="&#xe000;" TextColor="Red" FontFamily="MaterialIconsRegular" FontSize="20" Grid.Column="2">
-                    <Label.Triggers>
-                        <DataTrigger
+                                <Setter Property="Text" Value="&#xe86c;"/>
+                                <Setter Property="TextColor" Value="Green"/>
+                            </DataTrigger>
+                        </Label.Triggers>
+                    </Label>
+                </Grid>
+            </HorizontalStackLayout>
+            <HorizontalStackLayout Padding="5" Spacing="5">
+                <Label Text="Сопроводительный документ:"/>
+                <Grid ColumnDefinitions="*,*, Auto">
+                    <Picker ItemsSource="{Binding DocumentList}" SelectedItem="{Binding Document}" WidthRequest="300" Grid.Column="0">
+                        <Picker.ItemDisplayBinding>
+                            <MultiBinding StringFormat="{}{0} от {1:d}">
+                                <Binding Path="Name"/>
+                                <Binding Path="Date"/>
+                            </MultiBinding>
+                        </Picker.ItemDisplayBinding>
+                    </Picker>
+                    <Button Text="&#xe145;" FontFamily="MaterialIconsRegular" FontSize="20" Command="{Binding AddDocumentCommand}" Grid.Column="1"/>
+                    <Label Text="&#xe000;" TextColor="Red" FontFamily="MaterialIconsRegular" FontSize="20" Grid.Column="2">
+                        <Label.Triggers>
+                            <DataTrigger
                             TargetType="Label"
                             Value="0"
                             Binding="{Binding ErrorExposer[Document].Count}">
-                            <Setter Property="Text" Value="&#xe86c;"/>
-                            <Setter Property="TextColor" Value="Green"/>
-                        </DataTrigger>
-                    </Label.Triggers>
-                </Label>
-            </Grid>
-        </HorizontalStackLayout>
-        <HorizontalStackLayout>
-            <Button
+                                <Setter Property="Text" Value="&#xe86c;"/>
+                                <Setter Property="TextColor" Value="Green"/>
+                            </DataTrigger>
+                        </Label.Triggers>
+                    </Label>
+                </Grid>
+            </HorizontalStackLayout>
+            <HorizontalStackLayout>
+                <Button
                 Text="&#xe161; Сохранить" FontFamily="MaterialIconsRegular" FontSize="20"
                 Command="{Binding AcseptCommand}"/>
-            <Button
+                <Button
                 Text="&#xe166; Назад" FontFamily="MaterialIconsRegular" FontSize="20"
                 Command="{Binding CancelCommand}"/>
-        </HorizontalStackLayout>
-    </VerticalStackLayout>
+            </HorizontalStackLayout>
+        </VerticalStackLayout>
+    </Grid>
 </ContentPage>
