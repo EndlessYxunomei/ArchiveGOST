@@ -39,19 +39,22 @@ namespace VMLayer
         private async Task CreateOriginal() => await navigationService.GoToCreateOriginal();
         private async Task DeleteOriginal()
         {
-            var result = await dialogService.AskYesNo("Удаление данных", $"Вы действительно хотите удалить {SelectedOriginal!.OriginalName} {SelectedOriginal.OriginalCaption}?");
-            if (result)
+			if (SelectedOriginal != null)
             {
-                //Удаление оригинала
-                await originalService.DeleteOriginal(SelectedOriginal.Id);
+				var result = await dialogService.AskYesNo("Удаление данных", $"Вы действительно хотите удалить {SelectedOriginal!.OriginalName} {SelectedOriginal.OriginalCaption}?");
+                if (result)
+                {
+                    //Удаление оригинала
+                    await originalService.DeleteOriginal(SelectedOriginal.Id);
 
-                //обновление списка
-                OriginalsList.Remove(SelectedOriginal);
-                SelectedOriginal = null;
+                    //обновление списка
+                    OriginalsList.Remove(SelectedOriginal);
+                    SelectedOriginal = null;
                 
-                await dialogService.Notify("Удалено", "Документ удалён");
-            }
-        }
+                    await dialogService.Notify("Удалено", "Документ удалён");
+                }
+			}
+		}
         private async Task EditOriginal()
         {
             if (SelectedOriginal != null)

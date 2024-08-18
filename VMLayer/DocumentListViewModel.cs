@@ -46,17 +46,20 @@ namespace VMLayer
         }
         private async Task DeleteDocument()
         {
-            var result = await dialogService.AskYesNo("Удаление данных", $"Вы действительно хотите удалить документ {SelectedDocument!.Name} от {SelectedDocument.Date:d}?");
-            if (result)
+            if (SelectedDocument != null)
             {
-                //Удаление оригинала
-                await documentService.DeleteDocument(SelectedDocument.Id);
+                var result = await dialogService.AskYesNo("Удаление данных", $"Вы действительно хотите удалить документ {SelectedDocument!.Name} от {SelectedDocument.Date:d}?");
+                if (result)
+                {
+                    //Удаление оригинала
+                    await documentService.DeleteDocument(SelectedDocument.Id);
 
-                //обновление списка
-                DocumentList.Remove(SelectedDocument);
-                SelectedDocument = null;
+                    //обновление списка
+                    DocumentList.Remove(SelectedDocument);
+                    SelectedDocument = null;
 
-                await dialogService.Notify("Удалено", "Документ удалён");
+                    await dialogService.Notify("Удалено", "Документ удалён");
+                }
             }
         }
         private bool CanEditDeleteDocument() => SelectedDocument != null;

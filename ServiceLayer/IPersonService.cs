@@ -10,6 +10,8 @@ namespace ServiceLayer
     public interface IPersonService
     {
         Task<List<PersonListDto>> GetPersonList();
-        Task CreatePerson();
-    }
+        Task<int> UpsertPerson(PersonDetailDto personDetailDto);
+        Task<PersonDetailDto> GetPersonDetail(int id);
+		Task DeletePerson(int id);
+	}
 }

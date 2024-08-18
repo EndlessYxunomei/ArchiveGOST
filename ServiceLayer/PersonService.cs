@@ -16,12 +16,12 @@ namespace ServiceLayer
             personRepo = new PersonRepo(dbContext);
         }
 
-        public Task CreatePerson()
-        {
-            throw new NotImplementedException();
-        }
+		public Task DeletePerson(int id)
+		{
+			throw new NotImplementedException();
+		}
 
-        public async Task<List<PersonListDto>> GetPersonList()
+		public async Task<List<PersonListDto>> GetPersonList()
         {
             var personlist = await personRepo.GetPersonList();
             List<PersonListDto> list = [];
@@ -32,5 +32,15 @@ namespace ServiceLayer
             }
             return list;
         }
-    }
+
+		public Task<int> UpsertPerson(PersonDetailDto personDetailDto)
+		{
+			throw new NotImplementedException();
+		}
+
+		public Task<PersonDetailDto> GetPersonDetail(int id)
+		{
+			throw new NotImplementedException();
+		}
+	}
 }

@@ -30,5 +30,8 @@ namespace ArchiveGHOST.Client.Services
         public Task GoToCorrectionDetails(OriginalListDto original, int id = 0) => Navigate(NavigationConstants.CorrectionDetail, new() { { "original_list", original }, { "correction_detail", id } });
         public Task GoToCreateDocument() => Navigate(NavigationConstants.DocumentDetail);
         public Task GoToDocumentDetails(int id) => Navigate(NavigationConstants.DocumentDetail, new() { { "document_detail", id} });
-    }
+		public Task GoToCreatePerson() => Navigate(NavigationConstants.PersonDetail);
+		public Task GoToPersonDetails(int id) => Navigate(NavigationConstants.PersonDetail, new() { { "person_detail", id } });
+
+	}
 }

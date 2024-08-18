@@ -38,11 +38,13 @@ namespace ArchiveGHOST.Client
             builder.Services.AddTransientWithShellRoute<DocumentDetailPage, DocumentDetailViewModel>(NavigationConstants.DocumentDetail);
             builder.Services.AddTransientWithShellRoute<CompanyListPage, CompanyListViewModel>(NavigationConstants.CompanyList);
             builder.Services.AddTransientWithShellRoute<ApplicabilityListPage, ApplicabilityListViewModel>(NavigationConstants.ApplicabilityList);
+            builder.Services.AddTransientWithShellRoute<PersonListPage, PersonListViewModel>(NavigationConstants.PersonList);
 
-            //НАДО РАЗОБРАТЬСЯ ГДЕ НАХОДИТСЯ НАША БАЗА
-            //ПОКА РАБОТАЕТ ТОЛЬКО СЕРВЕРА
+			//НАДО РАЗОБРАТЬСЯ ГДЕ НАХОДИТСЯ НАША БАЗА
+			//C:\Users\pestr\AppData\Local\Packages\com.companyname.archiveghost.client_9zz4h110yvjzm\LocalState
+			//ПОКА РАБОТАЕТ ТОЛЬКО СЕРВЕРА
 
-            builder.Services.AddDbContext<ArchiveDbContext>(op =>
+			builder.Services.AddDbContext<ArchiveDbContext>(op =>
             op.UseSqlServer(builder.Configuration.GetConnectionString("ArchiveLibrarySQLServer")));
 
             builder.Services.AddTransient<IOriginalService, OriginalService>();

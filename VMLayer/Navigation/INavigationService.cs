@@ -16,5 +16,7 @@ namespace VMLayer.Navigation
         Task GoToCorrectionDetails(OriginalListDto original, int id = 0);
         Task GoToCreateDocument();
         Task GoToDocumentDetails(int id);
-    }
+        Task GoToCreatePerson();
+		Task GoToPersonDetails(int id);
+	}
 }
