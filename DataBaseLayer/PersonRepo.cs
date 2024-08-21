@@ -29,28 +29,26 @@ namespace DataBaseLayer
 
         public async Task UpsertPeople(List<Person> people)
         {
-            using (var transaction = _context.Database.BeginTransaction(System.Data.IsolationLevel.ReadUncommitted))
-            {
-                try
-                {
-                    foreach (var person in people)
-                    {
-                        var success = await UpsertPerson(person) > 0;
-                        if (!success) { throw new Exception($"Error saving the person {person.LastName}"); }
-                    }
-                    await transaction.CommitAsync();
-                }
-                catch (Exception ex)
-                {
-                    Debug.WriteLine(ex.ToString());
+			using var transaction = _context.Database.BeginTransaction(System.Data.IsolationLevel.ReadUncommitted);
+			try
+			{
+				foreach (var person in people)
+				{
+					var success = await UpsertPerson(person) > 0;
+					if (!success) { throw new Exception($"Error saving the person {person.LastName}"); }
+				}
+				await transaction.CommitAsync();
+			}
+			catch (Exception ex)
+			{
+				Debug.WriteLine(ex.ToString());
 
-                    await transaction.RollbackAsync();
+				await transaction.RollbackAsync();
 
-                    throw;
-                }
-            }
-            //не работает в SQLite
-            /*using (var scope = new TransactionScope(TransactionScopeOption.Required,
+				throw;
+			}
+			//не работает в SQLite
+			/*using (var scope = new TransactionScope(TransactionScopeOption.Required,
                 new TransactionOptions { IsolationLevel = IsolationLevel.ReadUncommitted },
                 TransactionScopeAsyncFlowOption.Enabled))
             {
@@ -69,7 +67,7 @@ namespace DataBaseLayer
                     throw;
                 }
             }*/
-        }
+		}
         public async Task<int> UpsertPerson(Person person)
         {
             if (person.Id > 0)
@@ -99,43 +97,41 @@ namespace DataBaseLayer
         }
         public async Task DeletePeople(List<int> personIds)
         {
-            using (var transaction = _context.Database.BeginTransaction(System.Data.IsolationLevel.ReadUncommitted))
-            {
-                try
-                {
-                    foreach (var personId in personIds)
-                    {
-                        await DeletePerson(personId);
-                    }
-                    await transaction.CommitAsync();
-                }
-                catch (Exception ex)
-                {
-                    Debug.WriteLine(ex.ToString());
-                    await transaction.RollbackAsync();
-                    throw;
-                }
-            }
-            //не работает в SQLite
-                /*using (var scope = new TransactionScope(TransactionScopeOption.Required,
-                        new TransactionOptions { IsolationLevel = IsolationLevel.ReadUncommitted },
-                        TransactionScopeAsyncFlowOption.Enabled))
-                {
-                    try
-                    {
-                        foreach (var personId in personIds)
-                        {
-                            await DeletePerson(personId);
-                        }
-                        scope.Complete();
-                    }
-                    catch (Exception ex)
-                    {
-                        Debug.WriteLine(ex.ToString());
-                        throw;
-                    }
-                }*/
-        }
+			using var transaction = _context.Database.BeginTransaction(System.Data.IsolationLevel.ReadUncommitted);
+			try
+			{
+				foreach (var personId in personIds)
+				{
+					await DeletePerson(personId);
+				}
+				await transaction.CommitAsync();
+			}
+			catch (Exception ex)
+			{
+				Debug.WriteLine(ex.ToString());
+				await transaction.RollbackAsync();
+				throw;
+			}
+			//не работает в SQLite
+			/*using (var scope = new TransactionScope(TransactionScopeOption.Required,
+					new TransactionOptions { IsolationLevel = IsolationLevel.ReadUncommitted },
+					TransactionScopeAsyncFlowOption.Enabled))
+			{
+				try
+				{
+					foreach (var personId in personIds)
+					{
+						await DeletePerson(personId);
+					}
+					scope.Complete();
+				}
+				catch (Exception ex)
+				{
+					Debug.WriteLine(ex.ToString());
+					throw;
+				}
+			}*/
+		}
         public async Task DeletePerson(int id)
         {
             var person = await _context.People.FirstOrDefaultAsync(x => x.Id == id);
@@ -143,5 +139,11 @@ namespace DataBaseLayer
             person.IsDeleted = true;
             await _context.SaveChangesAsync();
         }
-    }
+
+		public async Task<bool> CheckPersonFullName(string lastName, string? firstName)
+		{
+			bool exist = await _context.People.AnyAsync(x => x.LastName == lastName && x.FirstName == firstName);
+            return !exist;
+		}
+	}
 }

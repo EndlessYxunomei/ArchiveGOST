@@ -60,7 +60,7 @@ namespace ServiceLayer
             return await originalRepo.UpsertOriginal(newOriginal);
         }
         public async Task DeleteOriginal(int id) => await originalRepo.DeleteOriginal(id);
-        public async Task<int> GetLustInventoryNumber() => await originalRepo.GetLastInventoryNumberAsync();
+        public async Task<int> GetLastInventoryNumber() => await originalRepo.GetLastInventoryNumberAsync();
         public async Task<bool> CheckInventoryNumber(int inventorynumber) => await originalRepo.CheckInventoryNumberAsync(inventorynumber);
         public async Task<OriginalListDto> GetOriginalAsync(int id)
         {

@@ -16,9 +16,9 @@ namespace ServiceLayer
             personRepo = new PersonRepo(dbContext);
         }
 
-		public Task DeletePerson(int id)
+		public async Task DeletePerson(int id)
 		{
-			throw new NotImplementedException();
+			await personRepo.DeletePerson(id);
 		}
 
 		public async Task<List<PersonListDto>> GetPersonList()
@@ -38,9 +38,21 @@ namespace ServiceLayer
 			throw new NotImplementedException();
 		}
 
-		public Task<PersonDetailDto> GetPersonDetail(int id)
+		public async Task<PersonDetailDto> GetPersonDetail(int id)
 		{
-			throw new NotImplementedException();
+			var person = await personRepo.GetPersonAsync(id);
+			return (PersonDetailDto)person;
+		}
+
+		public async Task<bool> CheckPersonFullName(string lastName, string? firstName)
+		{
+			return await personRepo.CheckPersonFullName(lastName, firstName);
+		}
+
+		public async Task<PersonListDto> GetPerson(int id)
+		{
+			var person = await personRepo.GetPersonAsync(id);
+			return (PersonListDto)person;
 		}
 	}
 }

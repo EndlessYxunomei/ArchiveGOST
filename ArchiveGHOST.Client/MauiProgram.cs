@@ -39,6 +39,8 @@ namespace ArchiveGHOST.Client
             builder.Services.AddTransientWithShellRoute<CompanyListPage, CompanyListViewModel>(NavigationConstants.CompanyList);
             builder.Services.AddTransientWithShellRoute<ApplicabilityListPage, ApplicabilityListViewModel>(NavigationConstants.ApplicabilityList);
             builder.Services.AddTransientWithShellRoute<PersonListPage, PersonListViewModel>(NavigationConstants.PersonList);
+            builder.Services.AddTransientWithShellRoute<CreatePersonPage, CreatePersonViewModel>(NavigationConstants.CreatePerson);
+            builder.Services.AddTransientWithShellRoute<PersonDetailPage, EditPersonViewModel>(NavigationConstants.PersonDetail);
 
 			//НАДО РАЗОБРАТЬСЯ ГДЕ НАХОДИТСЯ НАША БАЗА
 			//C:\Users\pestr\AppData\Local\Packages\com.companyname.archiveghost.client_9zz4h110yvjzm\LocalState

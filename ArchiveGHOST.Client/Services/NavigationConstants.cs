@@ -18,5 +18,6 @@ namespace ArchiveGHOST.Client.Services
         public const string DocumentDetail = "DocumentDetail";
 		public const string PersonList = "PersonList";
 		public const string PersonDetail = "PersonDetail";
+		public const string CreatePerson = "CreatePerson";
 	}
 }

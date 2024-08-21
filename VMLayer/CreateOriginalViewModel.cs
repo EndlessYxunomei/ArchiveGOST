@@ -60,7 +60,7 @@ public class CreateOriginalViewModel: OriginalDetailViewModel
     //Пероначальная загрузка данных
     internal override  async Task LoadData()
     {
-        var newInventoryNumber = await originalService.GetLustInventoryNumber();
+        var newInventoryNumber = await originalService.GetLastInventoryNumber();
         InventoryNumber = newInventoryNumber + 1;
 
         await base.LoadData();

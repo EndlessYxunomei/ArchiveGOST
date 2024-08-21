@@ -13,7 +13,7 @@ namespace ServiceLayer
         Task<List<OriginalListDto>> GetOriginalListAsync();
         Task<OriginalDetailDto> GetOriginalDetailAsync(int id);
         Task<OriginalListDto> GetOriginalAsync(int id);
-        Task<int> GetLustInventoryNumber();
+        Task<int> GetLastInventoryNumber();
         Task<bool> CheckInventoryNumber(int inventorynumber);
         Task<int> UpsertOriginal(OriginalDetailDto originalDetailDto);
         Task DeleteOriginal(int id);
