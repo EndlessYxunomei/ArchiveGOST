@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vms="clr-namespace:VMLayer;assembly=VMLayer"
+             x:Class="ArchiveGHOST.Client.CreatePersonPage"
+             x:DataType="vms:CreatePersonViewModel"
+             Title="Создание новго пользователя">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <VerticalStackLayout Spacing="10" Grid.Row="0">
+            <HorizontalStackLayout Padding="5" Spacing="5">
+                <Label Text="Отдел:"/>
+                <Grid ColumnDefinitions="*, Auto">
+                    <Editor Text="{Binding Department}" Placeholder="Новый отдел" MaxLength="50" WidthRequest="200" IsSpellCheckEnabled="True"/>
+                    <Label Text="&#xe000;" TextColor="Red" FontFamily="MaterialIconsRegular" FontSize="20" Grid.Column="1">
+                        <Label.Triggers>
+                            <DataTrigger
+                            TargetType="Label"
+                            Value="0"
+                            Binding="{Binding ErrorExposer[Department].Count}">
+                                <Setter Property="Text" Value="&#xe86c;"/>
+                                <Setter Property="TextColor" Value="Green"/>
+                            </DataTrigger>
+                        </Label.Triggers>
+                    </Label>
+                </Grid>
+            </HorizontalStackLayout>
+            <HorizontalStackLayout Padding="5" Spacing="5">
+                <Label Text="Фамилия:"/>
+                <Grid ColumnDefinitions="*, Auto">
+                    <Editor Text="{Binding LastName}" Placeholder="Иванов" MaxLength="50" WidthRequest="200" IsSpellCheckEnabled="True"/>
+                    <Label Text="&#xe000;" TextColor="Red" FontFamily="MaterialIconsRegular" FontSize="20" Grid.Column="1">
+                        <Label.Triggers>
+                            <DataTrigger
+                            TargetType="Label"
+                            Value="0"
+                            Binding="{Binding ErrorExposer[LastName].Count}">
+                                <Setter Property="Text" Value="&#xe86c;"/>
+                                <Setter Property="TextColor" Value="Green"/>
+                            </DataTrigger>
+                        </Label.Triggers>
+                    </Label>
+                </Grid>
+            </HorizontalStackLayout>
+            <HorizontalStackLayout Padding="5" Spacing="5">
+                <Label Text="Имя:"/>
+                <Grid ColumnDefinitions="*, Auto">
+                    <Editor Text="{Binding FirstName}" Placeholder="Иван" MaxLength="50" WidthRequest="200" IsSpellCheckEnabled="True"/>
+                    <Label Text="&#xe000;" TextColor="Red" FontFamily="MaterialIconsRegular" FontSize="20" Grid.Column="1">
+                        <Label.Triggers>
+                            <DataTrigger
+                            TargetType="Label"
+                            Value="0"
+                            Binding="{Binding ErrorExposer[FirstName].Count}">
+                                <Setter Property="Text" Value="&#xe86c;"/>
+                                <Setter Property="TextColor" Value="Green"/>
+                            </DataTrigger>
+                        </Label.Triggers>
+                    </Label>
+                </Grid>
+            </HorizontalStackLayout>
+            <HorizontalStackLayout Padding="5" Spacing="5">
+                <Button
+                Text="&#xe161; Добавить пользователя" FontFamily="MaterialIconsRegular" FontSize="20"
+                Command="{Binding AcseptCommand}"/>
+                <Button
+                Text="&#xe166; Отмена" FontFamily="MaterialIconsRegular" FontSize="20"
+                Command="{Binding CancelCommand}"/>
+            </HorizontalStackLayout>
+        </VerticalStackLayout>
+    </Grid>
+</ContentPage>
