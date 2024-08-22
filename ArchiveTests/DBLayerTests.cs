@@ -178,6 +178,9 @@ namespace ArchiveTests
             await _personRepo.DeletePeople([listtest_update[4].Id, listtest_update[5].Id]);
             var listtest_del = await _personRepo.GetPersonList();
             listtest_del.Count.ShouldBe(4);
+
+            var check_new_full_name = await _personRepo.CheckPersonFullName("Царев", "Алексей");
+			check_new_full_name.ShouldBeFalse();
         }
     }
 }
