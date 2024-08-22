@@ -27,12 +27,25 @@ namespace VMLayer
 
 		//свойства
 		[StringLength(ArchiveConstants.MAX_PERSON_NAME_LENGTH)]
-		public string? FirstName { get; set; }
+		public string? FirstName
+		{
+			get => _firstName;
+			set => SetProperty(ref _firstName, value, true);
+		}
 		[Required]
 		[StringLength(ArchiveConstants.MAX_PERSON_NAME_LENGTH)]
-		public required string LastName { get; set; }
+		[MinLength(1)]
+		public required string LastName
+		{
+			get => _lastName;
+			set => SetProperty(ref _lastName, value, true);
+		}
 		[StringLength(ArchiveConstants.MAX_PERSON_DEPARTMENT_LENGTH)]
-		public string? Department { get; set; }
+		public string? Department
+		{
+			get => _department;
+			set => SetProperty(ref _department, value, true);
+		}
 
 		//списки
 

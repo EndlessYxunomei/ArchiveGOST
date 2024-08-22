@@ -17,6 +17,6 @@ namespace VMLayer.Navigation
         public const string CorrectionDeatil = "correction_detail";
         public const string CorrectionList = "correction_list";
         public const string DocumentDetail = "document_detail";
-		public const string PersoDetail = "person_detail";
+		public const string PersonDetail = "person_detail";
 	}
 }
