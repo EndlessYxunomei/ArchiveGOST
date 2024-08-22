@@ -1,4 +1,5 @@
-﻿using AcrhiveModels.DTOs;
+﻿using AcrhiveModels;
+using AcrhiveModels.DTOs;
 using ArchiveGOST_DbLibrary;
 using DataBaseLayer;
 
@@ -33,9 +34,16 @@ namespace ServiceLayer
             return list;
         }
 
-		public Task<int> UpsertPerson(PersonDetailDto personDetailDto)
+		public async Task<int> UpsertPerson(PersonDetailDto personDetailDto)
 		{
-			throw new NotImplementedException();
+			Person person = new()
+			{
+				LastName = personDetailDto.LastName,
+				FirstName = personDetailDto.FirstName,
+				Department = personDetailDto.Department,
+				Id = personDetailDto.Id
+			};
+			return await personRepo.UpsertPerson(person);
 		}
 
 		public async Task<PersonDetailDto> GetPersonDetail(int id)
