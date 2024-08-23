@@ -30,7 +30,7 @@ namespace ArchiveTests
             //Подключаем базу данных (можно сделалть фальшивую базу, но это не нужно пока можно делать тестоую настоящую базу)
             _configuration = ConfigurationBuilderSingleton.ConfigurationRoot;
             _optionsBuilder = new DbContextOptionsBuilder<ArchiveDbContext>();
-            var cstr = _configuration.GetConnectionString("ArchiveLibrary");
+            var cstr = _configuration.GetConnectionString("ArchiveLibraryTest");
             _optionsBuilder.UseSqlite(cstr);
             _dbContext = new ArchiveDbContext(_optionsBuilder.Options);
 

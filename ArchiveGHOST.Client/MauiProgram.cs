@@ -47,9 +47,10 @@ namespace ArchiveGHOST.Client
 			//ПОКА РАБОТАЕТ ТОЛЬКО СЕРВЕРА
 
 			builder.Services.AddDbContext<ArchiveDbContext>(op =>
-            op.UseSqlServer(builder.Configuration.GetConnectionString("ArchiveLibrarySQLServer")));
+            //op.UseSqlServer(builder.Configuration.GetConnectionString("ArchiveLibrarySQLServer")));
+			op.UseSqlite(builder.Configuration.GetConnectionString("ArchiveLibrary")));
 
-            builder.Services.AddTransient<IOriginalService, OriginalService>();
+			builder.Services.AddTransient<IOriginalService, OriginalService>();
             builder.Services.AddTransient<IDocumentService, DocumentService>();
             builder.Services.AddTransient<ICompanyService, CompanyService>();
             builder.Services.AddTransient<IPersonService, PersonService>();
